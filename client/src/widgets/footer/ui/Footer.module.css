@@ -1,6 +1,6 @@
 /* Стили для футера */
 .footer {
-  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  background: linear-gradient(135deg,#c2a137de 0%, #c29c35de 100%);
   color: #ecf0f1;
   padding: 2rem;
   margin-top: auto;
@@ -28,9 +28,9 @@
 }
 
 .footerButton {
-  background: rgba(52, 152, 219, 0.2);
-  color: #3498db;
-  border: 1px solid rgba(52, 152, 219, 0.3);
+  background: rgba(197, 195, 47, 0.2);
+  color: #e25a31;
+  border: 1px solid rgba(214, 9, 9, 0.3);
   padding: 0.5rem 1rem;
   border-radius: 8px;
   font-size: 0.9rem;
@@ -42,10 +42,10 @@
 }
 
 .footerButton:hover {
-  background: rgba(52, 152, 219, 0.3);
-  border-color: rgba(52, 152, 219, 0.5);
+  background: rgba(216, 129, 30, 0.247);
+  border-color: rgba(199, 92, 20, 0.5);
   transform: translateY(-1px);
-  color: #5dade2;
+  color: #bd4e0f;
 }
 
 .footerButton:active {
