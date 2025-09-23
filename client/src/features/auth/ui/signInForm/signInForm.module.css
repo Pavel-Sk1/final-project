@@ -6,7 +6,6 @@
 .formTitle {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #2c3e50;
   text-align: center;
   margin-bottom: 1.5rem;
 }
@@ -28,9 +27,9 @@
 
 .formInput:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #dd481b;
   background: white;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 0 0 3px rgba(212, 115, 36, 0.1);
 }
 
 .formInput::placeholder {
@@ -40,7 +39,7 @@
 .submitButton {
   width: 100%;
   padding: 0.8rem 1rem;
-  background: linear-gradient(45deg, #667eea, #764ba2);
+  background: linear-gradient(45deg, #ea9066, #b38d3c);
   color: white;
   border: none;
   border-radius: 10px;
@@ -53,7 +52,7 @@
 
 .submitButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 15px rgba(223, 99, 50, 0.4);
 }
 
 .submitButton:active {

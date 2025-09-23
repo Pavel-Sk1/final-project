@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #a1873d 0%, #b3985fd0 100%);
   padding: 2rem;
 }
 
@@ -43,7 +43,6 @@
 }
 
 .authTab.active {
-  color: #667eea;
   background: white;
 }
 
@@ -54,7 +53,7 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(45deg, #667eea, #764ba2);
+  background: linear-gradient(45deg, #ea9066, #b38d3c);
 }
 
 /* Адаптивность */
