@@ -1,0 +1,107 @@
+/* Стили для формы регистрации */
+.signUpForm {
+  padding: 2rem;
+}
+
+.formTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.inputGroup {
+  margin-bottom: 1.5rem;
+}
+
+.formInput {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+  box-sizing: border-box;
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.formInput::placeholder {
+  color: #6c757d;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background: linear-gradient(45deg, #28a745, #20c997);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.submitButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+}
+
+.submitButton:active {
+  transform: translateY(0);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.errorMessage {
+  color: #dc3545;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  text-align: center;
+  background: #f8d7da;
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #f5c6cb;
+}
+
+.passwordStrength {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+
+.passwordStrength.weak {
+  color: #dc3545;
+}
+
+.passwordStrength.medium {
+  color: #ffc107;
+}
+
+.passwordStrength.strong {
+  color: #28a745;
+}
+
+/* Адаптивность */
+@media (max-width: 480px) {
+  .signUpForm {
+    padding: 1.5rem;
+  }
+  
+  .formTitle {
+    font-size: 1.3rem;
+  }
+}

@@ -1,0 +1,74 @@
+/* Стили для страницы аутентификации */
+.authPage {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+}
+
+.authContainer {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 100%;
+  max-width: 400px;
+  backdrop-filter: blur(10px);
+}
+
+.authTabs {
+  display: flex;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.authTab {
+  flex: 1;
+  padding: 1rem 2rem;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #6c757d;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.authTab:hover {
+  background: #e9ecef;
+  color: #495057;
+}
+
+.authTab.active {
+  color: #667eea;
+  background: white;
+}
+
+.authTab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+}
+
+/* Адаптивность */
+@media (max-width: 480px) {
+  .authPage {
+    padding: 1rem;
+  }
+  
+  .authContainer {
+    max-width: 100%;
+  }
+  
+  .authTab {
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+  }
+}
