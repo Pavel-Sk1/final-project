@@ -1,4 +1,5 @@
 import { NavLink, useNavigate } from 'react-router';
+import { GiCroissant } from 'react-icons/gi';
 import { useAppDispatch, useAppSelector, CLIENT_ROUTES } from '@/shared';
 import { signOutThunk } from '@/entities';
 import styles from './Navigation.module.css';
@@ -20,15 +21,13 @@ export function Navigation(): React.JSX.Element {
   return (
     <nav className={styles.header}>
       <div className={styles.navLinks}>
-        {/* Ссылка на главную страницу */}
         <NavLink
           to={CLIENT_ROUTES.HOME}
-          className={({ isActive }) =>
-            `${styles.headerLink} ${isActive ? styles.headerLinkActive : ''}`
-          }
+          className={styles.brand}
         >
-          Home
-        </NavLink>        
+          <GiCroissant className={styles.brandIcon} />
+          <span className={styles.brandTitle}>Ромарио</span>
+        </NavLink>
       </div>
 
       {/* Секция пользователя */}
@@ -44,14 +43,16 @@ export function Navigation(): React.JSX.Element {
             </button>
           </>
         ) : (
-          <NavLink
-            to={CLIENT_ROUTES.AUTH}
-            className={({ isActive }) =>
-              `${styles.headerLink} ${isActive ? styles.headerLinkActive : ''}`
-            }
-          >
-            Sign In/Sign Up
-          </NavLink>
+          <div className="auth-buttons">
+            <NavLink
+              to={CLIENT_ROUTES.AUTH}
+              className={({ isActive }) =>
+                `btn-primary ${isActive && 'btn-primary--active'}`
+              }
+            >
+              Вход
+            </NavLink>
+          </div>
         )}
       </div>
     </nav>
