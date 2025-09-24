@@ -1,22 +1,22 @@
-const { Information, Product } = require("../db/models");
+const { News, Product } = require("../db/models");
 
 class AdminService {
 
-  static async getAllInformation() {
-    return await Information.findAll();
+  static async getAllNews() {
+    return await News.findAll();
   }
 
-  static async getInformationById(id) {
-    return await Information.findByPk(id);
+  static async getNewsById(id) {
+    return await News.findByPk(id);
   }
 
-  static async createInformation(information) {
-    return await Information.create(information);
+  static async createNews(information) {
+    return await News.create(information);
   }
 
-  static async updateInformation(id, information) {
-    const { title, description, img } = information;
-    const informationToUpdate = await Information.findByPk(id);
+  static async updateNews(id, information) {
+    const { title, description, img, is_active } = information;
+    const informationToUpdate = await News.findByPk(id);
 
     if (title) {
       informationToUpdate.title = title;
@@ -27,12 +27,15 @@ class AdminService {
     if (img) {
       informationToUpdate.img = img;
     }
+    if (is_active) {
+      informationToUpdate.is_active = is_active;
+    }
     await informationToUpdate.save();
     return informationToUpdate;
   }
 
-  static async deleteInformation(id) {
-    return await Information.destroy({ where: { id } });
+  static async deleteNews(id) {
+    return await News.destroy({ where: { id } });
   }
 
   static async getAllProducts() {

@@ -2,34 +2,35 @@ import { useAppDispatch, useAppSelector } from "@/shared";
 import styles from "./AdminPage.module.css";
 import { useEffect, useState } from "react";
 import {
-  getAllInformationThunk,
+  getAllAdminNewsThunk,
   getAllProductsThunk,
-  updateInformationThunk,
+  updateNewsThunk,
   updateProductThunk,
 } from "@/entities";
 
 export function AdminPage() {
-  const [editInformation, setEditInformation] = useState(false);
-  const [editOneInfo, setEditOneInfo] = useState(false);
-  const [editOneInfoId, setEditOneInfoId] = useState(0);
+  const [editNews, setEditNews] = useState(false);
+  const [editOneNews, setEditOneNews] = useState(false);
+  const [editOneNewsId, setEditOneNewsId] = useState(0);
   const [editProduct, setEditProduct] = useState(false);
   const [editOneProduct, setEditOneProduct] = useState(false);
   const [editOneProductId, setEditOneProductId] = useState(0);
-  const [informationInput, setInformationInput] = useState({
+  const [newsInput, setNewsInput] = useState({
     title: "",
     description: "",
     img: "",
+    is_active: false,
   });
   const [productInput, setProductInput] = useState({
     img: "",
   });
-  const { infoArray, productArray } = useAppSelector((state) => state.admin);
+  const { newsArray, productArray } = useAppSelector((state) => state.admin);
   const dispatch = useAppDispatch();
 
   const onChangeInformationHandler = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setInformationInput((prev) => ({
+    setNewsInput((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));
@@ -50,15 +51,15 @@ export function AdminPage() {
     event.preventDefault();
     try {
       dispatch(
-        updateInformationThunk({
-          id: editOneInfoId,
-          information: informationInput,
+        updateNewsThunk({
+          id: editOneNewsId,
+          news: newsInput,
         })
       );
     } catch (error) {
       console.error(error);
     } finally {
-      setEditOneInfo(false);
+      setEditOneNews(false);
     }
   };
 
@@ -76,7 +77,7 @@ export function AdminPage() {
   };
 
   useEffect(() => {
-    dispatch(getAllInformationThunk());
+    dispatch(getAllAdminNewsThunk());
     dispatch(getAllProductsThunk());
   }, [dispatch]);
 
@@ -88,20 +89,20 @@ export function AdminPage() {
         <section className={styles.section}>
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>
-              Информация на главной странице
+              Новости на главной странице
             </h2>
             <button
               className={styles.toggleButton}
-              onClick={() => setEditInformation((prev) => !prev)}
+              onClick={() => setEditNews((prev) => !prev)}
             >
-              {editInformation ? "Скрыть" : "Редактировать"}
+              {editNews ? "Скрыть" : "Редактировать"}
             </button>
           </div>
 
-          {editInformation && (
+          {editNews && (
             <div className={styles.itemsContainer}>
-              {infoArray.map((info) =>
-                editOneInfo && editOneInfoId === info.id ? (
+              {newsArray.map((info) =>
+                editOneNews && editOneNewsId === info.id ? (
                   <form
                     key={info.id}
                     className={styles.editForm}
@@ -112,7 +113,7 @@ export function AdminPage() {
                         type="text"
                         name="title"
                         placeholder="Название"
-                        value={informationInput.title}
+                        value={newsInput.title}
                         onChange={onChangeInformationHandler}
                         className={styles.formInput}
                       />
@@ -122,7 +123,7 @@ export function AdminPage() {
                         type="text"
                         name="description"
                         placeholder="Описание"
-                        value={informationInput.description}
+                        value={newsInput.description}
                         onChange={onChangeInformationHandler}
                         className={styles.formInput}
                       />
@@ -132,7 +133,7 @@ export function AdminPage() {
                         type="text"
                         name="img"
                         placeholder="URL изображения"
-                        value={informationInput.img}
+                        value={newsInput.img}
                         onChange={onChangeInformationHandler}
                         className={styles.formInput}
                       />
@@ -144,7 +145,7 @@ export function AdminPage() {
                       <button
                         type="button"
                         className={styles.cancelButton}
-                        onClick={() => setEditOneInfo(false)}
+                        onClick={() => setEditOneNews(false)}
                       >
                         Отмена
                       </button>
@@ -164,12 +165,13 @@ export function AdminPage() {
                     <button
                       className={styles.editButton}
                       onClick={() => {
-                        setEditOneInfo(true);
-                        setEditOneInfoId(info.id);
-                        setInformationInput({
+                        setEditOneNews(true);
+                        setEditOneNewsId(info.id);
+                        setNewsInput({
                           title: info.title,
                           description: info.description,
                           img: info.img,
+                          is_active: info.is_active,
                         });
                       }}
                     >

@@ -1,17 +1,17 @@
-export interface ICreateAdminInformation {
+export interface ICreateAdminNews {
   title: string;
   description: string;
   img: string;
+  is_active: boolean;
 }
 
-export interface IAdminInformation extends ICreateAdminInformation {
-  id: number;
-  page?: string;
+export interface IAdminNews extends ICreateAdminNews {
+  id: number;  
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-export type AdminInfoArrayType = Array<IAdminInformation>;
+export type AdminNewsArrayType = Array<IAdminNews>;
 
 export interface ICreateAdminProduct {
   img: string;
@@ -31,6 +31,6 @@ export interface IAdminProduct extends ICreateAdminProduct {
 export type AdminProductArrayType = Array<IAdminProduct>;
 
 export const ADMIN_API_ROUTES = {
-  INFORMATION: "/admin/information",
+  NEWS: "/admin/news",
   PRODUCT: "/admin/product",
 };
