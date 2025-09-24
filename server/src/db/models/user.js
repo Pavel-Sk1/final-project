@@ -5,7 +5,13 @@ const bcrypt = require("bcrypt");
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    static associate(models) {}
+    static associate(models) {
+      // Пользователь принадлежит одной роли
+      User.belongsTo(models.Role, {
+        foreignKey: "role_id",
+        as: "role",
+      });
+    }
 
     static validateEmail(email) {
       const emailPattern = /^[A-z0-9._%+-]+@[A-z0-9.-]+\.[A-z]{2,}$/;
@@ -31,16 +37,11 @@ module.exports = (sequelize, DataTypes) => {
       return true;
     }
 
-    static validateSignInData({ email, password }) {
-      if (
-        !email ||
-        typeof email !== "string" ||
-        email.trim().length === 0 ||
-        !this.validateEmail(email)
-      ) {
+    static validateSignInData({ login, password }) {
+      if (!login || typeof login !== "string" || login.trim().length === 0) {
         return {
           isValid: false,
-          error: "Email не должен быть пустым и должен быть валидным",
+          error: "Логин не должен быть пустым",
         };
       }
 
@@ -63,27 +64,11 @@ module.exports = (sequelize, DataTypes) => {
       };
     }
 
-    static validateSignUpData({ username, email, password }) {
-      if (
-        !username ||
-        typeof username !== "string" ||
-        username.trim().length === 0
-      ) {
+    static validateSignUpData({ login, password }) {
+      if (!login || typeof login !== "string" || login.trim().length === 0) {
         return {
           isValid: false,
-          error: "Поле username не должно быть пустым",
-        };
-      }
-
-      if (
-        !email ||
-        typeof email !== "string" ||
-        email.trim().length === 0 ||
-        !this.validateEmail(email)
-      ) {
-        return {
-          isValid: false,
-          error: "Email должен быть валидным",
+          error: "Поле login не должно быть пустым",
         };
       }
 
@@ -109,22 +94,52 @@ module.exports = (sequelize, DataTypes) => {
 
   User.init(
     {
-      email: DataTypes.STRING,
-      username: DataTypes.STRING,
-      password: DataTypes.STRING,
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+      },
+      login: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      phone: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      role_id: {
+        type: DataTypes.BIGINT,
+        allowNull: true,
+        references: {
+          model: "roles",
+          key: "id",
+        },
+      },
+      is_active: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+      },
     },
     {
       sequelize,
       modelName: "User",
+      tableName: "Users",
+      timestamps: true,
       hooks: {
         //* перед созданием
         beforeCreate: async (newUser) => {
           //* хэшируем пароль
           const hashedPassword = await bcrypt.hash(newUser.password, 10);
           newUser.password = hashedPassword;
-          //* приводим email и username к нижнему регистру
-          newUser.email = newUser.email.trim().toLowerCase();
-          newUser.username = newUser.username.trim().toLowerCase();
+          //* приводим login к нижнему регистру
+          newUser.login = newUser.login.trim().toLowerCase();
         },
         //* после создания
         afterCreate: (newUser) => {
