@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       // Telegram пользователь может иметь много заказов
       TgUser.hasMany(models.TgOrder, {
         foreignKey: "tg_user_id",
+        sourceKey: "tg_user_id",
         as: "orders",
       });
     }
@@ -22,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       tg_user_id: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.STRING,
         allowNull: false,
         unique: true,
       },

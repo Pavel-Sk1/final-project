@@ -8,7 +8,7 @@ module.exports = {
       [
         {
           id: 1,
-          tg_user_id: 1, // Анна Петрова
+          tg_user_id: "123456789", // Анна Петрова
           product_id: 1, // Маргарита
           quantity: 1,
           user_comment: "Без лука, пожалуйста",
@@ -18,7 +18,7 @@ module.exports = {
         },
         {
           id: 2,
-          tg_user_id: 1, // Анна Петрова
+          tg_user_id: "123456789", // Анна Петрова
           product_id: 6, // Кока-Кола
           quantity: 2,
           user_comment: "",
@@ -28,7 +28,7 @@ module.exports = {
         },
         {
           id: 3,
-          tg_user_id: 2, // Михаил Иванов
+          tg_user_id: "987654321", // Михаил Иванов
           product_id: 4, // Классический бургер
           quantity: 1,
           user_comment: "Дополнительный соус",
@@ -38,7 +38,7 @@ module.exports = {
         },
         {
           id: 4,
-          tg_user_id: 2, // Михаил Иванов
+          tg_user_id: "987654321", // Михаил Иванов
           product_id: 7, // Апельсиновый сок
           quantity: 1,
           user_comment: "",
@@ -48,7 +48,7 @@ module.exports = {
         },
         {
           id: 5,
-          tg_user_id: 3, // Елена Смирнова
+          tg_user_id: "456789123", // Елена Смирнова
           product_id: 2, // Пепперони
           quantity: 1,
           user_comment: "Острая пицца",
@@ -58,7 +58,7 @@ module.exports = {
         },
         {
           id: 6,
-          tg_user_id: 4, // Дмитрий Козлов
+          tg_user_id: "789123456", // Дмитрий Козлов
           product_id: 5, // Чизбургер
           quantity: 2,
           user_comment: "Один без лука",
@@ -68,7 +68,7 @@ module.exports = {
         },
         {
           id: 7,
-          tg_user_id: 4, // Дмитрий Козлов
+          tg_user_id: "789123456", // Дмитрий Козлов
           product_id: 10, // Цезарь
           quantity: 1,
           user_comment: "",
@@ -78,7 +78,7 @@ module.exports = {
         },
         {
           id: 8,
-          tg_user_id: 5, // Ольга Васильева
+          tg_user_id: "321654987", // Ольга Васильева
           product_id: 3, // Четыре сыра
           quantity: 1,
           user_comment: "Дополнительный сыр",
@@ -88,7 +88,7 @@ module.exports = {
         },
         {
           id: 9,
-          tg_user_id: 6, // Алексей Морозов
+          tg_user_id: "654987321", // Алексей Морозов
           product_id: 8, // Тирамису
           quantity: 2,
           user_comment: "На десерт",
@@ -98,7 +98,7 @@ module.exports = {
         },
         {
           id: 10,
-          tg_user_id: 7, // Татьяна Новикова
+          tg_user_id: "147258369", // Татьяна Новикова
           product_id: 9, // Чизкейк
           quantity: 1,
           user_comment: "С днем рождения!",
@@ -108,7 +108,7 @@ module.exports = {
         },
         {
           id: 11,
-          tg_user_id: 8, // Сергей Волков
+          tg_user_id: "369258147", // Сергей Волков
           product_id: 1, // Маргарита
           quantity: 1,
           user_comment: "Быстрая доставка",
@@ -118,7 +118,7 @@ module.exports = {
         },
         {
           id: 12,
-          tg_user_id: 8, // Сергей Волков
+          tg_user_id: "369258147", // Сергей Волков
           product_id: 6, // Кока-Кола
           quantity: 1,
           user_comment: "",

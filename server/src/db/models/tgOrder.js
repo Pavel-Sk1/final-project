@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       // Заказ принадлежит одному Telegram пользователю
       TgOrder.belongsTo(models.TgUser, {
         foreignKey: "tg_user_id",
+        targetKey: "tg_user_id",
         as: "tgUser",
       });
 
@@ -28,15 +29,15 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       tg_user_id: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.STRING,
         allowNull: false,
         references: {
           model: "tg_users",
-          key: "id",
+          key: "tg_user_id",
         },
       },
       product_id: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
           model: "Products",
@@ -54,7 +55,13 @@ module.exports = (sequelize, DataTypes) => {
       },
       status: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
+        defaultValue: "pending",
+        validate: {
+          isIn: [
+            ["pending", "in_progress", "completed", "cancelled", "delivered"],
+          ],
+        },
       },
     },
     {

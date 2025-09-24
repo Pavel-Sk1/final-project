@@ -184,8 +184,18 @@ router.get("/stats", async (req, res) => {
       },
       include: [
         {
+          model: TgUser,
+          as: "tgUser",
+        },
+        {
           model: Product,
           as: "product",
+          include: [
+            {
+              model: Category,
+              as: "category",
+            },
+          ],
         },
       ],
     });
