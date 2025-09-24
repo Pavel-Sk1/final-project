@@ -6,7 +6,6 @@ import { Layout } from "./layout/Layout";
 import { CLIENT_ROUTES, useAppDispatch } from "@/shared";
 import { ProtectedRoute } from "@/shared";
 import { refreshTokensThunk } from "@/entities";
-import AdminPage from "@/pages/admin/ui/AdminPage";
 
 export function App() {
   const dispatch = useAppDispatch();
