@@ -8,7 +8,7 @@ import {
   updateProductThunk,
 } from "@/entities";
 
-function AdminPage() {
+export function AdminPage() {
   const [editInformation, setEditInformation] = useState(false);
   const [editOneInfo, setEditOneInfo] = useState(false);
   const [editOneInfoId, setEditOneInfoId] = useState(0);
@@ -254,4 +254,3 @@ function AdminPage() {
   );
 }
 
-export default AdminPage;

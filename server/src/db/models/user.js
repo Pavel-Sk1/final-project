@@ -45,16 +45,10 @@ module.exports = (sequelize, DataTypes) => {
         };
       }
 
-      if (
-        !password ||
-        typeof password !== "string" ||
-        password.trim().length === 0 ||
-        !this.validatePassword(password)
-      ) {
+      if (!password || typeof password !== "string" || password.trim().length === 0) {
         return {
           isValid: false,
-          error:
-            "Пароль не должен быть пустым, должен содержать хотя бы одну цифру, одну заглавную букву, одну строчную букву, один специальный символ и быть не менее 8 символов",
+          error: "Пароль не должен быть пустым",
         };
       }
 

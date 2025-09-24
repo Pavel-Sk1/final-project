@@ -66,7 +66,7 @@ export function SignUpForm() {
           name='username'
           placeholder='Username'
           onChange={onChangeHandler}
-          value={inputs.username}
+          value={inputs.login}
           className={styles.formInput}
           autoFocus
           required

@@ -41,21 +41,20 @@ class AuthController {
   }
 
   static async signUp(req, res) {
-    const { email, password, username } = req.body;
+    const { login, password } = req.body;
 
     const { isValid, error } = User.validateSignUpData({
-      email,
+      login,
       password,
-      username,
     });
 
     if (!isValid) {
       return res.status(422).json(formatResponse(422, error, null, error));
     }
 
-    const normalizedEmail = email.trim().toLowerCase();
+    const normalizedLogin = login.trim().toLowerCase();
     try {
-      const userFound = await UserService.getByEmail(normalizedEmail);
+      const userFound = await User.findOne({ where: { login: normalizedLogin } });
 
       if (userFound) {
         return res
@@ -63,17 +62,16 @@ class AuthController {
           .json(
             formatResponse(
               409,
-              `Пользователь c таким email (${email}) уже существует`,
+              `Пользователь c таким login (${login}) уже существует`,
               null,
-              `Пользователь c таким email (${email}) уже существует`
+              `Пользователь c таким login (${login}) уже существует`
             )
           );
       }
 
       const newUser = await UserService.create({
-        email,
+        login: normalizedLogin,
         password,
-        username,
       });
 
       if (!newUser) {
@@ -113,10 +111,10 @@ class AuthController {
   }
 
   static async signIn(req, res) {
-    const { email, password } = req.body;
+    const { login, password } = req.body;
 
     const { isValid, error } = User.validateSignInData({
-      email,
+      login,
       password,
     });
 
@@ -124,9 +122,9 @@ class AuthController {
       return res.status(422).json(formatResponse(422, error, null, error));
     }
 
-    const normalizedEmail = email.trim().toLowerCase();
+    const normalizedLogin = login.trim().toLowerCase();
     try {
-      const userFound = await UserService.getByEmail(normalizedEmail);
+      const userFound = await UserService.getByLogin(normalizedLogin);
 
       if (!userFound) {
         return res
@@ -134,9 +132,9 @@ class AuthController {
           .json(
             formatResponse(
               404,
-              `Пользователь c таким email (${email}) не найден`,
+              `Пользователь c таким login (${login}) не найден`,
               null,
-              `Пользователь c таким email (${email}) не найден`
+              `Пользователь c таким login (${login}) не найден`
             )
           );
       }
@@ -149,14 +147,7 @@ class AuthController {
       if (!isPasswordValid) {
         return res
           .status(401)
-          .json(
-            formatResponse(
-              401,
-              `Неверный пароль для пользователя с email (${email})`,
-              null,
-              `Неверный пароль для пользователя с email (${email})`
-            )
-          );
+          .json(formatResponse(401, `Неверный пароль`, null, `Неверный пароль`));
       }
 
       delete userFound.password;
