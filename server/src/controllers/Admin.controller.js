@@ -2,6 +2,31 @@ const AdminService = require("../services/Admin.service");
 const formatResponse = require("../utils/formatResponse");
 
 class AdminController {
+  static async getAllInformation(req, res) {
+    try {
+      const information = await AdminService.getAllInformation();
+      res.status(200).json(formatResponse(200, "Information fetched successfully", information));
+    } catch (error) {
+      console.error("======AdminController.getAllInformation===\n", error);
+      res
+        .status(500)
+        .json(formatResponse(500, "Internal server error", null, error));
+    }
+  }
+
+  static async getInformationById(req, res) {
+    try {
+      const { id } = req.params;
+      const information = await AdminService.getInformationById(id);
+      res.status(200).json(formatResponse(200, "Information fetched successfully", information));
+    } catch (error) {
+      console.error("======AdminController.getInformationById===\n", error);
+      res
+        .status(500)
+        .json(formatResponse(500, "Internal server error", null, error));
+    }
+  }
+
   static async createInformation(req, res) {
     try {
       const { title, description, img } = req.body;
@@ -68,6 +93,30 @@ class AdminController {
         );
     } catch (error) {
       console.error("======AdminController.deleteInformation===\n", error);
+      res
+        .status(500)
+        .json(formatResponse(500, "Internal server error", null, error));
+    }
+  }
+  static async getAllProducts(req, res) {
+    try {
+      const products = await AdminService.getAllProducts();
+      res.status(200).json(formatResponse(200, "Products fetched successfully", products));
+    } catch (error) {
+      console.error("======AdminController.getAllProducts===\n", error);
+      res
+        .status(500)
+        .json(formatResponse(500, "Internal server error", null, error));
+    }
+  }
+
+  static async getProductById(req, res) {
+    try {
+      const { id } = req.params;
+      const product = await AdminService.getProductById(id);
+      res.status(200).json(formatResponse(200, "Product fetched successfully", product));
+    } catch (error) {
+      console.error("======AdminController.getProductById===\n", error);
       res
         .status(500)
         .json(formatResponse(500, "Internal server error", null, error));
