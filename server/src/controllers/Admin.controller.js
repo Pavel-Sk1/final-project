@@ -83,13 +83,14 @@ class AdminController {
           .json(formatResponse(400, "Неверный id", null, "Неверный id"));
       }
       const { title, description, img, is_active } = req.body;
+      
       const { isValid, error } = NewsValidator.validate({ title, description, img, is_active });
       if (!isValid) {
         return res
           .status(400)
           .json(formatResponse(400, error, null, error));
       }
-      const information = await AdminService.updateNews(id, {
+      const news = await AdminService.updateNews(id, {
         title,
         description,
         img,
@@ -98,7 +99,7 @@ class AdminController {
       res
         .status(200)
         .json(
-          formatResponse(200, "Новость обновлена успешно", information)
+          formatResponse(200, "Новость обновлена успешно", news)
         );
     } catch (error) {
       console.error("======AdminController.updateNews===\n", error);

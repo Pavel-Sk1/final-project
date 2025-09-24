@@ -14,7 +14,11 @@ module.exports = (sequelize, DataTypes) => {
           error: "Название новости не должно быть пустым",
         };
       }
-      if (!description || typeof description !== "string" || description.trim().length === 0) {
+      if (
+        !description ||
+        typeof description !== "string" ||
+        description.trim().length === 0
+      ) {
         return {
           isValid: false,
           error: "Описание новости не должно быть пустым",
@@ -32,6 +36,7 @@ module.exports = (sequelize, DataTypes) => {
           error: "Активность новости должна быть булевым значением",
         };
       }
+      return { isValid: true, error: null };
     }
   }
 
@@ -47,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      discription: {
+      description: {
         type: DataTypes.STRING,
         allowNull: true,
       },
