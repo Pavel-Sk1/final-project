@@ -10,6 +10,7 @@ export interface ISignUpData extends ISignInData {
 
 export interface IUser extends ISignUpData {
   id: number;
+  role: string;
   createdAt: Date;
   updatedAt: Date;
 }
