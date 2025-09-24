@@ -92,18 +92,21 @@ function AdminPage() {
                 <form onSubmit={onSubmitInformationHandler}>
                   <input
                     type="text"
+                    name="title"
                     placeholder="Название"
                     value={informationInput.title}
                     onChange={onChangeInformationHandler}
                   />
                   <input
                     type="text"
+                    name="description"
                     placeholder="Описание"
                     value={informationInput.description}
                     onChange={onChangeInformationHandler}
                   />
                   <input
                     type="text"
+                    name="img"
                     placeholder="Изображение"
                     value={informationInput.img}
                     onChange={onChangeInformationHandler}
