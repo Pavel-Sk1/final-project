@@ -4,22 +4,76 @@ import { CLIENT_ROUTES } from '@/shared';
 import styles from './Footer.module.css';
 
 export function Footer(): JSX.Element {
-  // Хук для навигации между страницами
   const navigate = useNavigate();
 
   return (
     <footer className={styles.footer}>
       <div className={styles.footerContent}>
-        <p className={styles.footerText}>© {new Date().getFullYear()} Wolves Online Project</p>
+        <div className={styles.footerColumns}>
+          <div className={styles.footerColumn}>
+            <h3 className={styles.columnTitle}>Навигация</h3>
+            <nav className={styles.footerNav}>
+              <button
+                className={styles.footerLink}
+                onClick={() => navigate(CLIENT_ROUTES.HOME)}
+              >
+                Новости
+              </button>
+              <button
+                className={styles.footerLink}
+                onClick={() => navigate(CLIENT_ROUTES.HOME)}
+              >
+                О нас
+              </button>
+              <button
+                className={styles.footerLink}
+                onClick={() => navigate(CLIENT_ROUTES.HOME)}
+              >
+                Наша продукция
+              </button>
+            </nav>
+          </div>
 
-        <nav className={styles.footerNav}>
-          <button
-            className={styles.footerButton}
-            onClick={() => navigate(CLIENT_ROUTES.HOME)}
-          >
-            Home
-          </button>          
-        </nav>
+          <div className={styles.footerColumn}>
+            <h3 className={styles.columnTitle}>Сотрудничество</h3>
+            <nav className={styles.footerNav}>
+              <button
+                className={styles.footerLink}
+                onClick={() => navigate(CLIENT_ROUTES.HOME)}
+              >
+                Информация для юр.лиц
+              </button>
+              <button
+                className={styles.footerLink}
+                onClick={() => navigate(CLIENT_ROUTES.HOME)}
+              >
+                Предложения о сотрудничестве
+              </button>
+            </nav>
+          </div>
+
+          <div className={styles.footerColumn}>
+            <h3 className={styles.columnTitle}>Контакты</h3>
+            <nav className={styles.footerNav}>
+              <button
+                className={styles.footerLink}
+                onClick={() => navigate(CLIENT_ROUTES.HOME)}
+              >
+                Вакансии
+              </button>
+              <button
+                className={styles.footerLink}
+                onClick={() => navigate(CLIENT_ROUTES.HOME)}
+              >
+                Наши контакты
+              </button>
+            </nav>
+          </div>
+        </div>
+
+        <div className={styles.footerBottom}>
+          <p className={styles.footerText}>© {new Date().getFullYear()} Семейное производство</p>
+        </div>
       </div>
     </footer>
   );
