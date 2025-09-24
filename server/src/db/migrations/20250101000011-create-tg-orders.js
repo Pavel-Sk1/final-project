@@ -2,40 +2,45 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Users", {
+    await queryInterface.createTable("tg_orders", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
-      },
-      login: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      phone: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      role_id: {
         type: Sequelize.BIGINT,
-        allowNull: true,
+      },
+      tg_user_id: {
+        type: Sequelize.BIGINT,
+        allowNull: false,
         references: {
-          model: "roles",
+          model: "tg_users",
           key: "id",
         },
         onUpdate: "CASCADE",
-        onDelete: "SET NULL",
+        onDelete: "CASCADE",
       },
-      is_active: {
-        type: Sequelize.BOOLEAN,
+      product_id: {
+        type: Sequelize.BIGINT,
         allowNull: false,
-        defaultValue: true,
+        references: {
+          model: "Products",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      quantity: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
+      },
+      user_comment: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
+      status: {
+        type: Sequelize.STRING,
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,
@@ -50,6 +55,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Users");
+    await queryInterface.dropTable("tg_orders");
   },
 };
