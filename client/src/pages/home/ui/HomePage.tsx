@@ -1,9 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import styles from "./HomePage.module.css";
-import { useAppDispatch, useAppSelector } from '@/shared';
+import { useAppDispatch, useAppSelector } from "@/shared";
 import { useTransition, animated } from "@react-spring/web";
 import { getAllNewsThunk, getAllProductImagesThunk } from "@/entities";
-
 
 export function HomePage() {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
@@ -14,8 +13,8 @@ export function HomePage() {
   const [newsIndex, setNewsIndex] = useState<number>(0);
 
   const imagesPerSlide = 4;
-  const images = useMemo(() => 
-    productImages.map((p) => p.img).filter(Boolean) as string[], 
+  const images = useMemo(
+    () => productImages.map((p) => p.img).filter(Boolean) as string[],
     [productImages]
   );
   const totalImages = images.length;
@@ -43,11 +42,17 @@ export function HomePage() {
   }, [news]);
 
   useEffect(() => {
-    if (!images || images.length === 0 || totalImages <= imagesPerSlide || isPaused) return;
-    
+    if (
+      !images ||
+      images.length === 0 ||
+      totalImages <= imagesPerSlide ||
+      isPaused
+    )
+      return;
+
     const interval = setInterval(() => {
       setCurrentSlide((prev: number) => (prev + 1) % totalImages);
-    }, 8000); 
+    }, 8000);
 
     return () => clearInterval(interval);
   }, [images, totalImages, isPaused]);
@@ -81,7 +86,7 @@ export function HomePage() {
     if (!images || images.length === 0) {
       return [];
     }
-    
+
     const visibleImages = [];
     for (let i = 0; i < imagesPerSlide; i++) {
       const index = (currentSlide + i) % totalImages;
@@ -99,16 +104,29 @@ export function HomePage() {
         <div className={styles.newsTicker}>
           {news.length > 0 ? (
             newsTransition((style, item) => (
-              <animated.div style={{ position: 'absolute', left: 16, right: 16, top: 0, ...style }} className={styles.newsCard}>
+              <animated.div
+                style={{
+                  position: "absolute",
+                  left: 16,
+                  right: 16,
+                  top: 0,
+                  ...style,
+                }}
+                className={styles.newsCard}
+              >
                 {item?.img ? (
-                  <img className={styles.newsImage} src={item.img as string} alt={item.title} />
+                  <img
+                    className={styles.newsImage}
+                    src={item.img as string}
+                    alt={item.title}
+                  />
                 ) : (
                   <div className={styles.newsImagePlaceholder}>Ромарио</div>
                 )}
                 <div className={styles.newsContent}>
                   <h3 className={styles.newsTitle}>{item?.title}</h3>
-                  {item?.discription && (
-                    <p className={styles.newsDescription}>{item.discription}</p>
+                  {item?.description && (
+                    <p className={styles.newsDescription}>{item.description}</p>
                   )}
                 </div>
               </animated.div>
@@ -122,19 +140,30 @@ export function HomePage() {
         <div className={styles.container}>
           <h1 className={styles.aboutHeading}>О нас</h1>
           <div className={styles.aboutCard}>
-            <h2 className={styles.aboutTitle}>Мы рядом, чтобы кормить вкусно</h2>
+            <h2 className={styles.aboutTitle}>
+              Мы рядом, чтобы кормить вкусно
+            </h2>
             <div className={styles.aboutText}>
               <p>
-                Мы — небольшое семейное производство, создающее вкусную и качественную свежую выпечку, салаты, первые и вторые блюда. Наша главная ценность — забота о каждом клиенте и внимательное отношение к ингредиентам и рецептам.
+                Мы — небольшое семейное производство, создающее вкусную и
+                качественную свежую выпечку, салаты, первые и вторые блюда. Наша
+                главная ценность — забота о каждом клиенте и внимательное
+                отношение к ингредиентам и рецептам.
               </p>
               <p>
-                Всё, что мы готовим, создаётся с любовью и соблюдением традиций, при этом мы используем только свежие и натуральные продукты без лишних консервантов и добавок.
+                Всё, что мы готовим, создаётся с любовью и соблюдением традиций,
+                при этом мы используем только свежие и натуральные продукты без
+                лишних консервантов и добавок.
               </p>
               <p>
-                Мы гордимся тем, что наши блюда находят отклик у многих дилеров и их клиентов, предлагая отличный вкус и стабильное качество. Наша миссия — сделать ваш ассортимент вкуснее и разнообразнее, чтобы вместе радовать людей вкусной и полезной едой.
+                Мы гордимся тем, что наши блюда находят отклик у многих дилеров
+                и их клиентов, предлагая отличный вкус и стабильное качество.
+                Наша миссия — сделать ваш ассортимент вкуснее и разнообразнее,
+                чтобы вместе радовать людей вкусной и полезной едой.
               </p>
               <p>
-                Семейные традиции, внимание к деталям и стремление к совершенству — вот что стоит за каждым кусочком нашей продукции.
+                Семейные традиции, внимание к деталям и стремление к
+                совершенству — вот что стоит за каждым кусочком нашей продукции.
               </p>
             </div>
           </div>
@@ -159,9 +188,21 @@ export function HomePage() {
             <div className={styles.images_slider}>
               <div className={styles.images_stage}>
                 {slideTransition((style) => (
-                  <animated.div style={{ position: 'absolute', left: 0, right: 0, top: 0, ...style }} className={styles.images_grid}>
+                  <animated.div
+                    style={{
+                      position: "absolute",
+                      left: 0,
+                      right: 0,
+                      top: 0,
+                      ...style,
+                    }}
+                    className={styles.images_grid}
+                  >
                     {getVisibleImages.map((image, index) => (
-                      <div key={`${currentSlide}-${index}`} className="image-item">
+                      <div
+                        key={`${currentSlide}-${index}`}
+                        className="image-item"
+                      >
                         <img
                           src={image}
                           alt={`Изображение ${index + 1}`}
@@ -189,7 +230,9 @@ export function HomePage() {
               {Array.from({ length: totalImages }).map((_, index) => (
                 <button
                   key={index}
-                  className={`slider-dot ${index === currentSlide ? 'slider-dot--active' : ''}`}
+                  className={`slider-dot ${
+                    index === currentSlide ? "slider-dot--active" : ""
+                  }`}
                   onClick={() => setCurrentSlide(index)}
                   aria-label={`Перейти к изображению ${index + 1}`}
                 />

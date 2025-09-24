@@ -27,12 +27,21 @@ export function AdminPage() {
   const { newsArray, productArray } = useAppSelector((state) => state.admin);
   const dispatch = useAppDispatch();
 
-  const onChangeInformationHandler = (
+  const onChangeNewsHandler = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setNewsInput((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
+    }));
+  };
+
+  const onChangeNewsIsActiveHandler = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setNewsInput((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.checked,
     }));
   };
 
@@ -45,11 +54,11 @@ export function AdminPage() {
     }));
   };
 
-  const onSubmitInformationHandler = (
+  const onSubmitNewsHandler = (
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
-    try {
+    try {      
       dispatch(
         updateNewsThunk({
           id: editOneNewsId,
@@ -101,12 +110,12 @@ export function AdminPage() {
 
           {editNews && (
             <div className={styles.itemsContainer}>
-              {newsArray.map((info) =>
-                editOneNews && editOneNewsId === info.id ? (
+              {newsArray.map((news) =>
+                editOneNews && editOneNewsId === news.id ? (
                   <form
-                    key={info.id}
+                    key={news.id}
                     className={styles.editForm}
-                    onSubmit={onSubmitInformationHandler}
+                    onSubmit={onSubmitNewsHandler}
                   >
                     <div className={styles.formGroup}>
                       <input
@@ -114,7 +123,7 @@ export function AdminPage() {
                         name="title"
                         placeholder="Название"
                         value={newsInput.title}
-                        onChange={onChangeInformationHandler}
+                        onChange={onChangeNewsHandler}
                         className={styles.formInput}
                       />
                     </div>
@@ -124,7 +133,7 @@ export function AdminPage() {
                         name="description"
                         placeholder="Описание"
                         value={newsInput.description}
-                        onChange={onChangeInformationHandler}
+                        onChange={onChangeNewsHandler}
                         className={styles.formInput}
                       />
                     </div>
@@ -134,7 +143,19 @@ export function AdminPage() {
                         name="img"
                         placeholder="URL изображения"
                         value={newsInput.img}
-                        onChange={onChangeInformationHandler}
+                        onChange={onChangeNewsHandler}
+                        className={styles.formInput}
+                      />
+                    </div>
+                    <div className={styles.formGroup}>
+                      <label htmlFor="is_active">Активность</label>
+                      <input
+                        id="is_active"
+                        type="checkbox"
+                        name="is_active"
+                        placeholder="Активность"
+                        checked={newsInput.is_active}
+                        onChange={onChangeNewsIsActiveHandler}
                         className={styles.formInput}
                       />
                     </div>
@@ -152,26 +173,26 @@ export function AdminPage() {
                     </div>
                   </form>
                 ) : (
-                  <div key={info.id} className={styles.infoItem}>
+                  <div key={news.id} className={styles.infoItem}>
                     <div className={styles.itemImage}>
-                      <img src={info.img} alt={info.title} />
+                      <img src={news.img} alt={news.title} />
                     </div>
                     <div className={styles.itemContent}>
-                      <h3 className={styles.itemTitle}>{info.title}</h3>
+                      <h3 className={styles.itemTitle}>{news.title}</h3>
                       <p className={styles.itemDescription}>
-                        {info.description}
+                        {news.description}
                       </p>
                     </div>
                     <button
                       className={styles.editButton}
                       onClick={() => {
                         setEditOneNews(true);
-                        setEditOneNewsId(info.id);
+                        setEditOneNewsId(news.id);
                         setNewsInput({
-                          title: info.title,
-                          description: info.description,
-                          img: info.img,
-                          is_active: info.is_active,
+                          title: news.title,
+                          description: news.description,
+                          img: news.img,
+                          is_active: news.is_active,
                         });
                       }}
                     >
