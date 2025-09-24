@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router";
 import { useEffect } from "react";
-import { HomePage, AuthPage } from "@/pages";
+import { HomePage, SignInPage } from "@/pages";
 import { Layout } from "./layout/Layout";
 import { CLIENT_ROUTES, useAppDispatch } from "@/shared";
 import { refreshTokensThunk } from "@/entities";
@@ -17,7 +17,7 @@ export function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
-          <Route path={CLIENT_ROUTES.AUTH} element={<AuthPage />} />
+          <Route path={CLIENT_ROUTES.AUTH} element={<SignInPage />} />
         </Route>
       </Routes>
     </>

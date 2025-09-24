@@ -1,18 +1,16 @@
-/* Стили для главной страницы */
 .mainPage {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 2rem;
-  background: linear-gradient(135deg, #a1873d 0%, #b3985fd0 100%);
-  color: white;
-  font-family: 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'Courier New', monospace;
+  background: linear-gradient(135deg, var(--bg) 0%, var(--bg-contrast) 100%);
+  color: var(--text);
 }
 
 .banner {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   width: 100%;
   margin-bottom: 3rem;
@@ -23,13 +21,79 @@
 .categories {
   padding: 4rem 0;
 }
+.container {
+  width: 85vw;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.newsTicker {
+  width: 100%;
+  max-width: 900px;
+  padding: 0 1rem;
+  position: relative;
+  height: 132px;
+}
+
+.newsCard {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 16px;
+  align-items: center;
+  background: linear-gradient(180deg, #ffffff, #fff9f5);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+  width: 100%;
+}
+
+.newsImage {
+  width: 120px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.newsImagePlaceholder {
+  width: 120px;
+  height: 80px;
+  border-radius: 12px;
+  border: 1px dashed var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-light);
+  background: #fff4ec;
+}
+
+
+.newsTitle {
+  font-size: 1.1rem;
+  color: var(--primary-dark);
+  margin-bottom: 6px;
+}
+
+.newsDescription {
+  color: var(--text);
+  opacity: 0.9;
+}
+
+.newsEmpty {
+  text-align: center;
+  color: var(--text-light);
+}
+
+ 
 .images_slider_container {
   position: relative;
   display: flex;
   align-items: center;
   gap: 2rem;
-  transition: all 0.3s ease;
+  transition: all 0.6s ease;
   padding: 1rem 0;
+  width: 100%;
 }
 
 .images_slider_container:hover {
@@ -40,26 +104,29 @@
   flex: 1;
   overflow: hidden;
   position: relative;
-  padding: 1rem 0;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding: 1rem;
+  height: 200px;
+  width: 100%;
+}
+
+.images_stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .images_grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
-  transition: none;
-  transform: translateX(0);
-  perspective: 1000px;
 }
 
 .images_grid > div {
-  background: var(--white);
+  background: linear-gradient(180deg, #ffffff, #fff9f5);
   border-radius: 16px;
-  padding: 2rem 1.5rem;
+  padding: 0;
   text-align: center;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid var(--border);
   cursor: pointer;
@@ -70,6 +137,14 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.slider_image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
 }
 .slider_btn {
   background: transparent;
@@ -84,46 +159,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: var(--transition);
+  box-shadow: var(--shadow);
   position: relative;
   overflow: hidden;
 }
-.slider_btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.1), transparent);
-  transition: left 0.5s;
-}
-
-.slider_btn:hover:not(:disabled)::before {
-  left: 100%;
-}
+ 
 
 .slider_btn:hover:not(:disabled) {
-  background: var(--light-blue);
-  border-color: var(--primary-blue);
-  color: var(--primary-blue);
+  background: #fff4ec;
+  border-color: var(--primary);
+  color: var(--primary);
   transform: scale(1.05);
-  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
+  box-shadow: var(--shadow);
 }
 
-.slider_btn:active:not(:disabled) {
-  transform: scale(0.95);
-}
+ 
 
-.slider_btn:disabled {
-  background: transparent;
-  color: var(--text-light);
-  border-color: var(--border);
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
+ 
 
 .slider_dots {
   display: flex;
@@ -151,13 +204,13 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--primary-blue);
+  background: var(--primary);
   opacity: 0;
   transition: all 0.3s ease;
 }
 
 .slider-dot--active {
-  border-color: var(--primary-blue);
+  border-color: var(--primary);
   transform: scale(1.1);
 }
 
@@ -175,17 +228,7 @@
   background: var(--accent-blue);
 }
 
-.loading-message,
-.error-message {
-  text-align: center;
-  padding: 2rem;
-  font-size: 1.1rem;
-  color: var(--text-light);
-}
-
-.error-message {
-  color: #dc2626;
-}
+ 
 
 /* Адаптивность */
 @media (max-width: 768px) {
@@ -194,16 +237,5 @@
     text-align: center;
   }
   
-  .bannerContent {
-    margin-right: 0;
-    margin-bottom: 2rem;
-  }
   
-  .bannerContent h1 {
-    font-size: 2rem;
-  }
-  
-  .techLogos {
-    justify-content: center;
-  }
 }

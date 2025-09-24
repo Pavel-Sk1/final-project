@@ -1,0 +1,3 @@
+export { type ICreateAdminInformation, type IAdminInformation, type AdminInfoArrayType, type ICreateAdminProduct, type IAdminProduct, type AdminProductArrayType, ADMIN_API_ROUTES } from './model';
+export { getAllInformationThunk, getInformationByIdThunk, createInformationThunk, updateInformationThunk, deleteInformationThunk, getAllProductsThunk, getProductByIdThunk, updateProductThunk } from './api/adminThunkApi';
+export { adminReducer } from './slice/adminSlice';
