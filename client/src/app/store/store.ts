@@ -1,10 +1,11 @@
-import { userReducer} from "@/entities";
+import { userReducer, newsReducer } from "@/entities";
 import { configureStore } from "@reduxjs/toolkit";
 
 // Конфигурация store
 export const store = configureStore({
     reducer: {
-        user: userReducer,        
+        user: userReducer,
+        news: newsReducer,
     },
 });
 
