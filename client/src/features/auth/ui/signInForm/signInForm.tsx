@@ -56,7 +56,7 @@ export function SignInForm() {
 
   return (
     <form className={styles.signInForm} onSubmit={onSubmitHandler}>
-      <h2 className={styles.formTitle}>Sign In</h2>
+      <h2 className={styles.formTitle}>Вход</h2>
 
       <div className={styles.inputGroup}>
         <input
@@ -84,7 +84,7 @@ export function SignInForm() {
       </div>
 
       <button type='submit' className={styles.submitButton}>
-        Sign In
+        Войти
       </button>
     </form>
   );

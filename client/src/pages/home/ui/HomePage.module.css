@@ -1,13 +1,11 @@
-/* Стили для главной страницы */
 .mainPage {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 2rem;
-  background: linear-gradient(135deg, #a1873d 0%, #b3985fd0 100%);
-  color: white;
-  font-family: 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'Courier New', monospace;
+  background: linear-gradient(135deg, var(--bg) 0%, var(--bg-contrast) 100%);
+  color: var(--text);
 }
 
 .banner {
@@ -40,9 +38,7 @@
   flex: 1;
   overflow: hidden;
   position: relative;
-  padding: 1rem 0;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding: 1rem;
 }
 
 .images_grid {
@@ -55,11 +51,11 @@
 }
 
 .images_grid > div {
-  background: var(--white);
+  background: linear-gradient(180deg, #ffffff, #fff9f5);
   border-radius: 16px;
   padding: 2rem 1.5rem;
   text-align: center;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid var(--border);
   cursor: pointer;
@@ -84,8 +80,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: var(--transition);
+  box-shadow: var(--shadow);
   position: relative;
   overflow: hidden;
 }
@@ -105,11 +101,11 @@
 }
 
 .slider_btn:hover:not(:disabled) {
-  background: var(--light-blue);
-  border-color: var(--primary-blue);
-  color: var(--primary-blue);
+  background: #fff4ec;
+  border-color: var(--primary);
+  color: var(--primary);
   transform: scale(1.05);
-  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
+  box-shadow: var(--shadow);
 }
 
 .slider_btn:active:not(:disabled) {
@@ -151,13 +147,13 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--primary-blue);
+  background: var(--primary);
   opacity: 0;
   transition: all 0.3s ease;
 }
 
 .slider-dot--active {
-  border-color: var(--primary-blue);
+  border-color: var(--primary);
   transform: scale(1.1);
 }
 
@@ -175,17 +171,7 @@
   background: var(--accent-blue);
 }
 
-.loading-message,
-.error-message {
-  text-align: center;
-  padding: 2rem;
-  font-size: 1.1rem;
-  color: var(--text-light);
-}
-
-.error-message {
-  color: #dc2626;
-}
+ 
 
 /* Адаптивность */
 @media (max-width: 768px) {
@@ -194,16 +180,5 @@
     text-align: center;
   }
   
-  .bannerContent {
-    margin-right: 0;
-    margin-bottom: 2rem;
-  }
   
-  .bannerContent h1 {
-    font-size: 2rem;
-  }
-  
-  .techLogos {
-    justify-content: center;
-  }
 }

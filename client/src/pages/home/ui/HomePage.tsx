@@ -23,7 +23,7 @@ export function HomePage() {
     
     const interval = setInterval(() => {
       setCurrentSlide((prev: number) => (prev + 1) % totalImages);
-    }, 3000); 
+    }, 6000); 
 
     return () => clearInterval(interval);
   }, [images, totalImages, isPaused]);
@@ -53,23 +53,23 @@ export function HomePage() {
   };
 
   return (
-    <div className={styles.mainPage}>      
+    <div className={styles.mainPage}>
       <div className={styles.banner}>
-        <h1>Новости и актуальная информация</h1>
+        <h1>Свежая выпечка каждый день</h1>
       </div>
       <div className={styles.banner}>
         <h1>О нас</h1>
       </div>
-        <section className={styles.categories}>
+      <section className={styles.categories}>
         <div className={styles.container}>
           <h1>Наша продукция</h1>
-          <div 
+          <div
             className={styles.images_slider_container}
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
-            <button 
-              className={styles.slider_btn} 
+            <button
+              className={styles.slider_btn}
               onClick={prevSlide}
               disabled={totalImages <= imagesPerSlide}
               aria-label="Предыдущие изображения"
@@ -80,8 +80,8 @@ export function HomePage() {
               <div className={styles.images_grid}>
                 {getVisibleImages().map((image, index) => (
                   <div key={`${currentSlide}-${index}`} className="image-item">
-                    <img 
-                      src={image} 
+                    <img
+                      src={image}
                       alt={`Изображение ${index + 1}`}
                       className={styles.slider_image}
                     />
@@ -89,8 +89,8 @@ export function HomePage() {
                 ))}
               </div>
             </div>
-            <button 
-              className= {styles.slider_btn} 
+            <button
+              className={styles.slider_btn}
               onClick={nextSlide}
               disabled={totalImages <= imagesPerSlide}
               aria-label="Следующие изображения"
@@ -111,7 +111,7 @@ export function HomePage() {
             </div>
           )}
         </div>
-        </section>
-        </div>
+      </section>
+    </div>
   );
 }

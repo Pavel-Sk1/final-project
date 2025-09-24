@@ -4,59 +4,71 @@
   box-sizing: border-box;
 }
 
+:root {
+  --bg: #f6eee7;
+  --bg-contrast: #f3e2d6;
+  --primary: #a76333;
+  --primary-dark: #8a4e24;
+  --accent: #d8955f;
+  --accent-rose: #e5b9a5;
+  --text: #2f2421;
+  --text-light: #5a4b48;
+  --white: #ffffff;
+  --border: #e0cfc6;
+  --shadow: 0 8px 24px rgba(120, 72, 36, 0.16);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --transition: all 0.25s ease;
+  --primary-blue: var(--primary);
+  --accent-blue: var(--accent);
+  --light-blue: #fff4ec;
+  --text-dark: var(--text);
+}
+
 body {
-  font-family: 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'Courier New', monospace;
-  font-size: 14px;
-  line-height: 1.5;
-  color: #333;
-  background-color: #f8f9fa;
+  font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text);
+  background-color: var(--bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Установка monospace для всех элементов */
-h1, h2, h3, h4, h5, h6,
-p, span, div, button, input, textarea, select,
-a, label, li, ul, ol, table, td, th {
-  font-family: 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'Courier New', monospace;
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Стили для кнопок */
-button {
-  font-family: 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'Courier New', monospace;
-  font-weight: 500;
+.main {
+  flex: 1;
 }
 
-/* Стили для полей ввода */
-input, textarea, select {
-  font-family: 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'Courier New', monospace;
-  font-size: 14px;
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: var(--white);
+  border: 1px solid transparent;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
 }
 
-/* Стили для ссылок */
-a {
-  font-family: 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'Courier New', monospace;
-  text-decoration: none;
+.btn-primary:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.03);
 }
 
-/* Стили для навигации */
-nav {
-  font-family: 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'Courier New', monospace;
+.btn-primary:active {
+  transform: translateY(0);
 }
 
-/* Стили для футера */
-footer {
-  font-family: 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'Courier New', monospace;
-}
-
-/* Улучшение читаемости для monospace */
-code, pre {
-  font-family: 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'Courier New', monospace;
-  font-size: 13px;
-}
-
-/* Стили для SVG текста */
-svg text {
-  font-family: 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'Courier New', monospace;
+.btn-primary--active {
+  outline: 2px solid var(--accent);
 }
 
