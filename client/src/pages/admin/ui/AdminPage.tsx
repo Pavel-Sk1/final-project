@@ -23,8 +23,7 @@ function AdminPage() {
   const [productInput, setProductInput] = useState({
     img: "",
   });
-  const { infoArray, productArray, error, loading } =
-    useAppSelector((state) => state.admin);
+  const { infoArray, productArray } = useAppSelector((state) => state.admin);
   const dispatch = useAppDispatch();
 
   const onChangeInformationHandler = (
@@ -66,98 +65,190 @@ function AdminPage() {
   const onSubmitProductHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      dispatch(updateProductThunk({id: editOneProductId, product: productInput}));
+      dispatch(
+        updateProductThunk({ id: editOneProductId, product: productInput })
+      );
     } catch (error) {
       console.error(error);
     } finally {
       setEditOneProduct(false);
-    }    
+    }
   };
 
   useEffect(() => {
     dispatch(getAllInformationThunk());
     dispatch(getAllProductsThunk());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className={styles.adminPage}>
-      <div className="information">
-        <button onClick={() => setEditInformation((prev) => !prev)}>
-          Редактировать информацию на главной странице
-        </button>
-        {editInformation && (
-          <div className="information_container">
-            {infoArray.map((info) =>
-              editOneInfo && editOneInfoId === info.id ? (
-                <form onSubmit={onSubmitInformationHandler}>
-                  <input
-                    type="text"
-                    name="title"
-                    placeholder="Название"
-                    value={informationInput.title}
-                    onChange={onChangeInformationHandler}
-                  />
-                  <input
-                    type="text"
-                    name="description"
-                    placeholder="Описание"
-                    value={informationInput.description}
-                    onChange={onChangeInformationHandler}
-                  />
-                  <input
-                    type="text"
-                    name="img"
-                    placeholder="Изображение"
-                    value={informationInput.img}
-                    onChange={onChangeInformationHandler}
-                  />
-                  <button type="submit">Сохранить</button>
-                </form>
-              ) : (
-                <div key={info.id} className="information_item">
-                  <h3>{info.title}</h3>
-                  <p>{info.description}</p>
-                  <img src={info.img} alt={info.title} />
-                  <button
-                    onClick={() => {
-                      setEditOneInfo(true);
-                      setEditOneInfoId(info.id);
-                      setInformationInput({
-                        title: info.title,
-                        description: info.description,
-                        img: info.img,
-                      });
-                    }}
+      <div className={styles.container}>
+        <h1 className={styles.pageTitle}>Панель администратора</h1>
+
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>
+              Информация на главной странице
+            </h2>
+            <button
+              className={styles.toggleButton}
+              onClick={() => setEditInformation((prev) => !prev)}
+            >
+              {editInformation ? "Скрыть" : "Редактировать"}
+            </button>
+          </div>
+
+          {editInformation && (
+            <div className={styles.itemsContainer}>
+              {infoArray.map((info) =>
+                editOneInfo && editOneInfoId === info.id ? (
+                  <form
+                    key={info.id}
+                    className={styles.editForm}
+                    onSubmit={onSubmitInformationHandler}
                   >
-                    Редактировать
-                  </button>
-                </div>
-              )
-            )}
+                    <div className={styles.formGroup}>
+                      <input
+                        type="text"
+                        name="title"
+                        placeholder="Название"
+                        value={informationInput.title}
+                        onChange={onChangeInformationHandler}
+                        className={styles.formInput}
+                      />
+                    </div>
+                    <div className={styles.formGroup}>
+                      <input
+                        type="text"
+                        name="description"
+                        placeholder="Описание"
+                        value={informationInput.description}
+                        onChange={onChangeInformationHandler}
+                        className={styles.formInput}
+                      />
+                    </div>
+                    <div className={styles.formGroup}>
+                      <input
+                        type="text"
+                        name="img"
+                        placeholder="URL изображения"
+                        value={informationInput.img}
+                        onChange={onChangeInformationHandler}
+                        className={styles.formInput}
+                      />
+                    </div>
+                    <div className={styles.formActions}>
+                      <button type="submit" className={styles.saveButton}>
+                        Сохранить
+                      </button>
+                      <button
+                        type="button"
+                        className={styles.cancelButton}
+                        onClick={() => setEditOneInfo(false)}
+                      >
+                        Отмена
+                      </button>
+                    </div>
+                  </form>
+                ) : (
+                  <div key={info.id} className={styles.infoItem}>
+                    <div className={styles.itemImage}>
+                      <img src={info.img} alt={info.title} />
+                    </div>
+                    <div className={styles.itemContent}>
+                      <h3 className={styles.itemTitle}>{info.title}</h3>
+                      <p className={styles.itemDescription}>
+                        {info.description}
+                      </p>
+                    </div>
+                    <button
+                      className={styles.editButton}
+                      onClick={() => {
+                        setEditOneInfo(true);
+                        setEditOneInfoId(info.id);
+                        setInformationInput({
+                          title: info.title,
+                          description: info.description,
+                          img: info.img,
+                        });
+                      }}
+                    >
+                      Редактировать
+                    </button>
+                  </div>
+                )
+              )}
+            </div>
+          )}
+        </section>
+
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Изображения продуктов</h2>
+            <button
+              className={styles.toggleButton}
+              onClick={() => setEditProduct((prev) => !prev)}
+            >
+              {editProduct ? "Скрыть" : "Редактировать"}
+            </button>
           </div>
-        )}
-      </div>
-      <div className="product">
-        <button onClick={() => setEditProduct((prev) => !prev)}>
-          Редактировать изображения продуктов
-        </button>
-        {editProduct && (
-          <div className="product_container">
-            {productArray.map((product) =>
-              editOneProduct && editOneProductId === product.id ? (
-                <form onSubmit={onSubmitProductHandler}>
-                  <input type="text" placeholder="Изображение" value={productInput.img} onChange={onChangeProductHandler} />
-                  <button type="submit">Сохранить</button>
-                </form>
-              ) : (
-                <div key={product.id} className="product_item">
-                  <img src={product.img} alt={product.name} />
-                  <button onClick={() => {setEditOneProduct(true); setEditOneProductId(product.id); setProductInput({img: product.img});}}>Редактировать</button>
-                </div>
-              )
-            )}
-          </div>
-        )}
+
+          {editProduct && (
+            <div className={styles.itemsContainer}>
+              {productArray.map((product) =>
+                editOneProduct && editOneProductId === product.id ? (
+                  <form
+                    key={product.id}
+                    className={styles.editForm}
+                    onSubmit={onSubmitProductHandler}
+                  >
+                    <div className={styles.formGroup}>
+                      <input
+                        type="text"
+                        name="img"
+                        placeholder="URL изображения"
+                        value={productInput.img}
+                        onChange={onChangeProductHandler}
+                        className={styles.formInput}
+                      />
+                    </div>
+                    <div className={styles.formActions}>
+                      <button type="submit" className={styles.saveButton}>
+                        Сохранить
+                      </button>
+                      <button
+                        type="button"
+                        className={styles.cancelButton}
+                        onClick={() => setEditOneProduct(false)}
+                      >
+                        Отмена
+                      </button>
+                    </div>
+                  </form>
+                ) : (
+                  <div key={product.id} className={styles.productItem}>
+                    <div className={styles.itemImage}>
+                      <img src={product.img} alt={product.name} />
+                    </div>
+                    <div className={styles.itemContent}>
+                      <h3 className={styles.itemTitle}>{product.name}</h3>
+                    </div>
+                    <button
+                      className={styles.editButton}
+                      onClick={() => {
+                        setEditOneProduct(true);
+                        setEditOneProductId(product.id);
+                        setProductInput({ img: product.img });
+                      }}
+                    >
+                      Редактировать
+                    </button>
+                  </div>
+                )
+              )}
+            </div>
+          )}
+        </section>
       </div>
     </div>
   );
