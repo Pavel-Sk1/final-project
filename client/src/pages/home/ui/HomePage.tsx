@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import styles from "./HomePage.module.css";
 import { useAppDispatch, useAppSelector } from '@/shared';
-import { useTransition, animated, config } from "@react-spring/web";
+import { useTransition, animated } from "@react-spring/web";
 import { getAllNewsThunk, getAllProductImagesThunk } from "@/entities";
 
 
@@ -14,13 +14,25 @@ export function HomePage() {
   const [newsIndex, setNewsIndex] = useState<number>(0);
 
   const imagesPerSlide = 4;
-  const images = (productImages.map((p) => p.img).filter(Boolean) as string[])
+  const images = useMemo(() => 
+    productImages.map((p) => p.img).filter(Boolean) as string[], 
+    [productImages]
+  );
   const totalImages = images.length;
 
   useEffect(() => {
     dispatch(getAllNewsThunk());
     dispatch(getAllProductImagesThunk());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (images.length > 0) {
+      images.forEach((imageSrc) => {
+        const img = new Image();
+        img.src = imageSrc;
+      });
+    }
+  }, [images]);
 
   useEffect(() => {
     if (!news || news.length === 0) return;
@@ -51,10 +63,10 @@ export function HomePage() {
 
   const slideTransition = useTransition(currentSlide, {
     keys: (s) => s,
-    from: { opacity: 0, y: 4 },
+    from: { opacity: 0, y: 2 },
     enter: { opacity: 1, y: 0 },
-    leave: { opacity: 0, y: -4 },
-    config: config.slow,
+    leave: { opacity: 0, y: -2 },
+    config: { tension: 300, friction: 30 },
   });
 
   const nextSlide = () => {
@@ -65,7 +77,7 @@ export function HomePage() {
     setCurrentSlide((prev: number) => (prev - 1 + totalImages) % totalImages);
   };
 
-  const getVisibleImages = () => {
+  const getVisibleImages = useMemo(() => {
     if (!images || images.length === 0) {
       return [];
     }
@@ -79,7 +91,7 @@ export function HomePage() {
       }
     }
     return visibleImages;
-  };
+  }, [images, currentSlide, totalImages, imagesPerSlide]);
 
   return (
     <div className={styles.mainPage}>
@@ -130,7 +142,7 @@ export function HomePage() {
       </section>
       <section className={styles.categories}>
         <div className={styles.container}>
-          <h1>Наша продукция</h1>
+          <h1 className={styles.aboutHeading}>Наша продукция</h1>
           <div
             className={styles.images_slider_container}
             onMouseEnter={() => setIsPaused(true)}
@@ -148,12 +160,14 @@ export function HomePage() {
               <div className={styles.images_stage}>
                 {slideTransition((style) => (
                   <animated.div style={{ position: 'absolute', left: 0, right: 0, top: 0, ...style }} className={styles.images_grid}>
-                    {getVisibleImages().map((image, index) => (
+                    {getVisibleImages.map((image, index) => (
                       <div key={`${currentSlide}-${index}`} className="image-item">
                         <img
                           src={image}
                           alt={`Изображение ${index + 1}`}
                           className={styles.slider_image}
+                          loading="eager"
+                          decoding="async"
                         />
                       </div>
                     ))}
