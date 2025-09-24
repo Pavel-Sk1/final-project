@@ -34,7 +34,7 @@ export function Navigation(): React.JSX.Element {
       <div className={styles.userSection}>
         {user ? (
           <>
-            <span className={styles.userGreeting}>Hello, {user.username}!</span>
+            <span className={styles.userGreeting}>Hello, {user.login}!</span>
             <button
               className={styles.signOutButton}
               onClick={handleSignOut}

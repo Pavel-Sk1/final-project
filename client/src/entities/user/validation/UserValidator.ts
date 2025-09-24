@@ -26,29 +26,30 @@ export class UserValidator {
     return true;
   }
 
-  static validateSignInData({ email, password }: ISignInData) {
+  static validateSignInData({ login, password }: ISignInData) {
+    const hasSpecialCharacters = /[!@#$%^&*()-,.?":{}|<>]/;
+    const isValidLength = login.length >= 3;
     if (
-      !email ||
-      typeof email !== 'string' ||
-      email.trim().length === 0 ||
-      !this.validateEmail(email)
+      !login ||
+      typeof login !== 'string' ||
+      login.trim().length === 0 ||
+      hasSpecialCharacters.test(login) ||
+      !isValidLength
     ) {
       return {
         isValid: false,
-        error: 'Email не должен быть пустым и должен быть валидным',
+        error: 'Login не должен быть пустым и должен быть валидным',
       };
     }
 
     if (
       !password ||
       typeof password !== 'string' ||
-      password.trim().length === 0 ||
-      !this.validatePassword(password)
+      password.trim().length === 0
     ) {
       return {
         isValid: false,
-        error:
-          'Пароль не должен быть пустым, должен содержать хотя бы одну цифру, одну заглавную букву, одну строчную букву, один специальный символ и быть не менее 8 символов',
+        error: 'Пароль не должен быть пустым',
       };
     }
 
@@ -58,15 +59,15 @@ export class UserValidator {
     };
   }
 
-  static validateSignUpData({ username, email, password, repeatPassword }: ISignUpData) {
+  static validateSignUpData({ login, email, password, repeatPassword }: ISignUpData) {
     if (
-      !username ||
-      typeof username !== 'string' ||
-      username.trim().length === 0
+      !login ||
+      typeof login !== 'string' ||
+      login.trim().length === 0
     ) {
       return {
         isValid: false,
-        error: 'Поле username не должно быть пустым',
+        error: 'Поле login не должно быть пустым',
       };
     }
 

@@ -7,7 +7,7 @@ import styles from './signInForm.module.css';
 
 // Начальные данные для формы входа
 const INITIAL_INPUTS_DATA: ISignInData = {
-  email: '',
+  login: '',
   password: '',
 };
 
@@ -38,9 +38,14 @@ export function SignInForm() {
       // Отправка запроса на вход
       dispatch(signInThunk(inputs))
         .unwrap()
-        .then(() => {
+        .then((res) => {
           setInputs(INITIAL_INPUTS_DATA);
-          navigate(CLIENT_ROUTES.HOME);
+          const role = res.data.user.role;
+          if (role.name === 'admin') {
+            navigate(CLIENT_ROUTES.ADMIN);
+          } else {
+            navigate(CLIENT_ROUTES.HOME);
+          }
         })
         .catch((error) => {
           alert(error.error);
@@ -60,11 +65,11 @@ export function SignInForm() {
 
       <div className={styles.inputGroup}>
         <input
-          type='email'
-          name='email'
-          placeholder='Email'
+          type='text'
+          name='login'
+          placeholder='login'
           onChange={onChangeHandler}
-          value={inputs.email}
+          value={inputs.login}
           className={styles.formInput}
           autoFocus
           required

@@ -1,7 +1,7 @@
 import styles from "./AdminPage.module.css";
 import { useState } from "react";
 
-function AdminPage() {
+export function AdminPage() {
   const [editInformation, setEditInformation] = useState(false);
   const [editProduct, setEditProduct] = useState(false);
   const [information, setInformation] = useState({
@@ -65,4 +65,3 @@ function AdminPage() {
   );
 }
 
-export default AdminPage;

@@ -8,7 +8,7 @@ function checkRole(requiredRole) {
   
       req.user = user;
   
-      if (user.role !== requiredRole) {
+      if (user.role.name !== requiredRole) {
         return res.status(403).json({ error: "Запрет" });
       }
   

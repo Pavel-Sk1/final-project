@@ -1,19 +1,21 @@
 export interface ISignInData {
-  email: string;
   password: string;
+  login: string;
 }
 
 export interface ISignUpData extends ISignInData {
-  username: string;
+  email: string;
   repeatPassword: string;
 }
 
 export interface IUser extends ISignUpData {
   id: number;
-  role: string;
+  role_id: number;
+  role: { name: string };
   createdAt: Date;
   updatedAt: Date;
 }
+
 
 export type UserResponseType = {
   user: IUser;

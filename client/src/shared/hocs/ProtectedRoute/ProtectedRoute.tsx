@@ -25,7 +25,7 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     );
   }
 
-  if (user?.role !== "admin") {
+  if (user?.role.name !== "admin") {
     return <Navigate to={CLIENT_ROUTES.HOME} />;
   }
 
