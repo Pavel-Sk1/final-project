@@ -1,8 +1,8 @@
-import { NavLink, useNavigate } from 'react-router';
-import { GiCroissant } from 'react-icons/gi';
-import { useAppDispatch, useAppSelector, CLIENT_ROUTES } from '@/shared';
-import { signOutThunk } from '@/entities';
-import styles from './Navigation.module.css';
+import { NavLink, useNavigate } from "react-router";
+import { GiCroissant } from "react-icons/gi";
+import { useAppDispatch, useAppSelector, CLIENT_ROUTES } from "@/shared";
+import { signOutThunk } from "@/entities";
+import styles from "./Navigation.module.css";
 
 export function Navigation(): React.JSX.Element {
   // Хук для навигации между страницами
@@ -21,14 +21,20 @@ export function Navigation(): React.JSX.Element {
   return (
     <nav className={styles.header}>
       <div className={styles.navLinks}>
-        <NavLink
-          to={CLIENT_ROUTES.HOME}
-          className={styles.brand}
-        >
+        <NavLink to={CLIENT_ROUTES.HOME} className={styles.brand}>
           <GiCroissant className={styles.brandIcon} />
           <span className={styles.brandTitle}>Ромарио</span>
         </NavLink>
-        <NavLink to={CLIENT_ROUTES.ADMIN} className={styles.adminButton}>Admin</NavLink>
+        {user?.role.name === "admin" && (
+          <NavLink
+            to={CLIENT_ROUTES.ADMIN}
+            className={({ isActive }) =>
+              `btn-primary ${isActive && "btn-primary--active"}`
+            }
+          >
+            Admin
+          </NavLink>
+        )}
       </div>
 
       {/* Секция пользователя */}
@@ -37,11 +43,7 @@ export function Navigation(): React.JSX.Element {
           <>
             <span className={styles.userGreeting}>Hello, {user.login}!</span>
 
-
-            <button
-              className={styles.signOutButton}
-              onClick={handleSignOut}
-            >
+            <button className={styles.signOutButton} onClick={handleSignOut}>
               Sign Out
             </button>
           </>
@@ -50,7 +52,7 @@ export function Navigation(): React.JSX.Element {
             <NavLink
               to={CLIENT_ROUTES.AUTH}
               className={({ isActive }) =>
-                `btn-primary ${isActive && 'btn-primary--active'}`
+                `btn-primary ${isActive && "btn-primary--active"}`
               }
             >
               Вход

@@ -1,22 +1,22 @@
 const AdminService = require("../services/Admin.service");
 const formatResponse = require("../utils/formatResponse");
 const isValidId = require("../utils/isValidId");
-const { Information: InformationValidator, Product: ProductValidator } = require("../db/models");
+const { News: NewsValidator, Product: ProductValidator } = require("../db/models");
 
 class AdminController {
-  static async getAllInformation(req, res) {
+  static async getAllNews(req, res) {
     try {
-      const information = await AdminService.getAllInformation();
-      res.status(200).json(formatResponse(200, "Информация получена успешно", information));
+      const information = await AdminService.getAllNews();
+      res.status(200).json(formatResponse(200, "Новости получены успешно", information));
     } catch (error) {
-      console.error("======AdminController.getAllInformation===\n", error);
+      console.error("======AdminController.getAllNews===\n", error);
       res
         .status(500)
         .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
     }
   }
 
-  static async getInformationById(req, res) {
+  static async getNewsById(req, res) {
     try {
       const { id } = req.params;
       if (!isValidId(id)) {
@@ -24,29 +24,30 @@ class AdminController {
           .status(400)
           .json(formatResponse(400, "Invalid id", null, "Invalid id"));
       }
-      const information = await AdminService.getInformationById(id);
-      res.status(200).json(formatResponse(200, "Информация получена успешно", information));
+      const information = await AdminService.getNewsById(id);
+      res.status(200).json(formatResponse(200, "Новость получена успешно", information));
     } catch (error) {
-      console.error("======AdminController.getInformationById===\n", error);
+      console.error("======AdminController.getNewsById===\n", error);
       res
         .status(500)
         .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
     }
   }
 
-  static async createInformation(req, res) {
+  static async createNews(req, res) {
     try {
-      const { title, description, img } = req.body;
-      const { isValid, error } = InformationValidator.validate({ title, description, img });
+      const { title, description, img, is_active } = req.body;
+      const { isValid, error } = NewsValidator.validate({ title, description, img, is_active });
       if (!isValid) {
         return res
           .status(400)
           .json(formatResponse(400, error, null, error));
       }
-      const information = await AdminService.createInformation({
+      const information = await AdminService.createNews({
         title,
         description,
         img,
+        is_active,
       });
       if (!information) {
         return res
@@ -54,26 +55,26 @@ class AdminController {
           .json(
             formatResponse(
               400,
-              "Информация не создана",
+              "Новость не создана",
               null,
-              "Информация не создана"
+              "Новость не создана"
             )
           );
       }
       res
         .status(200)
         .json(
-          formatResponse(200, "Информация создана успешно", information)
+          formatResponse(200, "Новость создана успешно", information)
         );
     } catch (error) {
-      console.error("======AdminController.createInformation===\n", error);
+      console.error("======AdminController.createNews===\n", error);
       res
         .status(500)
         .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
     }
   }
 
-  static async updateInformation(req, res) {
+  static async updateNews(req, res) {
     try {
       const { id } = req.params;
       if (!isValidId(id)) {
@@ -81,32 +82,33 @@ class AdminController {
           .status(400)
           .json(formatResponse(400, "Неверный id", null, "Неверный id"));
       }
-      const { title, description, img } = req.body;
-      const { isValid, error } = InformationValidator.validate({ title, description, img });
+      const { title, description, img, is_active } = req.body;
+      const { isValid, error } = NewsValidator.validate({ title, description, img, is_active });
       if (!isValid) {
         return res
           .status(400)
           .json(formatResponse(400, error, null, error));
       }
-      const information = await AdminService.updateInformation(id, {
+      const information = await AdminService.updateNews(id, {
         title,
         description,
         img,
+        is_active,
       });
       res
         .status(200)
         .json(
-          formatResponse(200, "Информация обновлена успешно", information)
+          formatResponse(200, "Новость обновлена успешно", information)
         );
     } catch (error) {
-      console.error("======AdminController.updateInformation===\n", error);
+      console.error("======AdminController.updateNews===\n", error);
       res
         .status(500)
         .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
     }
   }
 
-  static async deleteInformation(req, res) {
+  static async deleteNews(req, res) {
     try {
       const { id } = req.params;
       if (!isValidId(id)) {
@@ -114,14 +116,14 @@ class AdminController {
           .status(400)
           .json(formatResponse(400, "Неверный id", null, "Неверный id"));
       }
-      const information = await AdminService.deleteInformation(id);
+      const information = await AdminService.deleteNews(id);
       res
         .status(200)
         .json(
-          formatResponse(200, "Информация удалена успешно", information)
+          formatResponse(200, "Новость удалена успешно", information)
         );
     } catch (error) {
-      console.error("======AdminController.deleteInformation===\n", error);
+      console.error("======AdminController.deleteNews===\n", error);
       res
         .status(500)
         .json(formatResponse(500, "Internal server error", null, error));

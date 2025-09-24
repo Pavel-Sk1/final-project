@@ -7,6 +7,32 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // Пока нет связей с другими таблицами
     }
+    static validate({ title, description, img, is_active }) {
+      if (!title || typeof title !== "string" || title.trim().length === 0) {
+        return {
+          isValid: false,
+          error: "Название новости не должно быть пустым",
+        };
+      }
+      if (!description || typeof description !== "string" || description.trim().length === 0) {
+        return {
+          isValid: false,
+          error: "Описание новости не должно быть пустым",
+        };
+      }
+      if (!img || typeof img !== "string" || img.trim().length === 0) {
+        return {
+          isValid: false,
+          error: "Изображение новости не должно быть пустым",
+        };
+      }
+      if (typeof is_active !== "boolean") {
+        return {
+          isValid: false,
+          error: "Активность новости должна быть булевым значением",
+        };
+      }
+    }
   }
 
   News.init(

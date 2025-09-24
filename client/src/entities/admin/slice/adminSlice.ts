@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllInformationThunk, getInformationByIdThunk, createInformationThunk, updateInformationThunk, deleteInformationThunk, getAllProductsThunk, getProductByIdThunk, updateProductThunk } from "../api/adminThunkApi";
-import { type IAdminInformation, type AdminInfoArrayType, type IAdminProduct, type AdminProductArrayType } from "../model";
+import { getAllAdminNewsThunk, getNewsByIdThunk, createNewsThunk, updateNewsThunk, deleteNewsThunk, getAllProductsThunk, getProductByIdThunk, updateProductThunk } from "../api/adminThunkApi";
+import { type IAdminNews, type AdminNewsArrayType, type IAdminProduct, type AdminProductArrayType } from "../model";
+
 
 type AdminState = {
-    infoArray: AdminInfoArrayType;
-    info: IAdminInformation | null;
+    newsArray: AdminNewsArrayType;
+    news: IAdminNews | null;
     productArray: AdminProductArrayType;
     product: IAdminProduct | null;
     error: string | null;
@@ -12,8 +13,8 @@ type AdminState = {
 }
 
 const initialState: AdminState = {
-    infoArray: [],
-    info: null,
+    newsArray: [],
+    news: null,
     productArray: [],
     product: null,
     error: null,
@@ -26,64 +27,64 @@ const adminSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(getAllInformationThunk.pending, (state) => {
+            .addCase(getAllAdminNewsThunk.pending, (state) => {
                 state.loading = true;
             })
-            .addCase(getAllInformationThunk.fulfilled, (state, action) => {
-                state.infoArray = action.payload.data;
+            .addCase(getAllAdminNewsThunk.fulfilled, (state, action) => {
+                state.newsArray = action.payload.data;
                 state.loading = false;
                 state.error = null;
             })
-            .addCase(getAllInformationThunk.rejected, (state, action) => {
-                state.error = action.payload?.message || 'Ошибка при получении информации';
+            .addCase(getAllAdminNewsThunk.rejected, (state, action) => {
+                state.error = action.payload?.message || 'Ошибка при получении новости';
                 state.loading = false;
             })
-            .addCase(getInformationByIdThunk.pending, (state) => {
+            .addCase(getNewsByIdThunk.pending, (state) => {
                 state.loading = true;
             })
-            .addCase(getInformationByIdThunk.fulfilled, (state, action) => {
-                state.info = action.payload.data;
+            .addCase(getNewsByIdThunk.fulfilled, (state, action) => {
+                state.news = action.payload.data;
                 state.loading = false;
                 state.error = null;
             })
-            .addCase(getInformationByIdThunk.rejected, (state, action) => {
-                state.error = action.payload?.message || 'Ошибка при получении информации';
+            .addCase(getNewsByIdThunk.rejected, (state, action) => {
+                state.error = action.payload?.message || 'Ошибка при получении новости';
                 state.loading = false;
             })
-            .addCase(createInformationThunk.pending, (state) => {
+            .addCase(createNewsThunk.pending, (state) => {
                 state.loading = true;
             })
-            .addCase(createInformationThunk.fulfilled, (state, action) => {
-                state.infoArray.push(action.payload.data);
+            .addCase(createNewsThunk.fulfilled, (state, action) => {
+                state.newsArray.push(action.payload.data);
                 state.loading = false;
                 state.error = null;
             })
-            .addCase(createInformationThunk.rejected, (state, action) => {
-                state.error = action.payload?.message || 'Ошибка при создании информации';
+            .addCase(createNewsThunk.rejected, (state, action) => {
+                state.error = action.payload?.message || 'Ошибка при создании новости';
                 state.loading = false;
             })
-            .addCase(updateInformationThunk.pending, (state) => {
+            .addCase(updateNewsThunk.pending, (state) => {
                 state.loading = true;
             })
-            .addCase(updateInformationThunk.fulfilled, (state, action) => {
-                state.infoArray = state.infoArray.map(info => info.id === action.payload.data.id ? action.payload.data : info);
+            .addCase(updateNewsThunk.fulfilled, (state, action) => {
+                state.newsArray = state.newsArray.map(news => news.id === action.payload.data.id ? action.payload.data : news);
                 state.loading = false;
                 state.error = null;
             })
-            .addCase(updateInformationThunk.rejected, (state, action) => {
-                state.error = action.payload?.message || 'Ошибка при обновлении информации';
+            .addCase(updateNewsThunk.rejected, (state, action) => {
+                state.error = action.payload?.message || 'Ошибка при обновлении новости';
                 state.loading = false;
             })
-            .addCase(deleteInformationThunk.pending, (state) => {
+            .addCase(deleteNewsThunk.pending, (state) => {
                 state.loading = true;
             })
-            .addCase(deleteInformationThunk.fulfilled, (state, action) => {
-                state.infoArray = state.infoArray.filter(info => info.id !== action.payload.data.id);
+            .addCase(deleteNewsThunk.fulfilled, (state, action) => {
+                state.newsArray = state.newsArray.filter(news => news.id !== action.payload.data.id);
                 state.loading = false;
                 state.error = null;
             })
-            .addCase(deleteInformationThunk.rejected, (state, action) => {
-                state.error = action.payload?.message || 'Ошибка при удалении информации';
+            .addCase(deleteNewsThunk.rejected, (state, action) => {
+                state.error = action.payload?.message || 'Ошибка при удалении новости';
                 state.loading = false;
             })
             .addCase(getAllProductsThunk.pending, (state) => {

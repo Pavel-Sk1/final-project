@@ -1,11 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosInstance, type ServerResponseType } from "@/shared";
 import { AxiosError } from "axios";
-import { type ICreateAdminInformation, type IAdminInformation, type AdminInfoArrayType, type ICreateAdminProduct, type IAdminProduct, type AdminProductArrayType, ADMIN_API_ROUTES } from "../model";
+import { type ICreateAdminNews, type IAdminNews, type AdminNewsArrayType, type ICreateAdminProduct, type IAdminProduct, type AdminProductArrayType, ADMIN_API_ROUTES } from "../model";
 
-export const getAllInformationThunk = createAsyncThunk<ServerResponseType<AdminInfoArrayType>, void, { rejectValue: ServerResponseType }>('***admin/getAllInformation***', async (_, { rejectWithValue }) => {
+export const getAllAdminNewsThunk = createAsyncThunk<ServerResponseType<AdminNewsArrayType>, void, { rejectValue: ServerResponseType }>('***admin/getAllNews***', async (_, { rejectWithValue }) => {
     try {
-        const { data } = await axiosInstance.get<ServerResponseType<AdminInfoArrayType>>(ADMIN_API_ROUTES.INFORMATION);
+        const { data } = await axiosInstance.get<ServerResponseType<AdminNewsArrayType>>(ADMIN_API_ROUTES.NEWS);
         return data;
     } catch (error) {
         const err = error as AxiosError<ServerResponseType>;
@@ -13,9 +13,9 @@ export const getAllInformationThunk = createAsyncThunk<ServerResponseType<AdminI
     }
 });
 
-export const getInformationByIdThunk = createAsyncThunk<ServerResponseType<IAdminInformation>, number, { rejectValue: ServerResponseType }>('***admin/getInformationById***', async (id, { rejectWithValue }) => {
+export const getNewsByIdThunk = createAsyncThunk<ServerResponseType<IAdminNews>, number, { rejectValue: ServerResponseType }>('***admin/getNewsById***', async (id, { rejectWithValue }) => {
     try {
-        const { data } = await axiosInstance.get<ServerResponseType<IAdminInformation>>(`${ADMIN_API_ROUTES.INFORMATION}/${id}`);
+        const { data } = await axiosInstance.get<ServerResponseType<IAdminNews>>(`${ADMIN_API_ROUTES.NEWS}/${id}`);
         return data;
     } catch (error) {
         const err = error as AxiosError<ServerResponseType>;
@@ -23,9 +23,19 @@ export const getInformationByIdThunk = createAsyncThunk<ServerResponseType<IAdmi
     }
 });
 
-export const createInformationThunk = createAsyncThunk<ServerResponseType<IAdminInformation>, ICreateAdminInformation, { rejectValue: ServerResponseType }>('***admin/createInformation***', async (information, { rejectWithValue }) => {
+export const createNewsThunk = createAsyncThunk<ServerResponseType<IAdminNews>, ICreateAdminNews, { rejectValue: ServerResponseType }>('***admin/createNews***', async (news, { rejectWithValue }) => {
     try {
-        const { data } = await axiosInstance.post<ServerResponseType<IAdminInformation>>(ADMIN_API_ROUTES.INFORMATION, information);
+        const { data } = await axiosInstance.post<ServerResponseType<IAdminNews>>(ADMIN_API_ROUTES.NEWS, news);
+        return data;    
+    } catch (error) {
+        const err = error as AxiosError<ServerResponseType>;
+        return rejectWithValue(err.response!.data);
+    }
+});
+
+export const updateNewsThunk = createAsyncThunk<ServerResponseType<IAdminNews>, { id: number, news: ICreateAdminNews }, { rejectValue: ServerResponseType }>('***admin/updateNews***', async ({ id, news }, { rejectWithValue }) => {
+    try {
+        const { data } = await axiosInstance.put<ServerResponseType<IAdminNews>>(`${ADMIN_API_ROUTES.NEWS}/${id}`, news);
         return data;
     } catch (error) {
         const err = error as AxiosError<ServerResponseType>;
@@ -33,19 +43,9 @@ export const createInformationThunk = createAsyncThunk<ServerResponseType<IAdmin
     }
 });
 
-export const updateInformationThunk = createAsyncThunk<ServerResponseType<IAdminInformation>, { id: number, information: ICreateAdminInformation }, { rejectValue: ServerResponseType }>('***admin/updateInformation***', async ({ id, information }, { rejectWithValue }) => {
+export const deleteNewsThunk = createAsyncThunk<ServerResponseType<IAdminNews>, number, { rejectValue: ServerResponseType }>('***admin/deleteNews***', async (id, { rejectWithValue }) => {
     try {
-        const { data } = await axiosInstance.put<ServerResponseType<IAdminInformation>>(`${ADMIN_API_ROUTES.INFORMATION}/${id}`, information);
-        return data;
-    } catch (error) {
-        const err = error as AxiosError<ServerResponseType>;
-        return rejectWithValue(err.response!.data);
-    }
-});
-
-export const deleteInformationThunk = createAsyncThunk<ServerResponseType<IAdminInformation>, number, { rejectValue: ServerResponseType }>('***admin/deleteInformation***', async (id, { rejectWithValue }) => {
-    try {
-        const { data } = await axiosInstance.delete<ServerResponseType<IAdminInformation>>(`${ADMIN_API_ROUTES.INFORMATION}/${id}`);
+        const { data } = await axiosInstance.delete<ServerResponseType<IAdminNews>>(`${ADMIN_API_ROUTES.NEWS}/${id}`);
         return data;
     } catch (error) {
         const err = error as AxiosError<ServerResponseType>;
