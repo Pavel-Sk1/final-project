@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       }
       return { isValid: true, error: null };
     }
-    static validateImg({img}) {
+    static validateImg({ img }) {
       if (!img || typeof img !== "string" || img.trim().length === 0) {
         return {
           isValid: false,
@@ -91,6 +91,16 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT,
         allowNull: false,
         defaultValue: 1,
+      },
+      variants: {
+        type: DataTypes.JSONB,
+        allowNull: true,
+        comment: "Варианты товара (например: ж/п для пирогов)",
+      },
+      variant_names: {
+        type: DataTypes.JSONB,
+        allowNull: true,
+        comment: "Названия вариантов (например: ['жареный', 'печеный'])",
       },
     },
     {

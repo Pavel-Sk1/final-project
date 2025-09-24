@@ -10,17 +10,17 @@ module.exports = {
         type: Sequelize.BIGINT,
       },
       tg_user_id: {
-        type: Sequelize.BIGINT,
+        type: Sequelize.STRING,
         allowNull: false,
         references: {
           model: "tg_users",
-          key: "id",
+          key: "tg_user_id",
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
       product_id: {
-        type: Sequelize.BIGINT,
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: "Products",
@@ -40,7 +40,8 @@ module.exports = {
       },
       status: {
         type: Sequelize.STRING,
-        allowNull: true,
+        allowNull: false,
+        defaultValue: "pending",
       },
       createdAt: {
         allowNull: false,

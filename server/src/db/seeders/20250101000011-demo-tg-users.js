@@ -8,7 +8,7 @@ module.exports = {
       [
         {
           id: 1,
-          tg_user_id: 123456789,
+          tg_user_id: "123456789",
           tg_username: "anna_petrova",
           first_name: "Анна",
           last_name: "Петрова",
@@ -18,7 +18,7 @@ module.exports = {
         },
         {
           id: 2,
-          tg_user_id: 987654321,
+          tg_user_id: "987654321",
           tg_username: "mikhail_ivanov",
           first_name: "Михаил",
           last_name: "Иванов",
@@ -28,7 +28,7 @@ module.exports = {
         },
         {
           id: 3,
-          tg_user_id: 456789123,
+          tg_user_id: "456789123",
           tg_username: "elena_smirnova",
           first_name: "Елена",
           last_name: "Смирнова",
@@ -38,7 +38,7 @@ module.exports = {
         },
         {
           id: 4,
-          tg_user_id: 789123456,
+          tg_user_id: "789123456",
           tg_username: "dmitry_kozlov",
           first_name: "Дмитрий",
           last_name: "Козлов",
@@ -48,7 +48,7 @@ module.exports = {
         },
         {
           id: 5,
-          tg_user_id: 321654987,
+          tg_user_id: "321654987",
           tg_username: "olga_vasilieva",
           first_name: "Ольга",
           last_name: "Васильева",
@@ -58,7 +58,7 @@ module.exports = {
         },
         {
           id: 6,
-          tg_user_id: 654987321,
+          tg_user_id: "654987321",
           tg_username: "alexey_morozov",
           first_name: "Алексей",
           last_name: "Морозов",
@@ -68,7 +68,7 @@ module.exports = {
         },
         {
           id: 7,
-          tg_user_id: 147258369,
+          tg_user_id: "147258369",
           tg_username: "tatiana_novikova",
           first_name: "Татьяна",
           last_name: "Новикова",
@@ -78,11 +78,21 @@ module.exports = {
         },
         {
           id: 8,
-          tg_user_id: 369258147,
+          tg_user_id: "369258147",
           tg_username: "sergey_volkov",
           first_name: "Сергей",
           last_name: "Волков",
           phone: "+7 (999) 888-99-00",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 9,
+          tg_user_id: "870993655",
+          tg_username: "developer",
+          first_name: "Developer",
+          last_name: "User",
+          phone: "+7 (999) 999-99-99",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
