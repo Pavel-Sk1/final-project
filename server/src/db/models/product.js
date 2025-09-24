@@ -17,6 +17,42 @@ module.exports = (sequelize, DataTypes) => {
         as: "orders",
       });
     }
+    static validate({ name, img, price, recipe }) {
+      if (!name || typeof name !== "string" || name.trim().length === 0) {
+        return {
+          isValid: false,
+          error: "Название продукта не должно быть пустым",
+        };
+      }
+      if (!price || typeof price !== "number" || price < 0) {
+        return {
+          isValid: false,
+          error: "Цена продукта не должна быть пустой и должна быть числом",
+        };
+      }
+      if (!img || typeof img !== "string" || img.trim().length === 0) {
+        return {
+          isValid: false,
+          error: "Изображение продукта не должно быть пустым",
+        };
+      }
+      if (!recipe || typeof recipe !== "string" || recipe.trim().length === 0) {
+        return {
+          isValid: false,
+          error: "Рецепт продукта не должен быть пустым",
+        };
+      }
+      return { isValid: true, error: null };
+    }
+    static validateImg({img}) {
+      if (!img || typeof img !== "string" || img.trim().length === 0) {
+        return {
+          isValid: false,
+          error: "Изображение продукта не должно быть пустым",
+        };
+      }
+      return { isValid: true, error: null };
+    }
   }
 
   Product.init(

@@ -1,9 +1,10 @@
 const router = require('express').Router();
 const formatResponse = require('../utils/formatResponse');
 const authRoutes = require('./auth.routes');
+const adminRouter = require('./admin.routes');
 
 router.use('/auth', authRoutes);
-// router.use("/admin", adminRouter);
+router.use("/admin", adminRouter);
 
 router.use((req, res) => {
     res
