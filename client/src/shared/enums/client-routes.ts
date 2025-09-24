@@ -1,4 +1,5 @@
 export enum CLIENT_ROUTES {
   HOME = '/',
-  AUTH = '/auth'
+  AUTH = '/auth',
+  ADMIN = '/admin'
 }
