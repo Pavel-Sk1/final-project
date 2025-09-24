@@ -3,6 +3,7 @@ const formatResponse = require('../utils/formatResponse');
 const authRoutes = require('./auth.routes');
 
 router.use('/auth', authRoutes);
+// router.use("/admin", adminRouter);
 
 router.use((req, res) => {
     res

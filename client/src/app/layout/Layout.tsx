@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router';
 import { Navigation, Footer } from '@/widgets';
+import { Toaster } from 'react-hot-toast';
 
 export function Layout() {
   return (
@@ -9,6 +10,7 @@ export function Layout() {
         <Outlet />
       </main>
       <Footer />
+      <Toaster position="top-right" toastOptions={{ style: { borderRadius: '12px' } }} />
     </div>
   );
 }
