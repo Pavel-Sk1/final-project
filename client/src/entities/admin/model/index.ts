@@ -31,6 +31,6 @@ export interface IAdminProduct extends ICreateAdminProduct {
 export type AdminProductArrayType = Array<IAdminProduct>;
 
 export const ADMIN_API_ROUTES = {
-  INFORMATION: "/information",
-  PRODUCT: "/product",
+  INFORMATION: "/admin/information",
+  PRODUCT: "/admin/product",
 };
