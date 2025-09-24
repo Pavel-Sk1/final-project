@@ -3,13 +3,15 @@ const AdminController = require("../controllers/Admin.controller");
 const checkRole = require("../middleware/checkRole");
 const verifyAccessToken = require("../middleware/verifyAccessToken");
 
-adminRouter.get("/information", verifyAccessToken, checkRole("admin"), AdminController.getAllInformation)
-  .get("/information/:id", verifyAccessToken, checkRole("admin"), AdminController.getInformationById)
-  .post("/information", verifyAccessToken, checkRole("admin"), AdminController.createInformation)
-  .put("/information/:id", verifyAccessToken, checkRole("admin"), AdminController.updateInformation)
-  .delete("/information/:id", verifyAccessToken, checkRole("admin"), AdminController.deleteInformation)
-  .get("/product", verifyAccessToken, checkRole("admin"), AdminController.getAllProducts)
-  .get("/product/:id", verifyAccessToken, checkRole("admin"), AdminController.getProductById)
-  .put("/product/:id", verifyAccessToken, checkRole("admin"), AdminController.updateProduct);
+// verifyAccessToken, checkRole("admin"),
+
+adminRouter.get("/information", AdminController.getAllInformation)
+  .get("/information/:id", AdminController.getInformationById)
+  .post("/information", AdminController.createInformation)
+  .put("/information/:id", AdminController.updateInformation)
+  .delete("/information/:id", AdminController.deleteInformation)
+  .get("/product", AdminController.getAllProducts)
+  .get("/product/:id", AdminController.getProductById)
+  .put("/product/:id", AdminController.updateProduct);
 
 module.exports = adminRouter;

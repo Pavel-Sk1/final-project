@@ -28,6 +28,7 @@ export function Navigation(): React.JSX.Element {
           <GiCroissant className={styles.brandIcon} />
           <span className={styles.brandTitle}>Ромарио</span>
         </NavLink>
+        <NavLink to={CLIENT_ROUTES.ADMIN} className={styles.adminButton}>Admin</NavLink>
       </div>
 
       {/* Секция пользователя */}
@@ -35,6 +36,8 @@ export function Navigation(): React.JSX.Element {
         {user ? (
           <>
             <span className={styles.userGreeting}>Hello, {user.login}!</span>
+
+
             <button
               className={styles.signOutButton}
               onClick={handleSignOut}

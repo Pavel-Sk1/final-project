@@ -1,18 +1,18 @@
 const AdminService = require("../services/Admin.service");
 const formatResponse = require("../utils/formatResponse");
-const { isValidId } = require("../utils/isValidId");
+const isValidId = require("../utils/isValidId");
 const { Information: InformationValidator, Product: ProductValidator } = require("../db/models");
 
 class AdminController {
   static async getAllInformation(req, res) {
     try {
       const information = await AdminService.getAllInformation();
-      res.status(200).json(formatResponse(200, "Information fetched successfully", information));
+      res.status(200).json(formatResponse(200, "Информация получена успешно", information));
     } catch (error) {
       console.error("======AdminController.getAllInformation===\n", error);
       res
         .status(500)
-        .json(formatResponse(500, "Internal server error", null, error));
+        .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
     }
   }
 
@@ -25,12 +25,12 @@ class AdminController {
           .json(formatResponse(400, "Invalid id", null, "Invalid id"));
       }
       const information = await AdminService.getInformationById(id);
-      res.status(200).json(formatResponse(200, "Information fetched successfully", information));
+      res.status(200).json(formatResponse(200, "Информация получена успешно", information));
     } catch (error) {
       console.error("======AdminController.getInformationById===\n", error);
       res
         .status(500)
-        .json(formatResponse(500, "Internal server error", null, error));
+        .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
     }
   }
 
@@ -54,22 +54,22 @@ class AdminController {
           .json(
             formatResponse(
               400,
-              "Information not created",
+              "Информация не создана",
               null,
-              "Information not created"
+              "Информация не создана"
             )
           );
       }
       res
         .status(200)
         .json(
-          formatResponse(200, "Information created successfully", information)
+          formatResponse(200, "Информация создана успешно", information)
         );
     } catch (error) {
       console.error("======AdminController.createInformation===\n", error);
       res
         .status(500)
-        .json(formatResponse(500, "Internal server error", null, error));
+        .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
     }
   }
 
@@ -79,7 +79,7 @@ class AdminController {
       if (!isValidId(id)) {
         return res
           .status(400)
-          .json(formatResponse(400, "Invalid id", null, "Invalid id"));
+          .json(formatResponse(400, "Неверный id", null, "Неверный id"));
       }
       const { title, description, img } = req.body;
       const { isValid, error } = InformationValidator.validate({ title, description, img });
@@ -96,13 +96,13 @@ class AdminController {
       res
         .status(200)
         .json(
-          formatResponse(200, "Information updated successfully", information)
+          formatResponse(200, "Информация обновлена успешно", information)
         );
     } catch (error) {
       console.error("======AdminController.updateInformation===\n", error);
       res
         .status(500)
-        .json(formatResponse(500, "Internal server error", null, error));
+        .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
     }
   }
 
@@ -112,13 +112,13 @@ class AdminController {
       if (!isValidId(id)) {
         return res
           .status(400)
-          .json(formatResponse(400, "Invalid id", null, "Invalid id"));
+          .json(formatResponse(400, "Неверный id", null, "Неверный id"));
       }
       const information = await AdminService.deleteInformation(id);
       res
         .status(200)
         .json(
-          formatResponse(200, "Information deleted successfully", information)
+          formatResponse(200, "Информация удалена успешно", information)
         );
     } catch (error) {
       console.error("======AdminController.deleteInformation===\n", error);
@@ -130,12 +130,12 @@ class AdminController {
   static async getAllProducts(req, res) {
     try {
       const products = await AdminService.getAllProducts();
-      res.status(200).json(formatResponse(200, "Products fetched successfully", products));
+      res.status(200).json(formatResponse(200, "Продукты получены успешно", products));
     } catch (error) {
       console.error("======AdminController.getAllProducts===\n", error);
       res
         .status(500)
-        .json(formatResponse(500, "Internal server error", null, error));
+        .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
     }
   }
 
@@ -145,15 +145,15 @@ class AdminController {
       if (!isValidId(id)) {
         return res
           .status(400)
-          .json(formatResponse(400, "Invalid id", null, "Invalid id"));
+          .json(formatResponse(400, "Неверный id", null, "Неверный id"));
       }
       const product = await AdminService.getProductById(id);
-      res.status(200).json(formatResponse(200, "Product fetched successfully", product));
+      res.status(200).json(formatResponse(200, "Продукт получен успешно", product));
     } catch (error) {
       console.error("======AdminController.getProductById===\n", error);
       res
         .status(500)
-        .json(formatResponse(500, "Internal server error", null, error));
+        .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
     }
   }
 
@@ -163,7 +163,7 @@ class AdminController {
       if (!isValidId(id)) {
         return res
           .status(400)
-          .json(formatResponse(400, "Invalid id", null, "Invalid id"));
+          .json(formatResponse(400, "Неверный id", null, "Неверный id"));
       }
       const { img } = req.body;
       const { isValid, error } = ProductValidator.validateImg({ img });
@@ -175,12 +175,12 @@ class AdminController {
       const product = await AdminService.updateProduct(id, { img });
       res
         .status(200)
-        .json(formatResponse(200, "Product updated successfully", product));
+        .json(formatResponse(200, "Продукт обновлен успешно", product));
     } catch (error) {
       console.error("======AdminController.updateProduct===\n", error);
       res
         .status(500)
-        .json(formatResponse(500, "Internal server error", null, error));
+        .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
     }
   }  
 }
