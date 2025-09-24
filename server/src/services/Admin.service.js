@@ -1,6 +1,7 @@
 const { Information, Product } = require("../db/models");
 
 class AdminService {
+
   static async getAllInformation() {
     return await Information.findAll();
   }

@@ -1,4 +1,5 @@
-// user
+export { getAllNewsThunk, newsReducer, type INewsItem } from './news'
+export { getAllProductImagesThunk, productsReducer, type IProductImage } from './products'
 export {
   type IUser,
   type ISignInData,
@@ -30,3 +31,4 @@ export {
   updateProductThunk,
   adminReducer,
 } from "./admin";
+
