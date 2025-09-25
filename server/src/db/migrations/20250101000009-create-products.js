@@ -25,6 +25,10 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: true,
       },
+      weight: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },
       category_id: {
         type: Sequelize.BIGINT,
         allowNull: true,

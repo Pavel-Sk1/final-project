@@ -79,6 +79,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: true,
       },
+      weight: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       category_id: {
         type: DataTypes.BIGINT,
         allowNull: true,
