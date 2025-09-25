@@ -27,6 +27,7 @@
   --accent-blue: var(--accent);
   --light-blue: #fff4ec;
   --text-dark: var(--text);
+  --error: #dc3545;
 }
 
 body {

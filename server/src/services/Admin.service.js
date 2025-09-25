@@ -34,7 +34,9 @@ class AdminService {
   }
 
   static async deleteNews(id) {
-    return await News.destroy({ where: { id } });
+    const deletedNews = await News.findByPk(id);
+    await News.destroy({ where: { id } });
+    return deletedNews;
   }
 
   static async getAllProducts() {

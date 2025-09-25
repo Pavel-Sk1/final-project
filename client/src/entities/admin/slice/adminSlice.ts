@@ -78,8 +78,8 @@ const adminSlice = createSlice({
             .addCase(deleteNewsThunk.pending, (state) => {
                 state.loading = true;
             })
-            .addCase(deleteNewsThunk.fulfilled, (state, action) => {
-                state.newsArray = state.newsArray.filter(news => news.id !== action.payload.data.id);
+            .addCase(deleteNewsThunk.fulfilled, (state, action) => {                
+                state.newsArray = state.newsArray.filter(news => Number(news.id) !== Number(action.payload.data.id));
                 state.loading = false;
                 state.error = null;
             })
