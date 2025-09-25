@@ -39,7 +39,7 @@ export function Footer(): JSX.Element {
             <nav className={styles.footerNav}>
               <button
                 className={styles.footerLink}
-                onClick={() => navigate(CLIENT_ROUTES.HOME)}
+                onClick={() => navigate(CLIENT_ROUTES.INFO)}
               >
                 Информация для юр.лиц
               </button>
