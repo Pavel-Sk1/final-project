@@ -1,7 +1,6 @@
-const { News, Product } = require("../db/models");
+const { News, Product, TgOrder, TgUser } = require("../db/models");
 
 class AdminService {
-
   static async getAllNews() {
     return await News.findAll();
   }
@@ -26,10 +25,10 @@ class AdminService {
     }
     if (img) {
       newsToUpdate.img = img;
-    }   
-     
+    }
+
     newsToUpdate.is_active = is_active;
-    
+
     await newsToUpdate.save();
     return newsToUpdate;
   }
@@ -57,6 +56,57 @@ class AdminService {
     }
     await productToUpdate.save();
     return productToUpdate;
+  }
+
+  static async getOrdersByDate(date, status = "confirmed") {
+    try {
+      const targetDate = date ? new Date(date) : new Date();
+
+      const startOfDay = new Date(targetDate);
+      startOfDay.setHours(0, 0, 0, 0);
+
+      const endOfDay = new Date(targetDate);
+      endOfDay.setHours(23, 59, 59, 999);
+
+      // Создаем условие для фильтрации
+      const whereCondition = {
+        createdAt: {
+          [require("sequelize").Op.between]: [startOfDay, endOfDay],
+        },
+      };
+
+      // Добавляем фильтр по статусу только если не "all"
+      if (status && status !== "all") {
+        whereCondition.status = status;
+      }
+
+      const orders = await TgOrder.findAll({
+        where: whereCondition,
+        include: [
+          {
+            model: Product,
+            as: "product",
+            attributes: ["id", "name", "price"],
+          },
+          {
+            model: TgUser,
+            as: "tgUser",
+            attributes: [
+              "tg_user_id",
+              "first_name",
+              "last_name",
+              "tg_username",
+            ],
+          },
+        ],
+        order: [["createdAt", "DESC"]],
+      });
+
+      return orders;
+    } catch (error) {
+      console.error("Error in AdminService.getOrdersByDate:", error);
+      throw error;
+    }
   }
 }
 

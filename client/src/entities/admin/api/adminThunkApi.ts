@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosInstance, type ServerResponseType } from "@/shared";
 import { AxiosError } from "axios";
-import { type ICreateAdminNews, type IAdminNews, type AdminNewsArrayType, type ICreateAdminProduct, type IAdminProduct, type AdminProductArrayType, ADMIN_API_ROUTES } from "../model";
+import { type ICreateAdminNews, type IAdminNews, type AdminNewsArrayType, type ICreateAdminProduct, type IAdminProduct, type AdminProductArrayType, type OrderArrayType, ADMIN_API_ROUTES } from "../model";
 
 export const getAllAdminNewsThunk = createAsyncThunk<ServerResponseType<AdminNewsArrayType>, void, { rejectValue: ServerResponseType }>('***admin/getAllNews***', async (_, { rejectWithValue }) => {
     try {
@@ -76,6 +76,16 @@ export const getProductByIdThunk = createAsyncThunk<ServerResponseType<IAdminPro
 export const updateProductThunk = createAsyncThunk<ServerResponseType<IAdminProduct>, { id: number, product: ICreateAdminProduct }, { rejectValue: ServerResponseType }>('***admin/updateProduct***', async ({ id, product }, { rejectWithValue }) => {
     try {
         const { data } = await axiosInstance.put<ServerResponseType<IAdminProduct>>(`${ADMIN_API_ROUTES.PRODUCT}/${id}`, product);
+        return data;
+    } catch (error) {
+        const err = error as AxiosError<ServerResponseType>;
+        return rejectWithValue(err.response!.data);
+    }
+});
+
+export const getOrdersByDateThunk = createAsyncThunk<ServerResponseType<OrderArrayType>, { date: string }, { rejectValue: ServerResponseType }>('***admin/getOrdersByDate***', async ({ date }, { rejectWithValue }) => {
+    try {
+        const { data } = await axiosInstance.get<ServerResponseType<OrderArrayType>>(`${ADMIN_API_ROUTES.ORDER}?date=${date}`);
         return data;
     } catch (error) {
         const err = error as AxiosError<ServerResponseType>;
