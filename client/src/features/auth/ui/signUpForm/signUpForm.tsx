@@ -7,7 +7,7 @@ import styles from './signUpForm.module.css';
 
 // Начальные данные для формы регистрации
 const INITIAL_INPUTS_DATA: ISignUpData = {
-  username: '',
+  login: '',
   email: '',
   password: '',
   repeatPassword: '',

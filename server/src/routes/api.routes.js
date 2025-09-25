@@ -4,12 +4,14 @@ const authRoutes = require('./auth.routes');
 const adminRouter = require('./admin.routes');
 const newsRoutes = require('./news.routes');
 const productsRoutes = require('./products.routes');
+const infoRoutes = require('./info.routes');
 
 
 router.use('/auth', authRoutes);
 router.use("/admin", adminRouter);
 router.use('/news', newsRoutes);
 router.use('/products', productsRoutes);
+router.use('/info', infoRoutes);
 
 router.use((req, res) => {
     res

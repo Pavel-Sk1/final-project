@@ -1,5 +1,6 @@
 export { getAllNewsThunk, newsReducer, type INewsItem } from './news'
 export { getAllProductImagesThunk, productsReducer, type IProductImage } from './products'
+export { getProductsThunk, infoReducer, type IProduct } from './info'
 export {
   type IUser,
   type ISignInData,
