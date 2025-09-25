@@ -76,6 +76,91 @@
   transform: translateY(0);
 }
 
+.adminNav {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  padding: 1.5rem;
+  background: linear-gradient(180deg, #ffffff, #fff9f5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.adminNav::-webkit-scrollbar {
+  display: none;
+}
+
+.adminNav button {
+  flex-shrink: 0;
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(135deg, #f8f4f0, #f0e6dc);
+  color: var(--text);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+
+.adminNav button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.adminNav button:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #fff3ea, #f8e6d6);
+  border-color: var(--accent);
+  box-shadow: 0 6px 20px rgba(120, 72, 36, 0.15);
+}
+
+.adminNav button:hover::before {
+  left: 100%;
+}
+
+.adminNav button.active {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: var(--white);
+  border-color: var(--primary-dark);
+  box-shadow: 0 6px 20px rgba(120, 72, 36, 0.25);
+  transform: translateY(-1px);
+}
+
+.adminNav button.active::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+.adminNav button:active {
+  transform: translateY(0);
+}
+
 @media (max-width: 768px) {
   .adminPage {
     padding: 1rem 0.5rem;
@@ -84,6 +169,17 @@
   .pageTitle {
     font-size: 2rem;
     margin-bottom: 2rem;
+  }
+
+  .adminNav {
+    gap: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .adminNav button {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
   }
 
   .section {
@@ -100,12 +196,22 @@
   .sectionTitle {
     font-size: 1.3rem;
     text-align: center;
-  }  
+  }
 }
 
 @media (max-width: 480px) {
   .pageTitle {
     font-size: 1.8rem;
+  }
+
+  .adminNav {
+    gap: 0.5rem;
+    padding: 0.75rem;
+  }
+
+  .adminNav button {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.85rem;
   }
 
   .section {
