@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router";
 import { useEffect } from "react";
-import { HomePage, SignInPage } from "@/pages";
+import { HomePage, SignInPage, InfoPage } from "@/pages";
 import { AdminPage } from "@/pages/admin";
 import { Layout } from "./layout/Layout";
 import { CLIENT_ROUTES, useAppDispatch } from "@/shared";
@@ -20,6 +20,7 @@ export function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path={CLIENT_ROUTES.AUTH} element={<SignInPage />} />
+          <Route path={CLIENT_ROUTES.INFO} element={<InfoPage />} />
           <Route
             path={CLIENT_ROUTES.ADMIN}
             element={
