@@ -66,6 +66,13 @@ export default function InfoPage() {
             Скачать/Печать
           </button>
         </div>
+        <h2 className={styles.subtitlecontacts}>Наши контакты:</h2>
+        <div className={styles.contacts}>
+          <p>Телефон: +7 (999) 999-99-99</p>
+          <p>Email: info@example.com</p>
+          <p>Адрес: Москва, ул. Ленина, 1</p>
+          <a href="https://t.me/sixchains" target= "_blank" >@Telegram</a>
+        </div>
       </div>
     </div>
   );
