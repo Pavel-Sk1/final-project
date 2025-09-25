@@ -50,7 +50,13 @@
     line-height: 1.6;
     margin: 0;
   }
-  
+
+  .itemActions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+  }
+
   .editButton {
     padding: 0.6rem 1.2rem;
     background: linear-gradient(135deg, var(--accent), var(--primary));
@@ -71,6 +77,27 @@
   }
   
   .editButton:active {
+    transform: translateY(0);
+  }
+  .deleteButton {
+    padding: 0.6rem 1.2rem;
+    background: linear-gradient(135deg, var(--error), var(--primary));
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+    align-self: flex-start;
+  }
+
+  .deleteButton:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+  }
+  .deleteButton:active {
     transform: translateY(0);
   }
 

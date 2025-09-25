@@ -2,13 +2,13 @@ import styles from "./AdminPage.module.css";
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks";
 import { getOrdersByDateThunk } from "@/entities";
-
-import { AdminNewsList, AdminProductList } from "@/widgets";
+import { AdminCreateNewsForm, AdminNewsList, AdminProductList } from "@/widgets";
 import { AdminCalculationsPage } from "@/widgets/adminCalculationsPage";
 
 export function AdminPage() {
   const [editNews, setEditNews] = useState(false);
   const [editProduct, setEditProduct] = useState(false);
+  const [createNews, setCreateNews] = useState(false);
   const [tab, setTab] = useState("editMainPage");
   const [editCalculations, setEditCalculations] = useState(false);
   const [selectedDate, setSelectedDate] = useState(() => {
@@ -62,6 +62,22 @@ export function AdminPage() {
         </div>
         {tab === "editMainPage" && (
           <>
+            <section className={styles.section}>
+              <div className={styles.sectionHeader}>
+                <h2 className={styles.sectionTitle}>
+                  Создать новую новость
+                </h2>
+                <button
+                  className={styles.toggleButton}
+                  onClick={() => setCreateNews((prev) => !prev)}
+                >
+                  {createNews ? "Скрыть" : "Создать"}
+                </button>
+              </div>
+              {createNews && (
+                <AdminCreateNewsForm setCreateNews={setCreateNews} />
+              )}
+            </section>
             <section className={styles.section}>
               <div className={styles.sectionHeader}>
                 <h2 className={styles.sectionTitle}>
@@ -152,7 +168,8 @@ export function AdminPage() {
             </section>
           </>
         )}
-        {tab === "regCompanies" && <></>}
+        {tab === "regCompanies" && <>
+        </>}
         {tab === "manageProducts" && <></>}
       </div>
     </div>
