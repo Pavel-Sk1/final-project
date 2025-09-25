@@ -28,9 +28,22 @@ export interface IAdminProduct extends ICreateAdminProduct {
   updatedAt?: Date;
 }
 
+export interface IOrder {
+  id: number;
+  tg_user_id: string;
+  product_id: number;
+  quantity: number;
+  status: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+
 export type AdminProductArrayType = Array<IAdminProduct>;
+export type OrderArrayType = Array<IOrder>;
 
 export const ADMIN_API_ROUTES = {
   NEWS: "/admin/news",
   PRODUCT: "/admin/product",
+  ORDER: "/admin/order",
 };
