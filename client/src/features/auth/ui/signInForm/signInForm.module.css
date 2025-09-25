@@ -46,6 +46,7 @@
   width: 100%;
   padding: 0.8rem 1rem;
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  font-family: var(--font-base);
   color: var(--white);
   border: none;
   border-radius: var(--radius-sm);

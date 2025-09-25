@@ -3,7 +3,7 @@ const { Product } = require('../db/models');
 class InfoService {
   static async getProducts() {
     return await Product.findAll({
-      attributes: ['name', 'price'],
+      attributes: ['name', 'price', 'weight'],
     });
   }
 }

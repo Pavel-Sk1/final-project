@@ -9,7 +9,7 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+  font-family: var(--font-base);
 }
 
 .navLinks {
