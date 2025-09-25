@@ -57,11 +57,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         defaultValue: "pending",
-        validate: {
-          isIn: [
-            ["pending", "in_progress", "completed", "cancelled", "delivered"],
-          ],
-        },
       },
     },
     {
