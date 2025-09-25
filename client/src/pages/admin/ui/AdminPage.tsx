@@ -30,7 +30,6 @@ export function AdminPage() {
     }
   }, [editCalculations, selectedDate, dispatch]);
 
-
   return (
     <div className={styles.adminPage}>
       <div className={styles.container}>
@@ -96,50 +95,63 @@ export function AdminPage() {
             </section>
           </>
         )}
-        {tab === "statistics" && <>
-                   {editCalculations && (
-            <div>
-              <div
-                style={{
-                  marginBottom: "20px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "16px",
-                }}
-              >
-                <label
-                  htmlFor="orderDate"
-                  style={{ fontWeight: "500", color: "#374151" }}
+        {tab === "statistics" && (
+          <>
+            <section className={styles.section}>
+              <div className={styles.sectionHeader}>
+                <h2 className={styles.sectionTitle}>Cтатистикa заказов</h2>
+                <button
+                  className={styles.toggleButton}
+                  onClick={() => setEditCalculations((prev) => !prev)}
                 >
-                  Дата заказов:
-                </label>
-                <input
-                  type="date"
-                  id="orderDate"
-                  value={selectedDate}
-                  onChange={(e) => setSelectedDate(e.target.value)}
-                  style={{
-                    padding: "8px 12px",
-                    borderRadius: "4px",
-                    border: "1px solid #d1d5db",
-                    backgroundColor: "white",
-                    fontSize: "14px",
-                    minWidth: "150px",
-                  }}
-                />
-                <div style={{ fontSize: "14px", color: "#6b7280" }}>
-                  ✅ Только подтвержденные заказы
-                </div>
+                  {editCalculations ? "Скрыть" : "Редактировать"}
+                </button>
               </div>
-              <AdminCalculationsPage
-                orders={orders}
-                loading={loading}
-                error={error}
-                selectedDate={selectedDate}
-              />
-            </div>
-          )}
-        </section></>}
+              {editCalculations && (
+                <div>
+                  <div
+                    style={{
+                      marginBottom: "20px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "16px",
+                    }}
+                  >
+                    <label
+                      htmlFor="orderDate"
+                      style={{ fontWeight: "500", color: "#374151" }}
+                    >
+                      📅 Дата заказов:
+                    </label>
+                    <input
+                      type="date"
+                      id="orderDate"
+                      value={selectedDate}
+                      onChange={(e) => setSelectedDate(e.target.value)}
+                      style={{
+                        padding: "8px 12px",
+                        borderRadius: "4px",
+                        border: "1px solid #d1d5db",
+                        backgroundColor: "white",
+                        fontSize: "14px",
+                        minWidth: "150px",
+                      }}
+                    />
+                    <div style={{ fontSize: "14px", color: "#6b7280" }}>
+                      ✅ Только подтвержденные заказы
+                    </div>
+                  </div>
+                  <AdminCalculationsPage
+                    orders={orders}
+                    loading={loading}
+                    error={error}
+                    selectedDate={selectedDate}
+                  />
+                </div>
+              )}
+            </section>
+          </>
+        )}
         {tab === "regCompanies" && <></>}
         {tab === "manageProducts" && <></>}
       </div>
