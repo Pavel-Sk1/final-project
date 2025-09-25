@@ -1,0 +1,1 @@
+export { AdminProductForm } from "./ui/AdminProductForm";

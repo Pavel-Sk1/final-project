@@ -7,7 +7,7 @@ import styles from './signUpForm.module.css';
 
 // Начальные данные для формы регистрации
 const INITIAL_INPUTS_DATA: ISignUpData = {
-  username: '',
+  login: '',
   email: '',
   password: '',
   repeatPassword: '',
@@ -63,8 +63,8 @@ export function SignUpForm() {
       <div className={styles.inputGroup}>
         <input
           type='text'
-          name='username'
-          placeholder='Username'
+          name='login'
+          placeholder='Login'
           onChange={onChangeHandler}
           value={inputs.login}
           className={styles.formInput}

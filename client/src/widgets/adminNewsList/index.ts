@@ -1,0 +1,1 @@
+export { AdminNewsList } from "./ui/AdminNewsList";

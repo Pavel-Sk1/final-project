@@ -1,0 +1,1 @@
+export { AdminNewsCard } from "./ui/AdminNewsCard";
