@@ -1,7 +1,7 @@
 export interface INewsItem {
   id: number;
   title: string;
-  discription?: string;
+  description?: string;
   img?: string;
   is_active?: boolean;
   createdAt?: string;
@@ -9,7 +9,5 @@ export interface INewsItem {
 }
 
 export const NEWS_API_ROUTES = {
-  LIST: '/news',
-} 
-
-
+  LIST: "/news",
+};

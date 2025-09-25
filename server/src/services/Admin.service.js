@@ -14,24 +14,24 @@ class AdminService {
     return await News.create(information);
   }
 
-  static async updateNews(id, information) {
-    const { title, description, img, is_active } = information;
-    const informationToUpdate = await News.findByPk(id);
+  static async updateNews(id, news) {
+    const { title, description, img, is_active } = news;
+    const newsToUpdate = await News.findByPk(id);
 
     if (title) {
-      informationToUpdate.title = title;
+      newsToUpdate.title = title;
     }
     if (description) {
-      informationToUpdate.description = description;
+      newsToUpdate.description = description;
     }
     if (img) {
-      informationToUpdate.img = img;
-    }
-    if (is_active) {
-      informationToUpdate.is_active = is_active;
-    }
-    await informationToUpdate.save();
-    return informationToUpdate;
+      newsToUpdate.img = img;
+    }   
+     
+    newsToUpdate.is_active = is_active;
+    
+    await newsToUpdate.save();
+    return newsToUpdate;
   }
 
   static async deleteNews(id) {
