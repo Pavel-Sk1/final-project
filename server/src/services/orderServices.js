@@ -2,6 +2,44 @@ const { TgOrder, TgUser, Product, Category } = require("../db/models");
 const { sequelize, Op } = require("../db/models");
 
 class OrderService {
+  // Безопасное создание или поиск пользователя
+  static async findOrCreateUser(telegramId, userInfo, transaction) {
+    const telegramIdStr = String(telegramId);
+
+    // Сначала пытаемся найти пользователя
+    let tgUser = await TgUser.findOne({
+      where: { tg_user_id: telegramIdStr },
+      transaction,
+    });
+
+    if (tgUser) {
+      // Пользователь существует, обновляем его данные если нужно
+      if (userInfo) {
+        await tgUser.update(
+          {
+            tg_username: userInfo.username || tgUser.tg_username,
+            first_name: userInfo.first_name || tgUser.first_name,
+            last_name: userInfo.last_name || tgUser.last_name,
+          },
+          { transaction }
+        );
+      }
+    } else {
+      // Пользователь не существует, создаем нового
+      tgUser = await TgUser.create(
+        {
+          tg_user_id: telegramIdStr,
+          tg_username: userInfo.username || null,
+          first_name: userInfo.first_name || null,
+          last_name: userInfo.last_name || null,
+        },
+        { transaction }
+      );
+    }
+
+    return tgUser;
+  }
+
   // Парсинг текста с вариантами (например: "пирож ж/п - 10/15")
   static parseVariantOrder(text) {
     const regex = /^(.+?)\s+([а-яё\/]+)\s*-\s*(\d+(?:\/\d+)*)$/i;
@@ -41,29 +79,11 @@ class OrderService {
 
     try {
       // Находим или создаем пользователя
-      const telegramIdStr = String(telegramId);
-      const [tgUser, created] = await TgUser.findOrCreate({
-        where: { tg_user_id: telegramIdStr },
-        defaults: {
-          tg_user_id: telegramIdStr,
-          tg_username: userInfo.username || null,
-          first_name: userInfo.first_name || null,
-          last_name: userInfo.last_name || null,
-        },
-        transaction,
-      });
-
-      // Если пользователь уже существовал, обновляем его данные
-      if (!created && userInfo) {
-        await tgUser.update(
-          {
-            tg_username: userInfo.username || tgUser.tg_username,
-            first_name: userInfo.first_name || tgUser.first_name,
-            last_name: userInfo.last_name || tgUser.last_name,
-          },
-          { transaction }
-        );
-      }
+      const tgUser = await this.findOrCreateUser(
+        telegramId,
+        userInfo,
+        transaction
+      );
 
       // Проверяем продукт
       const product = await Product.findOne({
@@ -93,7 +113,7 @@ class OrderService {
         if (quantity > 0) {
           const order = await TgOrder.create(
             {
-              tg_user_id: telegramIdStr,
+              tg_user_id: tgUser.tg_user_id,
               product_id: productId,
               quantity: quantity,
               user_comment: userComment,
@@ -127,7 +147,13 @@ class OrderService {
       };
     } catch (error) {
       await transaction.rollback();
-      console.error("Ошибка создания заказа с вариантами:", error);
+      console.error("Detailed error in createOrderWithVariants:", {
+        error: error.message,
+        name: error.name,
+        errors: error.errors,
+        parent: error.parent?.message,
+        stack: error.stack,
+      });
       throw error;
     }
   }
@@ -144,29 +170,11 @@ class OrderService {
 
     try {
       // Находим или создаем пользователя
-      const telegramIdStr = String(telegramId);
-      const [tgUser, created] = await TgUser.findOrCreate({
-        where: { tg_user_id: telegramIdStr },
-        defaults: {
-          tg_user_id: telegramIdStr,
-          tg_username: userInfo.username || null,
-          first_name: userInfo.first_name || null,
-          last_name: userInfo.last_name || null,
-        },
-        transaction,
-      });
-
-      // Если пользователь уже существовал, обновляем его данные
-      if (!created && userInfo) {
-        await tgUser.update(
-          {
-            tg_username: userInfo.username || tgUser.tg_username,
-            first_name: userInfo.first_name || tgUser.first_name,
-            last_name: userInfo.last_name || tgUser.last_name,
-          },
-          { transaction }
-        );
-      }
+      const tgUser = await this.findOrCreateUser(
+        telegramId,
+        userInfo,
+        transaction
+      );
 
       // Проверяем продукт
       const product = await Product.findOne({
@@ -193,7 +201,7 @@ class OrderService {
       // Создаем заказ
       const order = await TgOrder.create(
         {
-          tg_user_id: tgUser.tg_user_id,
+          tg_user_id: telegramId,
           product_id: productId,
           quantity: quantity,
           user_comment: userComment,
@@ -204,6 +212,10 @@ class OrderService {
 
       await transaction.commit();
 
+      console.log(
+        `✅ Order created successfully: ID=${order.id}, Product=${product.name}, Quantity=${quantity}`
+      );
+
       return {
         success: true,
         order,
@@ -211,9 +223,17 @@ class OrderService {
         quantity,
         totalPrice,
         tgUser,
+        orderId: order.id,
       };
     } catch (error) {
       await transaction.rollback();
+      console.error("Detailed error in createOrder:", {
+        error: error.message,
+        name: error.name,
+        errors: error.errors,
+        parent: error.parent?.message,
+        stack: error.stack,
+      });
       throw new Error(`Ошибка создания заказа: ${error.message}`);
     }
   }

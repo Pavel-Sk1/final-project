@@ -4,8 +4,10 @@ const AuthMiddleware = require("./authMiddleware");
 const CommandHandlers = require("./commandHandlers");
 const AdminHandlers = require("./adminHandlers");
 const ActionHandlers = require("./actionHandlers");
+const AdminActionHandlers = require("./adminActionHandlers");
 const TextHandlers = require("./textHandlers");
 const BotUtils = require("./botUtils");
+const NotificationService = require("../../services/notificationService");
 
 class BotController {
   constructor(bot) {
@@ -17,6 +19,7 @@ class BotController {
     this.commandHandlers = new CommandHandlers(this);
     this.adminHandlers = new AdminHandlers(this);
     this.actionHandlers = new ActionHandlers(this);
+    this.adminActionHandlers = new AdminActionHandlers(this);
     this.textHandlers = new TextHandlers(this);
   }
 
@@ -88,6 +91,22 @@ class BotController {
     this.bot.action(
       "view_cart",
       this.actionHandlers.handleViewCart.bind(this.actionHandlers)
+    );
+
+    // Обработчики админских действий
+    this.bot.action(
+      /^admin_confirm_(\d+)$/,
+      this.adminActionHandlers.handleConfirmOrder.bind(this.adminActionHandlers)
+    );
+    this.bot.action(
+      /^admin_reject_(\d+)$/,
+      this.adminActionHandlers.handleRejectOrder.bind(this.adminActionHandlers)
+    );
+    this.bot.action(
+      /^admin_contact_(\d+)$/,
+      this.adminActionHandlers.handleContactCustomer.bind(
+        this.adminActionHandlers
+      )
     );
 
     // Обработчики кнопок клавиатуры (должны быть ПЕРЕД обработчиком текста)
@@ -290,6 +309,13 @@ class BotController {
             successCount++;
             totalAmount += result.totalPrice;
 
+            console.log(`📦 Order result:`, {
+              success: result.success,
+              orderId: result.orderId,
+              product: result.product?.name,
+              quantity: result.quantity,
+            });
+
             if (item.variantQuantities) {
               // Для товаров с вариантами добавляем все результаты
               results.push(...result.results);
@@ -299,6 +325,7 @@ class BotController {
                 product: result.product,
                 quantity: result.quantity,
                 totalPrice: result.totalPrice,
+                orderId: result.orderId,
               });
             }
           } else {
@@ -351,6 +378,40 @@ class BotController {
       }
 
       responseText += "\n🕒 Заказ передан поставщику. Ожидайте подтверждения!";
+
+      // Отправляем уведомления админам о новых заказах
+      if (successCount > 0) {
+        console.log(
+          `📤 Sending notifications for ${successCount} successful orders`
+        );
+        try {
+          const adminIds = await NotificationService.getAdminTelegramIds();
+          console.log(`📋 Processing ${results.length} order results`);
+
+          for (const result of results) {
+            console.log(`🔍 Processing result:`, {
+              success: result.success,
+              orderId: result.orderId,
+            });
+            if (result.success && result.orderId) {
+              for (const adminId of adminIds) {
+                console.log(
+                  `📨 Sending notification to admin ${adminId} for order ${result.orderId}`
+                );
+                await NotificationService.notifyAdminNewOrder(
+                  this.bot,
+                  result.orderId,
+                  adminId
+                );
+              }
+            }
+          }
+        } catch (error) {
+          console.error("Error sending admin notifications:", error);
+        }
+      } else {
+        console.log("❌ No successful orders to notify about");
+      }
 
       // Очищаем корзину
       userState.cart = [];
