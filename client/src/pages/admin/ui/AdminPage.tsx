@@ -86,7 +86,7 @@ export function AdminPage() {
                   htmlFor="orderDate"
                   style={{ fontWeight: "500", color: "#374151" }}
                 >
-                  📅 Дата заказов:
+                  Дата заказов:
                 </label>
                 <input
                   type="date"
