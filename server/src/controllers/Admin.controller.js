@@ -1,13 +1,18 @@
 const AdminService = require("../services/Admin.service");
 const formatResponse = require("../utils/formatResponse");
 const isValidId = require("../utils/isValidId");
-const { News: NewsValidator, Product: ProductValidator } = require("../db/models");
+const {
+  News: NewsValidator,
+  Product: ProductValidator,
+} = require("../db/models");
 
 class AdminController {
   static async getAllNews(req, res) {
     try {
       const information = await AdminService.getAllNews();
-      res.status(200).json(formatResponse(200, "Новости получены успешно", information));
+      res
+        .status(200)
+        .json(formatResponse(200, "Новости получены успешно", information));
     } catch (error) {
       console.error("======AdminController.getAllNews===\n", error);
       res
@@ -25,7 +30,9 @@ class AdminController {
           .json(formatResponse(400, "Invalid id", null, "Invalid id"));
       }
       const information = await AdminService.getNewsById(id);
-      res.status(200).json(formatResponse(200, "Новость получена успешно", information));
+      res
+        .status(200)
+        .json(formatResponse(200, "Новость получена успешно", information));
     } catch (error) {
       console.error("======AdminController.getNewsById===\n", error);
       res
@@ -37,11 +44,14 @@ class AdminController {
   static async createNews(req, res) {
     try {
       const { title, description, img, is_active } = req.body;
-      const { isValid, error } = NewsValidator.validate({ title, description, img, is_active });
+      const { isValid, error } = NewsValidator.validate({
+        title,
+        description,
+        img,
+        is_active,
+      });
       if (!isValid) {
-        return res
-          .status(400)
-          .json(formatResponse(400, error, null, error));
+        return res.status(400).json(formatResponse(400, error, null, error));
       }
       const information = await AdminService.createNews({
         title,
@@ -63,9 +73,7 @@ class AdminController {
       }
       res
         .status(200)
-        .json(
-          formatResponse(200, "Новость создана успешно", information)
-        );
+        .json(formatResponse(200, "Новость создана успешно", information));
     } catch (error) {
       console.error("======AdminController.createNews===\n", error);
       res
@@ -83,12 +91,15 @@ class AdminController {
           .json(formatResponse(400, "Неверный id", null, "Неверный id"));
       }
       const { title, description, img, is_active } = req.body;
-      
-      const { isValid, error } = NewsValidator.validate({ title, description, img, is_active });
+
+      const { isValid, error } = NewsValidator.validate({
+        title,
+        description,
+        img,
+        is_active,
+      });
       if (!isValid) {
-        return res
-          .status(400)
-          .json(formatResponse(400, error, null, error));
+        return res.status(400).json(formatResponse(400, error, null, error));
       }
       const news = await AdminService.updateNews(id, {
         title,
@@ -98,9 +109,7 @@ class AdminController {
       });
       res
         .status(200)
-        .json(
-          formatResponse(200, "Новость обновлена успешно", news)
-        );
+        .json(formatResponse(200, "Новость обновлена успешно", news));
     } catch (error) {
       console.error("======AdminController.updateNews===\n", error);
       res
@@ -120,9 +129,7 @@ class AdminController {
       const information = await AdminService.deleteNews(id);
       res
         .status(200)
-        .json(
-          formatResponse(200, "Новость удалена успешно", information)
-        );
+        .json(formatResponse(200, "Новость удалена успешно", information));
     } catch (error) {
       console.error("======AdminController.deleteNews===\n", error);
       res
@@ -133,7 +140,9 @@ class AdminController {
   static async getAllProducts(req, res) {
     try {
       const products = await AdminService.getAllProducts();
-      res.status(200).json(formatResponse(200, "Продукты получены успешно", products));
+      res
+        .status(200)
+        .json(formatResponse(200, "Продукты получены успешно", products));
     } catch (error) {
       console.error("======AdminController.getAllProducts===\n", error);
       res
@@ -151,7 +160,9 @@ class AdminController {
           .json(formatResponse(400, "Неверный id", null, "Неверный id"));
       }
       const product = await AdminService.getProductById(id);
-      res.status(200).json(formatResponse(200, "Продукт получен успешно", product));
+      res
+        .status(200)
+        .json(formatResponse(200, "Продукт получен успешно", product));
     } catch (error) {
       console.error("======AdminController.getProductById===\n", error);
       res
@@ -171,9 +182,7 @@ class AdminController {
       const { img } = req.body;
       const { isValid, error } = ProductValidator.validateImg({ img });
       if (!isValid) {
-        return res
-          .status(400)
-          .json(formatResponse(400, error, null, error));
+        return res.status(400).json(formatResponse(400, error, null, error));
       }
       const product = await AdminService.updateProduct(id, { img });
       res
@@ -185,7 +194,24 @@ class AdminController {
         .status(500)
         .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
     }
-  }  
+  }
+
+  static async getOrdersByDate(req, res) {
+    try {
+      const { date, status } = req.query;
+
+      const orders = await AdminService.getOrdersByDate(date, status);
+
+      res
+        .status(200)
+        .json(formatResponse(200, "Заказы получены успешно", orders));
+    } catch (error) {
+      console.error("======AdminController.getOrdersByDate===\n", error);
+      res
+        .status(500)
+        .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
+    }
+  }
 }
 
 module.exports = AdminController;
