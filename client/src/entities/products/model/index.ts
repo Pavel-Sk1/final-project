@@ -5,6 +5,7 @@ export interface IProductImage {
 
 export const PRODUCTS_API_ROUTES = {
   LIST: '/products',
+  ALL: '/products/all',
 } as const;
 
 export interface ICreateProduct {
@@ -24,3 +25,5 @@ export interface IProduct extends ICreateProduct {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export type IProductArrayType = Array<IProduct>;

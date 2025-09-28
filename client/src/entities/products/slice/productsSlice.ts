@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createProductThunk, getAllProductImagesThunk } from "../api/productsThunkApi";
-import { type IProductImage } from "../model";
-import type { IProduct } from "@/entities/info";
+import { createProductThunk, getAllProductImagesThunk, getAllProductsThunk } from "../api/productsThunkApi";
+import { type IProductArrayType, type IProductImage, type IProduct } from "../model";
 
 type ProductsState = {
   images: IProductImage[];
   product: IProduct | null;
+  products: IProductArrayType;
   loading?: boolean;
   error: string | null;
 };
@@ -13,6 +13,7 @@ type ProductsState = {
 const initialState: ProductsState = {
   images: [],
   product: null,
+  products: [],
   loading: false,
   error: null,
 };
@@ -35,11 +36,18 @@ const productsSlice = createSlice({
         state.error =
           action.payload?.message || "Ошибка при получении продуктов";
       })
+      .addCase(getAllProductsThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllProductsThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products = action.payload.data;
+      })
       .addCase(createProductThunk.pending, (state) => {
         state.loading = true;
       })
       .addCase(createProductThunk.fulfilled, (state, action) => {
-        state.product = action.payload.data;
+        state.products.push(action.payload.data);
         state.loading = false;
       })
       .addCase(createProductThunk.rejected, (state, action) => {

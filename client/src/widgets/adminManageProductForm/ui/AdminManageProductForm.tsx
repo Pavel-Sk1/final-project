@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import styles from "./AdminManageProduct.module.css";
+import styles from "./AdminManageProductForm.module.css";
 import { useAppDispatch, useAppSelector } from "@/shared";
 import { getAllCategoriesThunk } from "@/entities";
 import type { ICreateProduct } from "@/entities/products/model";
+import { createProductThunk } from "@/entities/products/api/productsThunkApi";
 
 const initialProductInput: ICreateProduct = {
   name: "",
@@ -20,7 +21,7 @@ type AdminManageProductProps = {
   setProCreateProduct: (value: boolean) => void;
 };
 
-export function AdminManageProduct({
+export function AdminManageProductForm({
   setProCreateProduct,
 }: AdminManageProductProps) {
   const dispatch = useAppDispatch();
@@ -50,10 +51,17 @@ export function AdminManageProduct({
   };
   const onSubmitProductHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-  };
-  useEffect(() => {
-    dispatch(getAllCategoriesThunk());
-  }, [dispatch]);
+    try {
+      dispatch(createProductThunk(productInput));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setProductInput(initialProductInput);
+      setProductVariants("");
+      setProductVariantsNames("");
+      setProCreateProduct(false);
+    }
+  }; 
 
   const addProductVariants = () => {
     if (productVariants.trim()) {
@@ -89,6 +97,14 @@ export function AdminManageProduct({
     }));
   };
 
+  useEffect(() => {
+    try {
+    dispatch(getAllCategoriesThunk());
+    } catch (error) {
+      console.error(error);
+    }
+  }, [dispatch]);
+
   return (
     <form className={styles.editForm} onSubmit={onSubmitProductHandler}>
       <div className={styles.formGroup}>
@@ -97,7 +113,7 @@ export function AdminManageProduct({
           id="name"
           type="text"
           name="name"
-          placeholder="ВВедите название продукта"
+          placeholder="Введите название продукта"
           value={productInput.name}
           onChange={onChangeProductHandler}
           className={styles.formInput}
@@ -110,7 +126,7 @@ export function AdminManageProduct({
           id="img"
           type="text"
           name="img"
-          placeholder="ВВедите URL изображения"
+          placeholder="Введите URL изображения"
           value={productInput.img}
           onChange={onChangeProductHandler}
           className={styles.formInput}
@@ -123,7 +139,7 @@ export function AdminManageProduct({
           id="price"
           type="number"
           name="price"
-          placeholder="ВВедите цену продукта"
+          placeholder="Введите цену продукта"
           value={productInput.price}
           onChange={onChangeProductHandler}
           className={styles.formInput}
@@ -136,7 +152,7 @@ export function AdminManageProduct({
           id="recipe"
           type="text"
           name="recipe"
-          placeholder="ВВедите рецепт продукта"
+          placeholder="Введите рецепт продукта"
           value={productInput.recipe}
           onChange={onChangeProductHandler}
           className={styles.formInput}
@@ -149,7 +165,7 @@ export function AdminManageProduct({
           id="weight"
           type="number"
           name="weight"
-          placeholder="ВВедите вес продукта"
+          placeholder="Введите вес продукта"
           value={productInput.weight}
           onChange={onChangeProductHandler}
           className={styles.formInput}
@@ -160,8 +176,7 @@ export function AdminManageProduct({
         <label htmlFor="is_active">Активность</label>
         <input
           type="checkbox"
-          name="is_active"
-          placeholder="ВВедите активность"
+          name="is_active"          
           checked={productInput.is_active}
           onChange={onChangeProductIsActiveHandler}
           className={styles.formInput}
@@ -191,7 +206,7 @@ export function AdminManageProduct({
           id="variants"
           type="text"
           name="variants"
-          placeholder="ВВедите варианты"
+          placeholder="Введите варианты"
           value={productVariants}
           onChange={(event) => setProductVariants(event.target.value)}
           onKeyDown={(event) => {
@@ -201,7 +216,7 @@ export function AdminManageProduct({
           }}
           className={styles.formInput}
         />
-        <button type="button" onClick={addProductVariants}>
+        <button type="button" onClick={addProductVariants} className={styles.saveButton}>
           Добавить
         </button>
         {(productInput.variants || []).length > 0 && (
@@ -212,6 +227,7 @@ export function AdminManageProduct({
                 <button
                   type="button"
                   onClick={() => removeProductVariant(index)}
+                  className={styles.cancelButton}
                 >
                   Удалить
                 </button>
@@ -226,11 +242,17 @@ export function AdminManageProduct({
           id="variant_names"
           type="text"
           name="variant_names"
-          placeholder="ВВедите варианты названий"
+          placeholder="Введите варианты названий"
           value={productVariantsNames}
           onChange={(event) => setProductVariantsNames(event.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              addProductVariantsNames();
+            }
+          }}
+          className={styles.formInput}
         />
-        <button type="button" onClick={addProductVariantsNames}>
+        <button type="button" onClick={addProductVariantsNames} className={styles.saveButton}>
           Добавить
         </button>
         {(productInput.variant_names || []).length > 0 && (
@@ -241,6 +263,7 @@ export function AdminManageProduct({
                 <button
                   type="button"
                   onClick={() => removeProductVariantName(index)}
+                  className={styles.cancelButton}
                 >
                   Удалить
                 </button>
