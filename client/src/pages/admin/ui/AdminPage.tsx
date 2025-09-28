@@ -6,9 +6,11 @@ import { AdminCreateNewsForm, AdminNewsList, AdminProductList } from "@/widgets"
 import { AdminCalculationsPage } from "@/widgets/adminCalculationsPage";
 
 export function AdminPage() {
+  const [createNews, setCreateNews] = useState(false);
   const [editNews, setEditNews] = useState(false);
   const [editProduct, setEditProduct] = useState(false);
-  const [createNews, setCreateNews] = useState(false);
+  const [proCreateProduct, setProCreateProduct] = useState(false);
+  const [proEditProduct, setProEditProduct] = useState(false);
   const [tab, setTab] = useState("editMainPage");
   const [editCalculations, setEditCalculations] = useState(false);
   const [selectedDate, setSelectedDate] = useState(() => {
@@ -170,7 +172,32 @@ export function AdminPage() {
         )}
         {tab === "regCompanies" && <>
         </>}
-        {tab === "manageProducts" && <></>}
+        {tab === "manageProducts" && <>
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Создать продукт</h2>
+            <button
+              className={styles.toggleButton}
+              onClick={() => setProCreateProduct((prev) => !prev)}
+            >
+              {proCreateProduct ? "Скрыть" : "Редактировать"}
+            </button>
+          </div>
+          {proCreateProduct && <></>}
+        </section>
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Редактировать продукты</h2>
+            <button
+              className={styles.toggleButton}
+              onClick={() => setProEditProduct((prev) => !prev)}
+            >
+              {proEditProduct ? "Скрыть" : "Редактировать"}
+            </button>
+          </div>
+          {proEditProduct && <></>}
+        </section>
+        </>}
       </div>
     </div>
   );

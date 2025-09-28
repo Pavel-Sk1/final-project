@@ -47,6 +47,10 @@ class AdminService {
     return await Product.findByPk(id);
   }
 
+  static async createProduct(product) {
+    return await Product.create(product);
+  }
+
   static async updateProduct(id, product) {
     const { name, img } = product;
     const productToUpdate = await Product.findByPk(id);
@@ -58,6 +62,12 @@ class AdminService {
     }
     await productToUpdate.save();
     return productToUpdate;
+  }
+
+  static async deleteProduct(id) {
+    const deletedProduct = await Product.findByPk(id);
+    await Product.destroy({ where: { id } });
+    return deletedProduct;
   }
 
   static async getOrdersByDate(date, status = "confirmed") {

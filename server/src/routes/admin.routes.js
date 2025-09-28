@@ -46,11 +46,23 @@ adminRouter
     checkRole("admin"),
     AdminController.getProductById
   )
+  .post(
+    "/product",
+    verifyAccessToken,
+    checkRole("admin"),
+    AdminController.createProduct
+  )
   .put(
     "/product/:id",
     verifyAccessToken,
     checkRole("admin"),
     AdminController.updateProduct
+  )
+  .delete(
+    "/product/:id",
+    verifyAccessToken,
+    checkRole("admin"),
+    AdminController.deleteProduct
   )
   .get(
     "/order",

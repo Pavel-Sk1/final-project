@@ -73,9 +73,29 @@ export const getProductByIdThunk = createAsyncThunk<ServerResponseType<IAdminPro
     }
 });
 
+export const createProductThunk = createAsyncThunk<ServerResponseType<IAdminProduct>, ICreateAdminProduct, { rejectValue: ServerResponseType }>('***admin/createProduct***', async (product, { rejectWithValue }) => {
+    try {
+        const { data } = await axiosInstance.post<ServerResponseType<IAdminProduct>>(ADMIN_API_ROUTES.PRODUCT, product);
+        return data;
+    } catch (error) {
+        const err = error as AxiosError<ServerResponseType>;
+        return rejectWithValue(err.response!.data);
+    }
+});
+
 export const updateProductThunk = createAsyncThunk<ServerResponseType<IAdminProduct>, { id: number, product: ICreateAdminProduct }, { rejectValue: ServerResponseType }>('***admin/updateProduct***', async ({ id, product }, { rejectWithValue }) => {
     try {
         const { data } = await axiosInstance.put<ServerResponseType<IAdminProduct>>(`${ADMIN_API_ROUTES.PRODUCT}/${id}`, product);
+        return data;
+    } catch (error) {
+        const err = error as AxiosError<ServerResponseType>;
+        return rejectWithValue(err.response!.data);
+    }
+});
+
+export const deleteProductThunk = createAsyncThunk<ServerResponseType<IAdminProduct>, number, { rejectValue: ServerResponseType }>('***admin/deleteProduct***', async (id, { rejectWithValue }) => {
+    try {
+        const { data } = await axiosInstance.delete<ServerResponseType<IAdminProduct>>(`${ADMIN_API_ROUTES.PRODUCT}/${id}`);
         return data;
     } catch (error) {
         const err = error as AxiosError<ServerResponseType>;

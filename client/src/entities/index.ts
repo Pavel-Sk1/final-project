@@ -44,3 +44,13 @@ export {
   type IOrder as ICalculationOrder,
   CALCULATIONS_API_ROUTES,
 } from "./calculations";
+
+// categories
+export {
+  getAllCategoriesThunk,
+  categoriesReducer,
+  type ICreateCategory,
+  type ICategory,
+  type CategoriesArrayType,
+  CATEGORIES_API_ROUTES,
+} from "./categories";

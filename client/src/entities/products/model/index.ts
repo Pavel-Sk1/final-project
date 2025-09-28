@@ -7,4 +7,15 @@ export const PRODUCTS_API_ROUTES = {
   LIST: '/products',
 } as const;
 
+export interface ICreateProduct {
+  name: string;
+  img: string;
+  price: number;
+  recipe: string;
+  weight: number;
+  category_id: number;
+  is_active: boolean;
+  variants: string[];
+  variant_names: string[];
+}
 
