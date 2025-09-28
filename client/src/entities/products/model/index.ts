@@ -19,3 +19,8 @@ export interface ICreateProduct {
   variant_names: string[];
 }
 
+export interface IProduct extends ICreateProduct {
+  id: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+}

@@ -8,6 +8,9 @@ class ProductService {
       order: [['createdAt', 'DESC']],
     });
   }
+  static async createProduct(product) {
+    return await Product.create(product);
+  }
 }
 
 module.exports = ProductService;

@@ -2,7 +2,7 @@ import styles from "./AdminPage.module.css";
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks";
 import { getOrdersByDateThunk } from "@/entities";
-import { AdminCreateNewsForm, AdminNewsList, AdminProductList } from "@/widgets";
+import { AdminCreateNewsForm, AdminManageProduct, AdminNewsList, AdminProductList } from "@/widgets";
 import { AdminCalculationsPage } from "@/widgets/adminCalculationsPage";
 
 export function AdminPage() {
@@ -183,7 +183,7 @@ export function AdminPage() {
               {proCreateProduct ? "Скрыть" : "Редактировать"}
             </button>
           </div>
-          {proCreateProduct && <></>}
+          {proCreateProduct && <AdminManageProduct setProCreateProduct={setProCreateProduct}/>}
         </section>
         <section className={styles.section}>
           <div className={styles.sectionHeader}>

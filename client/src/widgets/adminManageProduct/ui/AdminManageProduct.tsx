@@ -4,25 +4,36 @@ import { useAppDispatch, useAppSelector } from "@/shared";
 import { getAllCategoriesThunk } from "@/entities";
 import type { ICreateProduct } from "@/entities/products/model";
 
-export function AdminManageProduct() {
+const initialProductInput: ICreateProduct = {
+  name: "",
+  img: "",
+  price: 0,
+  recipe: "",
+  weight: 0,
+  category_id: 0,
+  is_active: false,
+  variants: [],
+  variant_names: [],
+};
+
+type AdminManageProductProps = {
+  setProCreateProduct: (value: boolean) => void;
+};
+
+export function AdminManageProduct({
+  setProCreateProduct,
+}: AdminManageProductProps) {
   const dispatch = useAppDispatch();
   const { categoriesArray } = useAppSelector((state) => state.categories);
 
-  const [productInput, setProductInput] = useState<ICreateProduct>({
-    name: "",
-    img: "",
-    price: 0,
-    recipe: "",
-    weight: 0,
-    category_id: 0,
-    is_active: false,
-    variants: [],
-    variant_names: [],
-  });
+  const [productInput, setProductInput] =
+    useState<ICreateProduct>(initialProductInput);
   const [productVariants, setProductVariants] = useState("");
   const [productVariantsNames, setProductVariantsNames] = useState("");
   const onChangeProductHandler = (
-    event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>
+    event:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLSelectElement>
   ) => {
     setProductInput((prev) => ({
       ...prev,
@@ -46,25 +57,37 @@ export function AdminManageProduct() {
 
   const addProductVariants = () => {
     if (productVariants.trim()) {
-      const newVariants:string = productVariants.trim();
+      const newVariants: string = productVariants.trim();
       setProductInput((prev: ICreateProduct) => ({
         ...prev,
-        variants: [...prev.variants || [], newVariants],
+        variants: [...(prev.variants || []), newVariants],
       }));
-    } 
+    }
     setProductVariants("");
-  }
+  };
 
   const addProductVariantsNames = () => {
     if (productVariantsNames.trim()) {
-      const newVariantsNames:string = productVariantsNames.trim();
+      const newVariantsNames: string = productVariantsNames.trim();
       setProductInput((prev: ICreateProduct) => ({
         ...prev,
-        variant_names: [...prev.variant_names || [], newVariantsNames],
+        variant_names: [...(prev.variant_names || []), newVariantsNames],
       }));
     }
     setProductVariantsNames("");
-  }
+  };
+  const removeProductVariant = (index: number) => {
+    setProductInput((prev: ICreateProduct) => ({
+      ...prev,
+      variants: prev.variants?.filter((_, i) => i !== index) || [],
+    }));
+  };
+  const removeProductVariantName = (index: number) => {
+    setProductInput((prev: ICreateProduct) => ({
+      ...prev,
+      variant_names: prev.variant_names?.filter((_, i) => i !== index) || [],
+    }));
+  };
 
   return (
     <form className={styles.editForm} onSubmit={onSubmitProductHandler}>
@@ -171,8 +194,72 @@ export function AdminManageProduct() {
           placeholder="ВВедите варианты"
           value={productVariants}
           onChange={(event) => setProductVariants(event.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              addProductVariants();
+            }
+          }}
           className={styles.formInput}
         />
+        <button type="button" onClick={addProductVariants}>
+          Добавить
+        </button>
+        {(productInput.variants || []).length > 0 && (
+          <div className={styles.formGroup}>
+            {(productInput.variants || []).map((variant, index) => (
+              <div key={index}>
+                {variant}
+                <button
+                  type="button"
+                  onClick={() => removeProductVariant(index)}
+                >
+                  Удалить
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className={styles.formGroup}>
+        <label htmlFor="variant_names">Варианты названий</label>
+        <input
+          id="variant_names"
+          type="text"
+          name="variant_names"
+          placeholder="ВВедите варианты названий"
+          value={productVariantsNames}
+          onChange={(event) => setProductVariantsNames(event.target.value)}
+        />
+        <button type="button" onClick={addProductVariantsNames}>
+          Добавить
+        </button>
+        {(productInput.variant_names || []).length > 0 && (
+          <div className={styles.formGroup}>
+            {(productInput.variant_names || []).map((variantName, index) => (
+              <div key={index}>
+                {variantName}
+                <button
+                  type="button"
+                  onClick={() => removeProductVariantName(index)}
+                >
+                  Удалить
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className={styles.formActions}>
+        <button type="submit" className={styles.saveButton}>
+          Сохранить
+        </button>
+        <button
+          type="button"
+          className={styles.cancelButton}
+          onClick={() => setProCreateProduct(false)}
+        >
+          Отмена
+        </button>
       </div>
     </form>
   );
