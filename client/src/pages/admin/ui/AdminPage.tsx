@@ -19,6 +19,8 @@ export function AdminPage() {
   const [proEditProduct, setProEditProduct] = useState(false);
   const [tab, setTab] = useState("editMainPage");
   const [editCalculations, setEditCalculations] = useState(false);
+  const [manageVacancies, setManageVacancies] = useState(false);
+  const [manageContacts, setManageContacts] = useState(false);
   const [selectedDate, setSelectedDate] = useState(() => {
     // Устанавливаем сегодняшнюю дату по умолчанию
     return new Date().toISOString().split("T")[0];
@@ -66,6 +68,18 @@ export function AdminPage() {
             onClick={() => setTab("manageProducts")}
           >
             Управление продуктами
+          </button>
+          <button
+            className={tab === "manageVacancies" ? "active" : ""}
+            onClick={() => setTab("manageVacancies")}
+          >
+            Редактировать вакансии
+          </button>
+          <button
+            className={tab === "manageContacts" ? "active" : ""}
+            onClick={() => setTab("manageContacts")}
+          >
+            Управление контактами
           </button>
         </div>
         {tab === "editMainPage" && (
@@ -206,6 +220,38 @@ export function AdminPage() {
                 </button>
               </div>
               {proEditProduct && (<AdminManageProductList />)}
+            </section>
+          </>
+        )}
+        {tab === "manageVacancies" && (
+          <>
+            <section className={styles.section}>
+              <div className={styles.sectionHeader}>
+                <h2 className={styles.sectionTitle}>Редактировать вакансии</h2>
+                <button
+                  className={styles.toggleButton}
+                  onClick={() => setManageVacancies((prev) => !prev)}
+                >
+                  {manageVacancies ? "Скрыть" : "Редактировать"}
+                </button>
+              </div>
+              {manageVacancies && <>ТУТ БУДЕТ СТРАНИЦА РЕДАКТИРОВАНИЯ ВАКАНСИЙ</>}
+            </section>
+          </>
+        )}
+        {tab === "manageContacts" && (
+          <>
+            <section className={styles.section}>
+              <div className={styles.sectionHeader}>
+                <h2 className={styles.sectionTitle}>Редактировать контакты</h2>
+                <button
+                  className={styles.toggleButton}
+                  onClick={() => setManageContacts((prev) => !prev)}
+                >
+                  {manageContacts ? "Скрыть" : "Редактировать"}
+                </button>
+              </div>
+              {manageContacts && <>ТУТ БУДЕТ СТРАНИЦА РЕДАКТИРОВАНИЯ КОНТАКТОВ</>}
             </section>
           </>
         )}
