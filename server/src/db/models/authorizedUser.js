@@ -2,7 +2,7 @@ const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class AuthorizedUser extends Model {
-    static associate(models) {
+    static associate() {
       // Здесь можно добавить связи с другими моделями при необходимости
     }
   }
@@ -51,6 +51,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
         comment: "Кто добавил пользователя",
+      },
+      shop_name: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        comment: "Название магазина пользователя",
       },
     },
     {

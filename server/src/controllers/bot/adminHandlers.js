@@ -12,19 +12,51 @@ class AdminHandlers {
     const messageText = ctx.message.text;
     const parts = messageText.split(" ");
 
-    if (parts.length < 2) {
+    if (parts.length < 3) {
       await ctx.reply(
-        "📝 *Использование:* `/adduser <telegram_id> [role]`\n\n" +
+        "📝 *Использование:* `/adduser <telegram_id> <название_магазина> [role]`\n\n" +
           "Примеры:\n" +
-          "`/adduser 123456789` - добавить обычного пользователя\n" +
-          "`/adduser 123456789 admin` - добавить администратора",
+          '`/adduser 123456789 "Магазин У Дома"` - добавить обычного пользователя\n' +
+          '`/adduser 123456789 "Супермаркет XYZ" admin` - добавить администратора\n\n' +
+          "⚠️ Название магазина должно быть в кавычках, если содержит пробелы",
         { parse_mode: "Markdown" }
       );
       return;
     }
 
     const targetUserId = parts[1];
-    const role = parts[2] || "user";
+
+    // Обрабатываем название магазина (может быть в кавычках)
+    let shopName;
+    let role = "user";
+
+    const messageWithoutCommand = messageText.substring(
+      messageText.indexOf(parts[1])
+    );
+
+    // Если название в кавычках
+    if (messageWithoutCommand.includes('"')) {
+      const shopNameMatch = messageWithoutCommand.match(/"([^"]+)"/);
+      if (shopNameMatch) {
+        shopName = shopNameMatch[1];
+        // Проверяем, есть ли роль после названия магазина
+        const afterShopName = messageWithoutCommand
+          .substring(
+            messageWithoutCommand.indexOf(shopNameMatch[0]) +
+              shopNameMatch[0].length
+          )
+          .trim();
+        if (afterShopName) {
+          role = afterShopName;
+        }
+      } else {
+        shopName = parts[2];
+        role = parts[3] || "user";
+      }
+    } else {
+      shopName = parts[2];
+      role = parts[3] || "user";
+    }
 
     try {
       // Создаем объект пользователя для добавления
@@ -34,6 +66,7 @@ class AdminHandlers {
         first_name: null,
         last_name: null,
         role: role,
+        shop_name: shopName,
       };
 
       await AuthService.addAuthorizedUser(userData, String(ctx.from.id));
@@ -41,6 +74,7 @@ class AdminHandlers {
       await ctx.reply(
         `✅ *Пользователь добавлен!*\n\n` +
           `🆔 ID: ${targetUserId}\n` +
+          `🏪 Магазин: ${shopName}\n` +
           `👤 Роль: ${role}\n` +
           `➕ Добавил: ${ctx.from.username || ctx.from.first_name}`,
         { parse_mode: "Markdown" }
@@ -104,6 +138,7 @@ class AdminHandlers {
 
       for (const user of users) {
         usersText += `🆔 ID: ${user.tg_user_id}\n`;
+        usersText += `🏪 Магазин: ${user.shop_name || "Не указан"}\n`;
         usersText += `👤 Имя: ${user.first_name || "Не указано"}\n`;
         usersText += `📛 Username: @${user.tg_username || "Не указан"}\n`;
         usersText += `🔑 Роль: ${user.role}\n`;

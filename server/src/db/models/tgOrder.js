@@ -58,6 +58,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: "pending",
       },
+      variant: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        comment: "Вариант товара (ж/п для пирогов, м/б для салатов)",
+      },
     },
     {
       sequelize,

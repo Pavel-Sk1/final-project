@@ -109,6 +109,20 @@ class BotController {
       )
     );
 
+    // Обработчики групповых админских действий
+    this.bot.action(
+      /^admin_confirm_bulk_(.+)$/,
+      this.adminActionHandlers.handleConfirmBulkOrders.bind(
+        this.adminActionHandlers
+      )
+    );
+    this.bot.action(
+      /^admin_reject_bulk_(.+)$/,
+      this.adminActionHandlers.handleRejectBulkOrders.bind(
+        this.adminActionHandlers
+      )
+    );
+
     // Обработчики кнопок клавиатуры (должны быть ПЕРЕД обработчиком текста)
     this.bot.hears(
       "🛒 Заказать товары",
@@ -379,31 +393,41 @@ class BotController {
 
       responseText += "\n🕒 Заказ передан поставщику. Ожидайте подтверждения!";
 
-      // Отправляем уведомления админам о новых заказах
+      // Отправляем сводное уведомление админам о новых заказах
       if (successCount > 0) {
         console.log(
-          `📤 Sending notifications for ${successCount} successful orders`
+          `📤 Sending bulk notifications for ${successCount} successful orders`
         );
         try {
           const adminIds = await NotificationService.getAdminTelegramIds();
           console.log(`📋 Processing ${results.length} order results`);
 
-          for (const result of results) {
-            console.log(`🔍 Processing result:`, {
-              success: result.success,
-              orderId: result.orderId,
-            });
-            if (result.success && result.orderId) {
-              for (const adminId of adminIds) {
-                console.log(
-                  `📨 Sending notification to admin ${adminId} for order ${result.orderId}`
-                );
-                await NotificationService.notifyAdminNewOrder(
-                  this.bot,
-                  result.orderId,
-                  adminId
-                );
-              }
+          // Собираем все успешные ID заказов
+          const successfulOrderIds = results
+            .filter((result) => result.success && result.orderId)
+            .map((result) => result.orderId);
+
+          console.log(
+            `🔍 All results:`,
+            results.map((r) => ({
+              success: r.success,
+              orderId: r.orderId,
+              productName: r.product?.name,
+            }))
+          );
+          console.log(`🎯 Successful order IDs:`, successfulOrderIds);
+
+          if (successfulOrderIds.length > 0) {
+            for (const adminId of adminIds) {
+              console.log(
+                `📨 Sending ONE bulk notification to admin ${adminId} for ${successfulOrderIds.length} orders:`,
+                successfulOrderIds
+              );
+              await NotificationService.notifyAdminBulkOrder(
+                this.bot,
+                successfulOrderIds,
+                adminId
+              );
             }
           }
         } catch (error) {
@@ -454,16 +478,66 @@ class BotController {
         return;
       }
 
+      // Группируем заказы по дате
+      const ordersByDate = {};
+      for (const order of orders) {
+        const dateKey = order.createdAt.toLocaleDateString("ru-RU");
+        if (!ordersByDate[dateKey]) {
+          ordersByDate[dateKey] = [];
+        }
+        ordersByDate[dateKey].push(order);
+      }
+
       let ordersText = "📋 *Ваши заказы поставщику:*\n\n";
 
-      for (const order of orders) {
-        const statusEmoji = BotUtils.getStatusEmoji(order.status);
-        ordersText += `${statusEmoji} *${order.product.name}*\n`;
-        ordersText += `Количество: ${order.quantity} шт.\n`;
-        ordersText += `Цена: ${order.product.price * order.quantity} руб.\n`;
-        ordersText += `Статус: ${BotUtils.getStatusText(order.status)}\n`;
-        ordersText += `Дата: ${order.createdAt.toLocaleDateString("ru-RU")}\n`;
+      // Отображаем заказы по датам
+      for (const [date, dayOrders] of Object.entries(ordersByDate)) {
+        ordersText += `📅 *${date}*\n`;
+
+        for (const order of dayOrders) {
+          const statusEmoji = BotUtils.getStatusEmoji(order.status);
+          let productName = order.product.name;
+
+          // Добавляем информацию о варианте
+          if (order.variant) {
+            const variantDisplay =
+              order.variant === "ж" || order.variant === "жар"
+                ? "жареный"
+                : order.variant === "п" || order.variant === "печ"
+                ? "печеный"
+                : order.variant;
+            productName += ` (${variantDisplay})`;
+          }
+
+          ordersText += `${statusEmoji} *${productName}*\n`;
+          ordersText += `   Количество: ${order.quantity} шт.\n`;
+          ordersText += `   Цена: ${
+            order.product.price * order.quantity
+          } руб.\n`;
+          ordersText += `   Статус: ${BotUtils.getStatusText(order.status)}\n`;
+
+          if (order.user_comment) {
+            ordersText += `   Комментарий: ${order.user_comment}\n`;
+          }
+
+          ordersText += "\n";
+        }
         ordersText += "\n";
+      }
+
+      // Добавляем общую статистику
+      const totalOrders = orders.length;
+      const totalAmount = orders.reduce((sum, order) => {
+        return sum + order.product.price * order.quantity;
+      }, 0);
+
+      ordersText += `📊 *Общая статистика:*\n`;
+      ordersText += `Всего заказов: ${totalOrders}\n`;
+      ordersText += `Общая сумма: ${totalAmount} руб.\n`;
+
+      if (ordersText.length > 4000) {
+        ordersText = ordersText.substring(0, 3900) + "\n\n...список обрезан";
+        ordersText += `\n\nВсего заказов: ${totalOrders}`;
       }
 
       await ctx.reply(ordersText, { parse_mode: "Markdown" });
@@ -473,9 +547,6 @@ class BotController {
     }
   }
 
-  /**
-   * Обработчик команды "Статистика"
-   */
   async handleStatsCommand(ctx) {
     try {
       const stats = await OrderService.getUserOrderStats(ctx.from.id);
@@ -483,16 +554,7 @@ class BotController {
       let statsText = "📊 *Статистика ваших заказов:*\n\n";
       statsText += `📦 Всего заказов: ${stats.totalOrders}\n`;
       statsText += `💰 Общая сумма: ${stats.totalAmount} руб.\n`;
-      statsText += `📈 Средний чек: ${stats.averageOrder} руб.\n\n`;
-
-      if (stats.statusCounts) {
-        statsText += "*По статусам:*\n";
-        for (const [status, count] of Object.entries(stats.statusCounts)) {
-          const statusEmoji = BotUtils.getStatusEmoji(status);
-          const statusText = BotUtils.getStatusText(status);
-          statsText += `${statusEmoji} ${statusText}: ${count}\n`;
-        }
-      }
+      statsText += `📈 Средний чек: ${stats.averageOrder} руб.\n`;
 
       await ctx.reply(statsText, { parse_mode: "Markdown" });
     } catch (error) {

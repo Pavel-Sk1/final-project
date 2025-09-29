@@ -80,14 +80,12 @@ class AdminService {
       const endOfDay = new Date(targetDate);
       endOfDay.setHours(23, 59, 59, 999);
 
-      // Создаем условие для фильтрации
       const whereCondition = {
         createdAt: {
           [require("sequelize").Op.between]: [startOfDay, endOfDay],
         },
       };
 
-      // Добавляем фильтр по статусу только если не "all"
       if (status && status !== "all") {
         whereCondition.status = status;
       }
@@ -98,7 +96,7 @@ class AdminService {
           {
             model: Product,
             as: "product",
-            attributes: ["id", "name", "price"],
+            attributes: ["id", "name", "price", "variants", "variant_names"],
           },
           {
             model: TgUser,
@@ -110,6 +108,15 @@ class AdminService {
               "tg_username",
             ],
           },
+        ],
+        attributes: [
+          "id",
+          "tg_user_id",
+          "product_id",
+          "quantity",
+          "variant",
+          "status",
+          "createdAt",
         ],
         order: [["createdAt", "DESC"]],
       });
