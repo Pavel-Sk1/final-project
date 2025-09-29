@@ -6,6 +6,7 @@ import { Layout } from "./layout/Layout";
 import { CLIENT_ROUTES, useAppDispatch } from "@/shared";
 import { ProtectedRoute } from "@/shared";
 import { refreshTokensThunk } from "@/entities";
+import { ContactPage } from "@/pages/contact";
 
 export function App() {
   const dispatch = useAppDispatch();
@@ -22,6 +23,7 @@ export function App() {
           <Route path={CLIENT_ROUTES.AUTH} element={<SignInPage />} />
           <Route path={CLIENT_ROUTES.INFO} element={<InfoPage />} />
           <Route path={CLIENT_ROUTES.VACANCY} element={<VacancyPage />} />
+          <Route path={CLIENT_ROUTES.CONTACT} element={<ContactPage />} />
           <Route
             path={CLIENT_ROUTES.ADMIN}
             element={
