@@ -7,7 +7,6 @@ module.exports = {
       "vacancies",
       [
         {
-          id: 1,
           position: "Повар",
           location: "Москва, ул. Тверская, 15",
           salary: "от 50 000 руб.",
@@ -18,7 +17,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 2,
           position: "Официант",
           location: "Москва, ул. Арбат, 25",
           salary: "от 40 000 руб. + чаевые",
@@ -29,7 +27,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 3,
           position: "Курьер",
           location: "Москва, все районы",
           salary: "от 35 000 руб. + бонусы",
@@ -40,7 +37,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 4,
           position: "Менеджер ресторана",
           location: "Москва, ул. Красная Площадь, 1",
           salary: "от 70 000 руб.",
@@ -51,7 +47,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 5,
           position: "Бармен",
           location: "Москва, ул. Кузнецкий мост, 10",
           salary: "от 45 000 руб. + чаевые",

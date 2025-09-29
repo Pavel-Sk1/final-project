@@ -69,6 +69,35 @@ adminRouter
     verifyAccessToken,
     checkRole("admin"),
     AdminController.getOrdersByDate
-  );
-
+  )
+  .get(
+    "/vacancy",
+    verifyAccessToken,
+    checkRole("admin"),
+    AdminController.getAllVacancies
+  )
+  .get(
+    "/vacancy/:id",
+    verifyAccessToken,
+    checkRole("admin"),
+    AdminController.getVacancyById
+  )
+  .post(
+    "/vacancy",
+    verifyAccessToken,
+    checkRole("admin"),
+    AdminController.createVacancy
+  )
+  .put(
+    "/vacancy/:id",
+    verifyAccessToken,
+    checkRole("admin"),
+    AdminController.updateVacancy
+  )
+  .delete(
+    "/vacancy/:id",
+    verifyAccessToken,
+    checkRole("admin"),
+    AdminController.deleteVacancy
+  )
 module.exports = adminRouter;

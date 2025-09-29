@@ -4,6 +4,7 @@ const isValidId = require("../utils/isValidId");
 const {
   News: NewsValidator,
   Product: ProductValidator,
+  Vacancy: VacancyValidator,
 } = require("../db/models");
 
 class AdminController {
@@ -250,6 +251,83 @@ class AdminController {
         .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
     }
   }
+  static async getAllVacancies(req, res) {
+    try {
+      const vacancies = await AdminService.getAllVacancies();
+      res
+        .status(200)
+        .json(formatResponse(200, "Вакансии получены успешно", vacancies));
+    }  catch (error) {
+    console.error("======AdminController.getAllVacancies===\n", error);
+    res
+      .status(500)
+      .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
+  }
 }
-
-module.exports = AdminController;
+  static async getVacancyById(req, res) {
+    try {
+      const { id } = req.params;
+      const vacancy = await AdminService.getVacancyById(id);
+      res
+        .status(200)
+        .json(formatResponse(200, "Вакансия получена успешно", vacancy));
+    } catch (error) {
+      console.error("======AdminController.getVacancyById===\n", error);
+      res
+        .status(500)
+        .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
+    }
+  }
+  static async createVacancy(req, res) {
+    try {
+      const { position, location, salary, description, is_active } = req.body;
+      const { isValid, error } = VacancyValidator.validate({ position, location, salary, description, is_active });
+      if (!isValid) {
+        return res.status(400).json(formatResponse(400, error, null, error));
+      }
+      const vacancy = await AdminService.createVacancy({ position, location, salary, description, is_active });
+      res
+        .status(200)
+        .json(formatResponse(200, "Вакансия создана успешно", vacancy));
+    } catch (error) {
+      console.error("======AdminController.createVacancy===\n", error);
+      res
+        .status(500)
+        .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
+    }
+  }
+  static async updateVacancy(req, res) {
+    try {
+      const { id } = req.params;
+      const { position, location, salary, description, is_active } = req.body;
+      const { isValid, error } = VacancyValidator.validate({ position, location, salary, description, is_active });
+      if (!isValid) {
+        return res.status(400).json(formatResponse(400, error, null, error));
+      }
+      const vacancy = await AdminService.updateVacancy(id, { position, location, salary, description, is_active });
+      res
+        .status(200)
+        .json(formatResponse(200, "Вакансия обновлена успешно", vacancy));
+    } catch (error) {
+      console.error("======AdminController.updateVacancy===\n", error);
+      res
+        .status(500)
+        .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
+    }
+  }
+  static async deleteVacancy(req, res) {
+    try {
+      const { id } = req.params;
+      const vacancy = await AdminService.deleteVacancy(id);
+      res
+        .status(200)
+        .json(formatResponse(200, "Вакансия удалена успешно", vacancy));
+    } catch (error) {
+      console.error("======AdminController.deleteVacancy===\n", error);
+      res
+        .status(500)
+        .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
+    }
+  }
+}
+module.exports = AdminController

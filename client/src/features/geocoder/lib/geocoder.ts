@@ -12,8 +12,8 @@ export async function geocode(address: string) {
         limit: 1,
       },
       headers: {
-        'Accept-Language': 'ru', // если хотите русский язык результата
-        'User-Agent': 'YourAppName/1.0 (your.email@example.com)', // обязательно для Nominatim
+        'Accept-Language': 'ru',
+        'User-Agent': 'YourAppName/1.0 (your.email@example.com)', 
       },
     });
 

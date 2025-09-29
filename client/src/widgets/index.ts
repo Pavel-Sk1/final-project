@@ -10,3 +10,7 @@ export { AdminCreateNewsForm } from "./adminCreateNewsForm";
 export { AdminManageProductForm } from "./adminManageProductForm";
 export { AdminManageProductCard } from "./adminManageProductCard";
 export { AdminManageProductList } from "./adminManageProductList";
+export { AdminVacancyList } from "./adminVacancyList";
+export { AdminVacancyForm } from "./adminVacancyForm";
+export { AdminVacancyCard } from "./adminVacancyCard";
+export { AdminCreateVacancyForm } from "./adminCreateVacancyForm";

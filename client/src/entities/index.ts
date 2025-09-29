@@ -37,6 +37,14 @@ export {
   adminReducer,
   type IOrder,
   type OrderArrayType,
+  type IAdminVacancy,
+  type ICreateAdminVacancy,
+  type AdminVacancyArrayType,
+  getAllAdminVacanciesThunk,
+  getVacancyByIdThunk,
+  createVacancyThunk,
+  updateVacancyThunk,
+  deleteVacancyThunk,
 } from "./admin";
 
 // calculations
