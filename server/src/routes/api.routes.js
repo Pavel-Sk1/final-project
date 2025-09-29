@@ -8,6 +8,7 @@ const infoRoutes = require('./info.routes');
 const categoriesRoutes = require('./categories.routes');
 const vacancyRoutes = require('./vacancy.routes');
 const mainContactRoutes = require('./mainContact.routes');
+const partnerRoutes = require('./partner.routes');
 
 router.use('/auth', authRoutes);
 router.use("/admin", adminRouter);
@@ -17,6 +18,7 @@ router.use('/info', infoRoutes);
 router.use('/categories', categoriesRoutes);
 router.use('/vacancy', vacancyRoutes);
 router.use('/contact', mainContactRoutes);
+router.use('/partners', partnerRoutes);
 
 router.use((req, res) => {
     res
