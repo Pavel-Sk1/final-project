@@ -79,6 +79,8 @@
 .adminNav {
   display: flex;
   gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
   margin-bottom: 3rem;
   padding: 1.5rem;
   background: linear-gradient(180deg, #ffffff, #fff9f5);
