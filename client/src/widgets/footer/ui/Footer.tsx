@@ -63,7 +63,7 @@ export function Footer(): JSX.Element {
               </button>
               <button
                 className={styles.footerLink}
-                onClick={() => navigate(CLIENT_ROUTES.VACANCY)}
+                onClick={() => navigate(CLIENT_ROUTES.CONTACT)}
               >
                 Наши контакты
               </button>

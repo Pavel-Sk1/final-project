@@ -1,5 +1,5 @@
 
-import { userReducer, newsReducer, adminReducer, productsReducer, infoReducer, calculationsReducer, vacancyReducer, categoriesReducer } from "@/entities";
+import { userReducer, newsReducer, adminReducer, productsReducer, infoReducer, calculationsReducer, vacancyReducer, categoriesReducer, contactReducer } from "@/entities";
 
 
 import { configureStore } from "@reduxjs/toolkit";
@@ -15,6 +15,7 @@ export const store = configureStore({
         info: infoReducer,
         categories: categoriesReducer,
         vacancy: vacancyReducer,
+        contact: contactReducer,
     },
 });
 
