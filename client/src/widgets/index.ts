@@ -6,4 +6,5 @@ export { AdminNewsForm } from "./adminNewsForm";
 export { AdminProductForm } from "./adminProductForm";
 export { AdminNewsCard } from "./adminNewsCard";
 export { AdminProductCard } from "./adminProductCard";
-export { AdminCreateNewsForm } from "./adminCreateNewsForm";
+export { AdminCreateNewsForm } from "./adminCreateNewsForm";  
+export { AdminManageProductForm } from "./adminManageProductForm";

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllAdminNewsThunk, getNewsByIdThunk, createNewsThunk, updateNewsThunk, deleteNewsThunk, getAllProductsThunk, getProductByIdThunk, updateProductThunk } from "../api/adminThunkApi";
+import { getAllAdminNewsThunk, getNewsByIdThunk, createNewsThunk, updateNewsThunk, deleteNewsThunk, getAllProductsThunk, getProductByIdThunk, updateProductThunk, createProductThunk, deleteProductThunk } from "../api/adminThunkApi";
 import { type IAdminNews, type AdminNewsArrayType, type IAdminProduct, type AdminProductArrayType } from "../model";
 
 
@@ -111,6 +111,18 @@ const adminSlice = createSlice({
                 state.error = action.payload?.message || 'Ошибка при получении продукта';
                 state.loading = false;
             })
+            .addCase(createProductThunk.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(createProductThunk.fulfilled, (state, action) => {
+                state.productArray.push(action.payload.data);
+                state.loading = false;
+                state.error = null;
+            })
+            .addCase(createProductThunk.rejected, (state, action) => {
+                state.error = action.payload?.message || 'Ошибка при создании продукта';
+                state.loading = false;
+            })            
             .addCase(updateProductThunk.pending, (state) => {
                 state.loading = true;
             })
@@ -119,8 +131,21 @@ const adminSlice = createSlice({
                 state.loading = false;
                 state.error = null;
             })
+            
             .addCase(updateProductThunk.rejected, (state, action) => {
                 state.error = action.payload?.message || 'Ошибка при обновлении продукта';
+                state.loading = false;
+            })
+            .addCase(deleteProductThunk.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(deleteProductThunk.fulfilled, (state, action) => {
+                state.productArray = state.productArray.filter(product => Number(product.id) !== Number(action.payload.data.id));
+                state.loading = false;
+                state.error = null;
+            })
+            .addCase(deleteProductThunk.rejected, (state, action) => {
+                state.error = action.payload?.message || 'Ошибка при удалении продукта';
                 state.loading = false;
             })
     }

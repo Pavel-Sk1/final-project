@@ -1,6 +1,6 @@
 
 export { getAllNewsThunk, newsReducer, type INewsItem } from './news'
-export { getAllProductImagesThunk, productsReducer, type IProductImage } from './products'
+export { getAllProductImagesThunk, productsReducer, type IProductImage, type IProductArrayType, type ICreateProduct } from './products'
 export { getProductsThunk, infoReducer, type IProduct } from './info'
 export { getAllVacanciesThunk, vacancyReducer, type IVacancy } from './vacancy'
 
@@ -45,3 +45,13 @@ export {
   type IOrder as ICalculationOrder,
   CALCULATIONS_API_ROUTES,
 } from "./calculations";
+
+// categories
+export {
+  getAllCategoriesThunk,
+  categoriesReducer,
+  type ICreateCategory,
+  type ICategory,
+  type CategoriesArrayType,
+  CATEGORIES_API_ROUTES,
+} from "./categories";

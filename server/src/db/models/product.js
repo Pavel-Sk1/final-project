@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         as: "orders",
       });
     }
-    static validate({ name, img, price, recipe }) {
+    static validate({ name, img, price, recipe, category_id, is_active, variants, variant_names }) {
       if (!name || typeof name !== "string" || name.trim().length === 0) {
         return {
           isValid: false,
@@ -41,6 +41,30 @@ module.exports = (sequelize, DataTypes) => {
           isValid: false,
           error: "Рецепт продукта не должен быть пустым",
         };
+      }
+      if (!category_id || typeof category_id !== "number") {
+        return {
+          isValid: false,
+          error: "Категория продукта не должна быть пустой и должна быть числом",
+        };
+      }
+      if (!is_active || typeof is_active !== "number") {
+        return {
+          isValid: false,
+          error: "Активность продукта не должна быть пустой и должна быть числом",
+        };
+      }
+      if (!variants || typeof variants !== "object") {
+        return {
+          isValid: false,
+          error: "Варианты продукта не должны быть пустыми и должны быть объектом",
+        };
+      }
+      if (!variant_names || typeof variant_names !== "object") {
+        return {
+          isValid: false,
+          error: "Названия вариантов продукта не должны быть пустыми и должны быть объектом",
+        };        
       }
       return { isValid: true, error: null };
     }

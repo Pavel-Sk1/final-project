@@ -171,6 +171,25 @@ class AdminController {
     }
   }
 
+  static async createProduct(req, res) {
+    try {
+      const { name, img, price, recipe, category_id, is_active, variants, variant_names } = req.body;
+      const { isValid, error } = ProductValidator.validate({ name, img, price, recipe, category_id, is_active, variants, variant_names });
+      if (!isValid) {
+        return res.status(400).json(formatResponse(400, error, null, error));
+      }
+      const product = await AdminService.createProduct({ name, img, price, recipe, category_id, is_active, variants, variant_names });
+      res
+        .status(200)
+        .json(formatResponse(200, "Продукт создан успешно", product));
+    } catch (error) {
+      console.error("======AdminController.createProduct===\n", error);
+      res
+        .status(500)
+        .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
+    }
+  }
+
   static async updateProduct(req, res) {
     try {
       const { id } = req.params;
@@ -190,6 +209,25 @@ class AdminController {
         .json(formatResponse(200, "Продукт обновлен успешно", product));
     } catch (error) {
       console.error("======AdminController.updateProduct===\n", error);
+      res
+        .status(500)
+        .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
+    }
+  }
+
+  static async deleteProduct(req, res) {
+
+    try {
+      const { id } = req.params;
+      if (!isValidId(id)) {
+        return res.status(400).json(formatResponse(400, "Неверный id", null, "Неверный id"));
+      }
+      const product = await AdminService.deleteProduct(id);
+      res
+        .status(200)
+        .json(formatResponse(200, "Продукт удален успешно", product));
+    } catch (error) {
+      console.error("======AdminController.deleteProduct===\n", error);
       res
         .status(500)
         .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));

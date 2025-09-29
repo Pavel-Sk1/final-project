@@ -5,6 +5,7 @@ const adminRouter = require('./admin.routes');
 const newsRoutes = require('./news.routes');
 const productsRoutes = require('./products.routes');
 const infoRoutes = require('./info.routes');
+const categoriesRoutes = require('./categories.routes');
 const vacancyRoutes = require('./vacancy.routes');
 
 
@@ -13,6 +14,7 @@ router.use("/admin", adminRouter);
 router.use('/news', newsRoutes);
 router.use('/products', productsRoutes);
 router.use('/info', infoRoutes);
+router.use('/categories', categoriesRoutes);
 router.use('/vacancy', vacancyRoutes);
 
 router.use((req, res) => {
