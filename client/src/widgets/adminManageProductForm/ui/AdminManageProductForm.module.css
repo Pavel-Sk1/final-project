@@ -1,112 +1,281 @@
 .editForm {
-    background: linear-gradient(180deg, #ffffff, #fff9f5);
-    border: 2px solid var(--accent);
-    border-radius: var(--radius);
-    padding: 2rem;
-    box-shadow: 0 8px 24px rgba(120, 72, 36, 0.2);
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+  background: linear-gradient(180deg, #ffffff, #fff9f5);
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: 0 8px 24px rgba(120, 72, 36, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.editForm::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formGroup label {
+  font-weight: 600;
+  color: var(--primary-dark);
+  font-size: 0.95rem;
+  margin-bottom: 0.3rem;
+}
+
+.formInput {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  transition: var(--transition);
+  background: #fff7f2;
+  box-sizing: border-box;
+  color: var(--text);
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(224, 167, 108, 0.25);
+}
+
+.formInput::placeholder {
+  color: var(--text-light);
+}
+
+/* Стили для вариантов */
+.variantsSection {
+  background: var(--light-blue);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  margin-top: 0.5rem;
+}
+
+.variantsInputGroup {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.variantsInputGroup input {
+  flex: 1;
+}
+
+.variantsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.variantItem {
+  background: linear-gradient(135deg, var(--accent-rose), var(--accent));
+  color: var(--white);
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 8px rgba(120, 72, 36, 0.2);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
   }
-  
-  .formGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .formInput {
-    width: 100%;
-    padding: 0.85rem 1rem;
-    border: 2px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-size: 1rem;
-    transition: var(--transition);
-    background: #fff7f2;
-    box-sizing: border-box;
-    color: var(--text);
+}
+
+.variantRemoveButton {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: var(--white);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+  transition: var(--transition);
+}
+
+.variantRemoveButton:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.variantRemoveButton:active {
+  transform: scale(0.95);
+}
+
+.addVariantButton {
+  padding: 0.6rem 1rem;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow);
+  white-space: nowrap;
+}
+
+.addVariantButton:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+.addVariantButton:active {
+  transform: translateY(0);
+}
+
+/* Стили для чекбокса */
+.checkboxGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: var(--light-blue);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.checkboxGroup input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.checkboxGroup label {
+  margin: 0;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.formActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.saveButton {
+  padding: 0.8rem 1.5rem;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.saveButton:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+  box-shadow: 0 8px 20px rgba(120, 72, 36, 0.3);
+}
+
+.saveButton:active {
+  transform: translateY(0);
+}
+
+.cancelButton {
+  padding: 0.8rem 1.5rem;
+  background: transparent;
+  color: var(--text-light);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cancelButton:hover {
+  background: var(--light-blue);
+  border-color: var(--accent);
+  color: var(--text);
+  transform: translateY(-1px);
+}
+
+.cancelButton:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .editForm {
+    padding: 1.5rem;
   }
-  
-  .formInput:focus {
-    outline: none;
-    border-color: var(--accent);
-    background: var(--white);
-    box-shadow: 0 0 0 3px rgba(224, 167, 108, 0.25);
-  }
-  
-  .formInput::placeholder {
-    color: var(--text-light);
-  }
-  
+
   .formActions {
-    display: flex;
-    gap: 1rem;
-    justify-content: flex-end;
-    margin-top: 1rem;
+    flex-direction: column;
   }
-  
-  .saveButton {
-    padding: 0.8rem 1.5rem;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: var(--white);
-    border: none;
-    border-radius: var(--radius-sm);
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-    box-shadow: var(--shadow);
-  }
-  
-  .saveButton:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.05);
-  }
-  
-  .saveButton:active {
-    transform: translateY(0);
-  }
-  
+
+  .saveButton,
   .cancelButton {
-    padding: 0.8rem 1.5rem;
-    background: transparent;
-    color: var(--text-light);
-    border: 2px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
+    width: 100%;
+    justify-content: center;
   }
-  
-  .cancelButton:hover {
-    background: var(--light-blue);
-    border-color: var(--accent);
-    color: var(--text);
-    transform: translateY(-1px);
+
+  .variantsInputGroup {
+    flex-direction: column;
   }
-  
-  .cancelButton:active {
-    transform: translateY(0);
+
+  .addVariantButton {
+    width: 100%;
   }
-  
-  @media (max-width: 768px) {
-    .editForm {
-      padding: 1.5rem;
-    }
-  
-    .formActions {
-      flex-direction: column;
-    }
-  
-    .saveButton,
-    .cancelButton {
-      width: 100%;
-    }
+}
+
+@media (max-width: 480px) {
+  .editForm {
+    padding: 1rem;
   }
-  
-  @media (max-width: 480px) {
-    .editForm {
-      padding: 1rem;
-    }
+
+  .variantsSection {
+    padding: 0.8rem;
   }
+
+  .variantItem {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+  }
+}

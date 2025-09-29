@@ -30,7 +30,7 @@ module.exports = {
         allowNull: true,
       },
       category_id: {
-        type: Sequelize.BIGINT,
+        type: Sequelize.INTEGER,
         allowNull: true,
         references: {
           model: "categories",
@@ -40,9 +40,9 @@ module.exports = {
         onDelete: "SET NULL",
       },
       is_active: {
-        type: Sequelize.BIGINT,
+        type: Sequelize.BOOLEAN,
         allowNull: false,
-        defaultValue: 1,
+        defaultValue: true,
       },
       createdAt: {
         allowNull: false,
