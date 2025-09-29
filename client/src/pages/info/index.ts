@@ -1,1 +1,1 @@
-export { default as InfoPage } from './ui/InfoPage';
+export { InfoPage } from './ui/InfoPage';

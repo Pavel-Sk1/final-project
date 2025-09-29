@@ -45,7 +45,7 @@ export function Footer(): JSX.Element {
               </button>
               <button
                 className={styles.footerLink}
-                onClick={() => navigate(CLIENT_ROUTES.HOME)}
+                onClick={() => navigate(CLIENT_ROUTES.INFO)}
               >
                 Предложения о сотрудничестве
               </button>
@@ -57,13 +57,13 @@ export function Footer(): JSX.Element {
             <nav className={styles.footerNav}>
               <button
                 className={styles.footerLink}
-                onClick={() => navigate(CLIENT_ROUTES.HOME)}
+                onClick={() => navigate(CLIENT_ROUTES.VACANCY)}
               >
                 Вакансии
               </button>
               <button
                 className={styles.footerLink}
-                onClick={() => navigate(CLIENT_ROUTES.HOME)}
+                onClick={() => navigate(CLIENT_ROUTES.VACANCY)}
               >
                 Наши контакты
               </button>
