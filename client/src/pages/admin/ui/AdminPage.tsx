@@ -2,7 +2,13 @@ import styles from "./AdminPage.module.css";
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks";
 import { getOrdersByDateThunk } from "@/entities";
-import { AdminCreateNewsForm, AdminManageProductForm, AdminNewsList, AdminProductList } from "@/widgets";
+import {
+  AdminCreateNewsForm,
+  AdminManageProductForm,
+  AdminManageProductList,
+  AdminNewsList,
+  AdminProductList,
+} from "@/widgets";
 import { AdminCalculationsPage } from "@/widgets/adminCalculationsPage";
 
 export function AdminPage() {
@@ -66,9 +72,7 @@ export function AdminPage() {
           <>
             <section className={styles.section}>
               <div className={styles.sectionHeader}>
-                <h2 className={styles.sectionTitle}>
-                  Создать новую новость
-                </h2>
+                <h2 className={styles.sectionTitle}>Создать новую новость</h2>
                 <button
                   className={styles.toggleButton}
                   onClick={() => setCreateNews((prev) => !prev)}
@@ -170,34 +174,41 @@ export function AdminPage() {
             </section>
           </>
         )}
-        {tab === "regCompanies" && <>
-        </>}
-        {tab === "manageProducts" && <>
-        <section className={styles.section}>
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Создать продукт</h2>
-            <button
-              className={styles.toggleButton}
-              onClick={() => setProCreateProduct((prev) => !prev)}
-            >
-              {proCreateProduct ? "Скрыть" : "Редактировать"}
-            </button>
-          </div>
-          {proCreateProduct && <AdminManageProductForm setProCreateProduct={setProCreateProduct}/>}
-        </section>
-        <section className={styles.section}>
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Редактировать продукты</h2>
-            <button
-              className={styles.toggleButton}
-              onClick={() => setProEditProduct((prev) => !prev)}
-            >
-              {proEditProduct ? "Скрыть" : "Редактировать"}
-            </button>
-          </div>
-          {proEditProduct && <></>}
-        </section>
-        </>}
+        {tab === "regCompanies" && <></>}
+        {tab === "manageProducts" && (
+          <>
+            <section className={styles.section}>
+              <div className={styles.sectionHeader}>
+                <h2 className={styles.sectionTitle}>Создать продукт</h2>
+                <button
+                  className={styles.toggleButton}
+                  onClick={() => setProCreateProduct((prev) => !prev)}
+                >
+                  {proCreateProduct ? "Скрыть" : "Создать"}
+                </button>
+              </div>
+              {proCreateProduct && (
+                <AdminManageProductForm
+                  setProCreateProduct={setProCreateProduct}
+                  setProEditOneProduct={null}
+                  product={null}
+                />
+              )}
+            </section>
+            <section className={styles.section}>
+              <div className={styles.sectionHeader}>
+                <h2 className={styles.sectionTitle}>Редактировать продукты</h2>
+                <button
+                  className={styles.toggleButton}
+                  onClick={() => setProEditProduct((prev) => !prev)}
+                >
+                  {proEditProduct ? "Скрыть" : "Редактировать"}
+                </button>
+              </div>
+              {proEditProduct && (<AdminManageProductList />)}
+            </section>
+          </>
+        )}
       </div>
     </div>
   );

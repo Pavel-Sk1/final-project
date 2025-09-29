@@ -17,7 +17,16 @@ module.exports = (sequelize, DataTypes) => {
         as: "orders",
       });
     }
-    static validate({ name, img, price, recipe, category_id, is_active, variants, variant_names }) {
+    static validate({
+      name,
+      img,
+      price,
+      recipe,
+      category_id,
+      is_active,
+      variants,
+      variant_names,
+    }) {
       if (!name || typeof name !== "string" || name.trim().length === 0) {
         return {
           isValid: false,
@@ -45,26 +54,27 @@ module.exports = (sequelize, DataTypes) => {
       if (!category_id || typeof category_id !== "number") {
         return {
           isValid: false,
-          error: "Категория продукта не должна быть пустой и должна быть числом",
+          error:
+            "Категория продукта не должна быть пустой и должна быть числом",
         };
       }
-      if (!is_active || typeof is_active !== "number") {
+      if (typeof is_active !== "boolean") {
         return {
           isValid: false,
-          error: "Активность продукта не должна быть пустой и должна быть числом",
+          error: "Активность продукта должна быть булевым значением",
         };
       }
-      if (!variants || typeof variants !== "object") {
+      if (variants && !Array.isArray(variants)) {
         return {
           isValid: false,
-          error: "Варианты продукта не должны быть пустыми и должны быть объектом",
+          error: "Варианты продукта должны быть массивом",
         };
       }
-      if (!variant_names || typeof variant_names !== "object") {
+      if (variant_names && !Array.isArray(variant_names)) {
         return {
           isValid: false,
-          error: "Названия вариантов продукта не должны быть пустыми и должны быть объектом",
-        };        
+          error: "Названия вариантов продукта должны быть массивом",
+        };
       }
       return { isValid: true, error: null };
     }
@@ -108,7 +118,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       category_id: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.INTEGER,
         allowNull: true,
         references: {
           model: "categories",
@@ -116,9 +126,9 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       is_active: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: 1,
+        defaultValue: true,
       },
       variants: {
         type: DataTypes.JSONB,

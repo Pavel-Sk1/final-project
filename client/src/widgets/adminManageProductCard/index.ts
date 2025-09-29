@@ -1,0 +1,1 @@
+export { AdminManageProductCard } from "./ui/AdminManageProductCard";

@@ -57,3 +57,31 @@ export const createProductThunk = createAsyncThunk<
     return rejectWithValue(err.response!.data);
   }
 });
+
+export const updateFullProductThunk = createAsyncThunk<
+  ServerResponseType<IProduct>,
+  { id: number, product: ICreateProduct },
+  { rejectValue: ServerResponseType }
+>("***products/updateProduct***", async ({ id, product }, { rejectWithValue }) => {
+  try {
+    const { data } = await axiosInstance.put<ServerResponseType<IProduct>>(`${PRODUCTS_API_ROUTES.LIST}/${id}`, product);
+    return data;
+  } catch (error) { 
+    const err = error as AxiosError<ServerResponseType>;
+    return rejectWithValue(err.response!.data);
+  }
+});
+
+export const deleteProductThunk = createAsyncThunk<
+  ServerResponseType<IProduct>,
+  number,
+  { rejectValue: ServerResponseType }
+>("***products/deleteProduct***", async (id, { rejectWithValue }) => {
+  try {
+    const { data } = await axiosInstance.delete<ServerResponseType<IProduct>>(`${PRODUCTS_API_ROUTES.LIST}/${id}`);
+    return data;
+  } catch (error) {
+    const err = error as AxiosError<ServerResponseType>;
+    return rejectWithValue(err.response!.data);
+  }
+});
