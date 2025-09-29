@@ -17,15 +17,20 @@ class TextHandlers {
       return; // Пропускаем команды
     }
 
-    // Проверяем, не является ли это кнопкой клавиатуры
-    const keyboardButtons = [
-      "🛒 Заказать товары",
-      "📋 Мои заказы",
-      "📊 Статистика",
-      "❓ Помощь",
-    ];
-    if (keyboardButtons.includes(ctx.message.text)) {
-      return; // Пропускаем кнопки клавиатуры
+    // Обработка кнопок клавиатуры
+    switch (ctx.message.text) {
+      case "🛒 Заказать товары":
+        await this.botController.handleOrderCommand(ctx);
+        return;
+      case "📋 Мои заказы":
+        await this.botController.handleMyOrdersCommand(ctx);
+        return;
+      case "📊 Статистика":
+        await this.botController.handleStatsCommand(ctx);
+        return;
+      case "❓ Помощь":
+        await this.botController.commandHandlers.handleHelp(ctx);
+        return;
     }
 
     if (userState && userState.waitingForQuantity) {

@@ -57,6 +57,7 @@ class AuthService {
         first_name: userData.first_name || null,
         last_name: userData.last_name || null,
         role: userData.role || "user",
+        shop_name: userData.shop_name || null,
         is_active: true,
         added_by: addedBy,
       });

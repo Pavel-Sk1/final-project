@@ -14,7 +14,6 @@ export function AdminPage() {
   const [tab, setTab] = useState("editMainPage");
   const [editCalculations, setEditCalculations] = useState(false);
   const [selectedDate, setSelectedDate] = useState(() => {
-    // Устанавливаем сегодняшнюю дату по умолчанию
     return new Date().toISOString().split("T")[0];
   });
 
@@ -23,7 +22,6 @@ export function AdminPage() {
     (state) => state.calculations
   );
 
-  // Загружаем заказы при открытии раздела расчетов или изменении даты
   useEffect(() => {
     if (editCalculations && selectedDate) {
       dispatch(

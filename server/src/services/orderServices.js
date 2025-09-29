@@ -6,43 +6,77 @@ class OrderService {
   static async findOrCreateUser(telegramId, userInfo, transaction) {
     const telegramIdStr = String(telegramId);
 
-    // Сначала пытаемся найти пользователя
-    let tgUser = await TgUser.findOne({
-      where: { tg_user_id: telegramIdStr },
-      transaction,
-    });
+    try {
+      // Получаем название магазина из authorized_users
+      const { AuthorizedUser } = require("../db/models");
+      const authorizedUser = await AuthorizedUser.findOne({
+        where: { tg_user_id: telegramIdStr, is_active: true },
+        transaction,
+      });
 
-    if (tgUser) {
-      // Пользователь существует, обновляем его данные если нужно
-      if (userInfo) {
+      const shopName =
+        authorizedUser?.shop_name || userInfo?.first_name || null;
+
+      console.log(`🏪 Shop name for user ${telegramIdStr}: ${shopName}`);
+
+      // Используем findOrCreate для атомарной операции
+      const [tgUser, created] = await TgUser.findOrCreate({
+        where: { tg_user_id: telegramIdStr },
+        defaults: {
+          tg_user_id: telegramIdStr,
+          tg_username: userInfo?.username || null,
+          first_name: shopName, // Используем название магазина как first_name
+          last_name: userInfo?.last_name || null,
+        },
+        transaction,
+      });
+
+      // Если пользователь существовал и нужно обновить данные
+      if (!created && userInfo) {
         await tgUser.update(
           {
             tg_username: userInfo.username || tgUser.tg_username,
-            first_name: userInfo.first_name || tgUser.first_name,
+            first_name: shopName || tgUser.first_name, // Обновляем название магазина
             last_name: userInfo.last_name || tgUser.last_name,
           },
           { transaction }
         );
       }
-    } else {
-      // Пользователь не существует, создаем нового
-      tgUser = await TgUser.create(
-        {
-          tg_user_id: telegramIdStr,
-          tg_username: userInfo.username || null,
-          first_name: userInfo.first_name || null,
-          last_name: userInfo.last_name || null,
-        },
-        { transaction }
-      );
-    }
 
-    return tgUser;
+      console.log(
+        `${
+          created ? "✅ Created new user" : "👤 Found existing user"
+        }: ${telegramIdStr}`
+      );
+      return tgUser;
+    } catch (error) {
+      console.error("Error in findOrCreateUser:", {
+        telegramId: telegramIdStr,
+        error: error.message,
+        stack: error.stack,
+      });
+
+      // Если ошибка связана с уникальностью, попробуем просто найти пользователя
+      if (error.name === "SequelizeUniqueConstraintError") {
+        console.log("🔄 Attempting to find user after unique constraint error");
+        const existingUser = await TgUser.findOne({
+          where: { tg_user_id: telegramIdStr },
+          transaction,
+        });
+
+        if (existingUser) {
+          console.log("✅ Found existing user after constraint error");
+          return existingUser;
+        }
+      }
+
+      throw error;
+    }
   }
 
   // Парсинг текста с вариантами (например: "пирож ж/п - 10/15")
   static parseVariantOrder(text) {
-    const regex = /^(.+?)\s+([а-яё\/]+)\s*-\s*(\d+(?:\/\d+)*)$/i;
+    const regex = /^(.+?)\s+([а-яё/]+)\s*-\s*(\d+(?:\/\d+)*)$/i;
     const match = text.match(regex);
 
     if (!match) {
@@ -78,12 +112,18 @@ class OrderService {
     const transaction = await sequelize.transaction();
 
     try {
+      console.log(
+        `🚀 Starting createOrderWithVariants for telegramId: ${telegramId}, productId: ${productId}`
+      );
+
       // Находим или создаем пользователя
       const tgUser = await this.findOrCreateUser(
         telegramId,
         userInfo,
         transaction
       );
+
+      console.log(`👤 User resolved for variants: ${tgUser.tg_user_id}`);
 
       // Проверяем продукт
       const product = await Product.findOne({
@@ -116,6 +156,7 @@ class OrderService {
               tg_user_id: tgUser.tg_user_id,
               product_id: productId,
               quantity: quantity,
+              variant: variant, // Добавляем сохранение варианта
               user_comment: userComment,
               status: "pending",
             },
@@ -169,12 +210,18 @@ class OrderService {
     const transaction = await sequelize.transaction();
 
     try {
+      console.log(
+        `🚀 Starting createOrder for telegramId: ${telegramId}, productId: ${productId}`
+      );
+
       // Находим или создаем пользователя
       const tgUser = await this.findOrCreateUser(
         telegramId,
         userInfo,
         transaction
       );
+
+      console.log(`👤 User resolved: ${tgUser.tg_user_id}`);
 
       // Проверяем продукт
       const product = await Product.findOne({
@@ -201,7 +248,7 @@ class OrderService {
       // Создаем заказ
       const order = await TgOrder.create(
         {
-          tg_user_id: telegramId,
+          tg_user_id: tgUser.tg_user_id,
           product_id: productId,
           quantity: quantity,
           user_comment: userComment,
@@ -458,15 +505,13 @@ class OrderService {
         return sum + order.product.price * order.quantity;
       }, 0);
 
-      const statusCounts = orders.reduce((acc, order) => {
-        acc[order.status] = (acc[order.status] || 0) + 1;
-        return acc;
-      }, {});
+      const averageOrder =
+        totalOrders > 0 ? Math.round(totalAmount / totalOrders) : 0;
 
       return {
         totalOrders,
         totalAmount,
-        statusCounts,
+        averageOrder,
         lastOrder: orders.length > 0 ? orders[0] : null,
       };
     } catch (error) {

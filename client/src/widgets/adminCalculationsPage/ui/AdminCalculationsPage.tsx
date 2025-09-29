@@ -10,10 +10,13 @@ type AdminCalculationsPageProps = {
 
 // Расширенный интерфейс для заказа с дополнительной информацией
 interface ExtendedOrder extends IOrder {
+  variant?: string; // Явно добавляем для TypeScript
   product?: {
     id: number;
     name: string;
     price: number;
+    variants?: string[];
+    variant_names?: string[];
   };
   tgUser?: {
     tg_user_id: string;
@@ -132,58 +135,284 @@ export function AdminCalculationsPage({
   const uniqueUserIds = Array.from(userMap.keys());
 
   // Получаем уникальные продукты и создаем объект для группировки
-  const productMap = new Map<number, { name: string; price: number }>();
-  const productOrdersMap = new Map<number, Map<string, number>>();
+  const productMap = new Map<
+    string,
+    {
+      name: string;
+      price: number;
+      variants?: string[];
+      variant_names?: string[];
+    }
+  >();
+  const productOrdersMap = new Map<
+    string,
+    Map<string, { fried: number; baked: number }>
+  >();
 
   extendedOrders.forEach((order) => {
+    // Создаем уникальный ключ для продукта
+    const productKey = `${order.product_id}`;
+
     // Сохраняем информацию о продукте
-    if (order.product) {
-      productMap.set(order.product.id, {
+    if (order.product && !productMap.has(productKey)) {
+      productMap.set(productKey, {
         name: order.product.name,
         price: order.product.price,
+        variants: order.product.variants,
+        variant_names: order.product.variant_names,
       });
     }
 
-    // Группируем заказы по продуктам и пользователям
-    if (!productOrdersMap.has(order.product_id)) {
-      productOrdersMap.set(order.product_id, new Map());
+    // Группируем заказы по продуктам и пользователям с учетом вариантов
+    if (!productOrdersMap.has(productKey)) {
+      productOrdersMap.set(productKey, new Map());
     }
 
-    const userOrdersMap = productOrdersMap.get(order.product_id)!;
-    const currentQuantity = userOrdersMap.get(order.tg_user_id) || 0;
-    userOrdersMap.set(order.tg_user_id, currentQuantity + order.quantity);
+    const userOrdersMap = productOrdersMap.get(productKey)!;
+    if (!userOrdersMap.has(order.tg_user_id)) {
+      userOrdersMap.set(order.tg_user_id, { fried: 0, baked: 0 });
+    }
+
+    const userVariants = userOrdersMap.get(order.tg_user_id)!;
+
+    // Определяем, к какому варианту относится заказ
+    if (order.variant === "ж" || order.variant === "жар") {
+      userVariants.fried += order.quantity;
+    } else if (order.variant === "п" || order.variant === "печ") {
+      userVariants.baked += order.quantity;
+    } else {
+      // Если вариант не определен, добавляем к жареному (по умолчанию)
+      userVariants.fried += order.quantity;
+    }
   });
 
   // Вычисляем общие суммы
   const totalByUser = new Map<string, number>();
-  const totalByProduct = new Map<number, number>();
+  const totalByProduct = new Map<string, number>();
 
-  productOrdersMap.forEach((userOrdersMap, productId) => {
-    const product = productMap.get(productId);
+  productOrdersMap.forEach((userOrdersMap, productKey) => {
+    const product = productMap.get(productKey);
     if (!product) return;
 
     let productTotal = 0;
-    userOrdersMap.forEach((quantity, userId) => {
+    userOrdersMap.forEach((variants, userId) => {
+      const totalQuantity = variants.fried + variants.baked;
       const userTotal = totalByUser.get(userId) || 0;
-      totalByUser.set(userId, userTotal + quantity * product.price);
-      productTotal += quantity * product.price;
+      totalByUser.set(userId, userTotal + totalQuantity * product.price);
+      productTotal += totalQuantity * product.price;
     });
-    totalByProduct.set(productId, productTotal);
+    totalByProduct.set(productKey, productTotal);
   });
+
+  // Функция для печати заявки
+  const handlePrintOrder = () => {
+    const printWindow = window.open("", "_blank");
+    if (!printWindow) return;
+
+    const printContent = generatePrintContent();
+
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <title>Заявка на ${
+            selectedDate ? formatDate(selectedDate) : "выбранную дату"
+          }</title>
+          <style>
+            body { 
+              font-family: Arial, sans-serif; 
+              margin: 20px; 
+              color: #000; 
+            }
+            .header { 
+              text-align: center; 
+              margin-bottom: 30px; 
+              border-bottom: 2px solid #000; 
+              padding-bottom: 15px; 
+            }
+            .header h1 { 
+              margin: 0; 
+              font-size: 24px; 
+            }
+            .header p { 
+              margin: 5px 0; 
+              font-size: 14px; 
+            }
+            table { 
+              width: 100%; 
+              border-collapse: collapse; 
+              margin-bottom: 20px; 
+            }
+            th, td { 
+              border: 1px solid #000; 
+              padding: 8px; 
+              text-align: left; 
+              font-size: 12px; 
+            }
+            th { 
+              background-color: #f0f0f0; 
+              font-weight: bold; 
+              text-align: center; 
+            }
+            .product-cell { 
+              font-weight: bold; 
+            }
+            .total-row { 
+              background-color: #f5f5f5; 
+              font-weight: bold; 
+            }
+            .summary { 
+              margin-top: 20px; 
+              border-top: 2px solid #000; 
+              padding-top: 15px; 
+            }
+            @media print {
+              body { margin: 0; }
+              .no-print { display: none; }
+            }
+          </style>
+        </head>
+        <body>
+          ${printContent}
+        </body>
+      </html>
+    `);
+
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => {
+      printWindow.print();
+      printWindow.close();
+    }, 250);
+  };
+
+  // Генерация содержимого для печати
+  const generatePrintContent = () => {
+    const totalAmount = Array.from(totalByUser.values()).reduce(
+      (sum, total) => sum + total,
+      0
+    );
+    const currentDate = new Date().toLocaleDateString("ru-RU");
+
+    let content = `
+      <div class="header">
+        <h1>ЗАЯВКА НА ПОСТАВКУ</h1>
+        <p><strong>Дата заявки:</strong> ${
+          selectedDate ? formatDate(selectedDate) : currentDate
+        }</p>
+        <p><strong>Дата формирования:</strong> ${currentDate}</p>
+        <p><strong>Количество заказов:</strong> ${orders.length}</p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 30%;">Наименование товара</th>
+    `;
+
+    // Добавляем заголовки для каждого магазина
+    uniqueUserIds.forEach((userId) => {
+      const userInfo = userMap.get(userId);
+      content += `<th style="width: ${Math.floor(
+        60 / uniqueUserIds.length
+      )}%;">${userInfo?.name || userId}</th>`;
+    });
+
+    content += `
+            <th style="width: 10%;">Итого (₽)</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    // Добавляем строки с продуктами
+    Array.from(productOrdersMap.entries()).forEach(
+      ([productKey, userOrdersMap]) => {
+        const product = productMap.get(productKey);
+        if (!product) return;
+
+        content += `
+        <tr>
+          <td class="product-cell">${product.name}</td>
+      `;
+
+        uniqueUserIds.forEach((userId) => {
+          const variants = userOrdersMap.get(userId) || { fried: 0, baked: 0 };
+          const hasVariants = product.variants && product.variants.length > 0;
+
+          if (hasVariants && (variants.fried > 0 || variants.baked > 0)) {
+            content += `<td style="text-align: center;">${variants.fried}/${variants.baked}</td>`;
+          } else {
+            const totalQuantity = variants.fried + variants.baked;
+            content += `<td style="text-align: center;">${
+              totalQuantity || 0
+            }</td>`;
+          }
+        });
+
+        content += `<td style="text-align: center; font-weight: bold;">${
+          totalByProduct.get(productKey) || 0
+        }₽</td>`;
+        content += `</tr>`;
+      }
+    );
+
+    // Добавляем итоговую строку
+    content += `
+        <tr class="total-row">
+          <td><strong>ИТОГО</strong></td>
+    `;
+
+    uniqueUserIds.forEach((userId) => {
+      const userTotal = totalByUser.get(userId) || 0;
+      content += `<td style="text-align: center;"><strong>${userTotal}₽</strong></td>`;
+    });
+
+    content += `
+          <td style="text-align: center;"><strong>${totalAmount}₽</strong></td>
+        </tr>
+        </tbody>
+      </table>
+
+      <div class="summary">
+        <p><strong>Общая сумма заказа:</strong> ${totalAmount}₽</p>
+        <p><strong>Количество позиций:</strong> ${productOrdersMap.size}</p>
+        <p><strong>Количество магазинов:</strong> ${uniqueUserIds.length}</p>
+      </div>
+    `;
+
+    return content;
+  };
 
   return (
     <div className={styles.calculationsTable}>
       <div
         style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
           marginBottom: "16px",
-          fontSize: "16px",
-          fontWeight: "600",
-          color: "#374151",
         }}
       >
-        ✅ Подтвержденные заказы за{" "}
-        {selectedDate ? formatDate(selectedDate) : "выбранную дату"} (
-        {orders.length} заказов)
+        <div
+          style={{
+            fontSize: "16px",
+            fontWeight: "600",
+            color: "#374151",
+          }}
+        >
+          ✅ Подтвержденные заказы за{" "}
+          {selectedDate ? formatDate(selectedDate) : "выбранную дату"} (
+          {orders.length} заказов)
+        </div>
+        <button
+          onClick={handlePrintOrder}
+          className={styles.printButton}
+          title="Распечатать заявку"
+        >
+          🖨️ Печать заявки
+        </button>
       </div>
       <table className={styles.table}>
         <thead>
@@ -208,29 +437,48 @@ export function AdminCalculationsPage({
         </thead>
         <tbody>
           {Array.from(productOrdersMap.entries()).map(
-            ([productId, userOrdersMap]) => {
-              const product = productMap.get(productId);
+            ([productKey, userOrdersMap]) => {
+              const product = productMap.get(productKey);
               return (
-                <tr key={productId}>
+                <tr key={productKey}>
                   <td
                     className={styles.tableCell}
                     title={`Цена: ${product?.price || 0}₽`}
                   >
-                    {product?.name || `Продукт #${productId}`}
+                    {product?.name || `Продукт #${productKey}`}
                   </td>
                   {uniqueUserIds.map((userId) => {
-                    const quantity = userOrdersMap.get(userId) || 0;
-                    const product = productMap.get(productId);
-                    const total = quantity * (product?.price || 0);
+                    const variants = userOrdersMap.get(userId) || {
+                      fried: 0,
+                      baked: 0,
+                    };
+                    const totalQuantity = variants.fried + variants.baked;
+                    const total = totalQuantity * (product?.price || 0);
+
+                    // Проверяем, есть ли варианты у продукта
+                    const hasVariants =
+                      product?.variants && product.variants.length > 0;
+
                     return (
                       <td
                         key={userId}
                         className={styles.tableCell}
-                        title={`${quantity} × ${
-                          product?.price || 0
-                        }₽ = ${total}₽`}
+                        title={
+                          hasVariants
+                            ? `Жареные: ${variants.fried}, Печеные: ${
+                                variants.baked
+                              } (${totalQuantity} × ${
+                                product?.price || 0
+                              }₽ = ${total}₽)`
+                            : `${totalQuantity} × ${
+                                product?.price || 0
+                              }₽ = ${total}₽`
+                        }
                       >
-                        {quantity}
+                        {hasVariants &&
+                        (variants.fried > 0 || variants.baked > 0)
+                          ? `${variants.fried}/${variants.baked}`
+                          : totalQuantity || 0}
                       </td>
                     );
                   })}
@@ -238,7 +486,7 @@ export function AdminCalculationsPage({
                     className={styles.tableCell}
                     style={{ fontWeight: "bold", backgroundColor: "#f0f9ff" }}
                   >
-                    {totalByProduct.get(productId) || 0}₽
+                    {totalByProduct.get(productKey) || 0}₽
                   </td>
                 </tr>
               );

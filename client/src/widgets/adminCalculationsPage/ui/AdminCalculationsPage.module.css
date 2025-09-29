@@ -157,6 +157,34 @@
   color: #991b1b;
 }
 
+/* Стили для кнопки печати */
+.printButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.printButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+}
+
+.printButton:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 /* Адаптивность */
 @media (max-width: 768px) {
   .table {
@@ -170,5 +198,16 @@
 
   .calculationsTable {
     margin: 10px 0;
+  }
+
+  .printButton {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+}
+
+@media print {
+  .printButton {
+    display: none !important;
   }
 }
