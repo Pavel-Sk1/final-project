@@ -1,9 +1,21 @@
-
-export { getAllNewsThunk, newsReducer, type INewsItem } from './news'
-export { getAllProductImagesThunk, productsReducer, type IProductImage, type IProductArrayType, type ICreateProduct, updateFullProductThunk, deleteProductThunk } from './products'
-export { getProductsThunk, infoReducer, type IProduct } from './info'
-export { getAllVacanciesThunk, vacancyReducer, type IVacancy } from './vacancy'
-export { getAllContactsThunk, contactReducer, type MainContact, CONTACT_API_ROUTES } from './contact'
+export { getAllNewsThunk, newsReducer, type INewsItem } from "./news";
+export {
+  getAllProductImagesThunk,
+  productsReducer,
+  type IProductImage,
+  type IProductArrayType,
+  type ICreateProduct,
+  updateFullProductThunk,
+  deleteProductThunk,
+} from "./products";
+export { getProductsThunk, infoReducer, type IProduct } from "./info";
+export { getAllVacanciesThunk, vacancyReducer, type IVacancy } from "./vacancy";
+export {
+  getAllContactsThunk,
+  contactReducer,
+  type MainContact,
+  CONTACT_API_ROUTES,
+} from "./contact";
 
 export {
   type IUser,
@@ -56,3 +68,17 @@ export {
   type CategoriesArrayType,
   CATEGORIES_API_ROUTES,
 } from "./categories";
+
+// partner
+export {
+  getAllPartnersThunk,
+  getPartnerByIdThunk,
+  createPartnerThunk,
+  updatePartnerThunk,
+  deletePartnerThunk,
+  partnerReducer,
+  type IPartner,
+  type ICreatePartner,
+  type PartnersArrayType,
+  PARTNER_API_ROUTES,
+} from "./partner";
