@@ -4,4 +4,5 @@ export enum CLIENT_ROUTES {
   ADMIN = '/admin',
   INFO = '/information',
   VACANCY = '/vacancy',
+  CONTACT = '/contact',
 }
