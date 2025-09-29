@@ -8,28 +8,28 @@ module.exports = {
       [
         {
           id: 1,
-          name: "Пицца",
+          name: "Пироги",
           description: "Классическая итальянская пицца с различными начинками",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           id: 2,
-          name: "Бургеры",
+          name: "Хот-Доги",
           description: "Сочные бургеры с мясом и овощами",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           id: 3,
-          name: "Напитки",
+          name: "Тесто",
           description: "Холодные и горячие напитки",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           id: 4,
-          name: "Десерты",
+          name: "Готовые блюда",
           description: "Сладкие десерты и выпечка",
           createdAt: new Date(),
           updatedAt: new Date(),
