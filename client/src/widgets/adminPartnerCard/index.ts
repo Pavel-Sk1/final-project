@@ -1,0 +1,1 @@
+export { AdminPartnerCard } from "./ui/AdminPartnerCard";

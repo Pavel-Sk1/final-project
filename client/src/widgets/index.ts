@@ -14,3 +14,6 @@ export { AdminVacancyList } from "./adminVacancyList";
 export { AdminVacancyForm } from "./adminVacancyForm";
 export { AdminVacancyCard } from "./adminVacancyCard";
 export { AdminCreateVacancyForm } from "./adminCreateVacancyForm";
+export { AdminPartnerForm } from "./adminPartnerForm";
+export { AdminPartnerList } from "./adminPartnerList";
+export { AdminPartnerCard } from "./adminPartnerCard";

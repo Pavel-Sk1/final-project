@@ -1,0 +1,1 @@
+export { AdminPartnerForm } from "./ui/adminPartnerForm";

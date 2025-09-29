@@ -10,6 +10,8 @@ import {
   AdminProductList,
   AdminVacancyList,
   AdminCreateVacancyForm,
+  AdminPartnerForm,
+  AdminPartnerList,
 } from "@/widgets";
 import { AdminCalculationsPage } from "@/widgets/adminCalculationsPage";
 
@@ -25,6 +27,8 @@ export function AdminPage() {
   const [manageVacancies, setManageVacancies] = useState(false);
   const [createVacancy, setCreateVacancy] = useState(false);
   const [manageContacts, setManageContacts] = useState(false);
+  const [createPartner, setCreatePartner] = useState(false);
+  const [editPartners, setEditPartners] = useState(false);
   const [selectedDate, setSelectedDate] = useState(() => {
     return new Date().toISOString().split("T")[0];
   });
@@ -60,8 +64,8 @@ export function AdminPage() {
             Статистика заказов
           </button>
           <button
-            className={tab === "regCompanies" ? "active" : ""}
-            onClick={() => setTab("regCompanies")}
+            className={tab === "regPartners" ? "active" : ""}
+            onClick={() => setTab("regPartners")}
           >
             Зарегистрировать дистрибьютора
           </button>
@@ -190,7 +194,43 @@ export function AdminPage() {
             </section>
           </>
         )}
-        {tab === "regCompanies" && <></>}
+        {tab === "regPartners" && 
+        <>
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Создать дистрибьютора</h2>
+            <button
+              className={styles.toggleButton}
+              onClick={() => setCreatePartner((prev) => !prev)}
+            >
+              {createPartner ? "Скрыть" : "Создать"}
+            </button>
+          </div>
+          {createPartner && (
+            <AdminPartnerForm 
+            setCreatePartner={setCreatePartner} 
+            partner={null}
+            setEditOnePartner={null}
+            />
+          )}
+        </section>
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Редактировать дистрибьюторов</h2>
+            <button
+              className={styles.toggleButton}
+              onClick={() => setEditPartners((prev) => !prev)}
+            >
+              {editPartners ? "Скрыть" : "Редактировать"}
+            </button>
+          </div>
+          {editPartners && (
+            <>
+            <AdminPartnerList />
+            </>
+          )}
+        </section>
+        </>}
         {tab === "manageProducts" && (
           <>
             <section className={styles.section}>

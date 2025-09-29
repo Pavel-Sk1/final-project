@@ -1,0 +1,1 @@
+export { AdminPartnerList } from "./ui/AdminPartnerList";
