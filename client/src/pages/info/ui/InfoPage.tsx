@@ -5,7 +5,7 @@ import { getProductsThunk, type IProduct } from '@/entities';
 import { usePDF } from '@/features';
 import styles from './InfoPage.module.css';
 
-export default function InfoPage() {
+export  function InfoPage() {
   const dispatch = useAppDispatch();
   const { products, loading, error } = useAppSelector((state) => state.info);
   const { generatePDF } = usePDF();
