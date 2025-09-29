@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllAdminNewsThunk, getNewsByIdThunk, createNewsThunk, updateNewsThunk, deleteNewsThunk, getAllProductsThunk, getProductByIdThunk, updateProductThunk, createProductThunk, deleteProductThunk } from "../api/adminThunkApi";
-import { type IAdminNews, type AdminNewsArrayType, type IAdminProduct, type AdminProductArrayType } from "../model";
+import { getAllAdminNewsThunk, getNewsByIdThunk, createNewsThunk, updateNewsThunk, deleteNewsThunk, getAllProductsThunk, getProductByIdThunk, updateProductThunk, createProductThunk, deleteProductThunk, getAllAdminVacanciesThunk, getVacancyByIdThunk, createVacancyThunk, updateVacancyThunk, deleteVacancyThunk } from "../api/adminThunkApi";
+import { type IAdminNews, type AdminNewsArrayType, type IAdminProduct, type AdminProductArrayType, type IAdminVacancy, type AdminVacancyArrayType } from "../model";
 
 
 type AdminState = {
@@ -8,6 +8,8 @@ type AdminState = {
     news: IAdminNews | null;
     productArray: AdminProductArrayType;
     product: IAdminProduct | null;
+    vacancyArray: AdminVacancyArrayType;
+    vacancy: IAdminVacancy | null;
     error: string | null;
     loading: boolean;    
 }
@@ -17,6 +19,8 @@ const initialState: AdminState = {
     news: null,
     productArray: [],
     product: null,
+    vacancyArray: [],
+    vacancy: null,
     error: null,
     loading: false,
 }
@@ -118,10 +122,6 @@ const adminSlice = createSlice({
                 state.productArray.push(action.payload.data);
                 state.loading = false;
                 state.error = null;
-            })
-            .addCase(createProductThunk.rejected, (state, action) => {
-                state.error = action.payload?.message || 'Ошибка при создании продукта';
-                state.loading = false;
             })            
             .addCase(updateProductThunk.pending, (state) => {
                 state.loading = true;
@@ -146,6 +146,66 @@ const adminSlice = createSlice({
             })
             .addCase(deleteProductThunk.rejected, (state, action) => {
                 state.error = action.payload?.message || 'Ошибка при удалении продукта';
+                state.loading = false;
+            })
+            .addCase(getAllAdminVacanciesThunk.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(getAllAdminVacanciesThunk.fulfilled, (state, action) => {
+                state.vacancyArray = action.payload.data;
+                state.loading = false;
+                state.error = null;
+            })
+            .addCase(getAllAdminVacanciesThunk.rejected, (state, action) => {
+                state.error = action.payload?.message || 'Ошибка при получении вакансий';
+                state.loading = false;
+            })
+            .addCase(getVacancyByIdThunk.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(getVacancyByIdThunk.fulfilled, (state, action) => {
+                state.vacancy = action.payload.data;
+                state.loading = false;
+                state.error = null;
+            })
+            .addCase(getVacancyByIdThunk.rejected, (state, action) => {
+                state.error = action.payload?.message || 'Ошибка при получении вакансии';
+                state.loading = false;
+            })
+            .addCase(createVacancyThunk.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(createVacancyThunk.fulfilled, (state, action) => {
+                state.vacancyArray.push(action.payload.data);
+                state.loading = false;
+                state.error = null;
+            })
+            .addCase(createVacancyThunk.rejected, (state, action) => {
+                state.error = action.payload?.message || 'Ошибка при создании вакансии';
+                state.loading = false;
+            })
+            .addCase(updateVacancyThunk.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(updateVacancyThunk.fulfilled, (state, action) => {
+                state.vacancyArray = state.vacancyArray.map(vacancy => vacancy.id === action.payload.data.id ? action.payload.data : vacancy);
+                state.loading = false;
+                state.error = null;
+            })
+            .addCase(updateVacancyThunk.rejected, (state, action) => {
+                state.error = action.payload?.message || 'Ошибка при обновлении вакансии';
+                state.loading = false;
+            })
+            .addCase(deleteVacancyThunk.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(deleteVacancyThunk.fulfilled, (state, action) => {
+                state.vacancyArray = state.vacancyArray.filter(vacancy => Number(vacancy.id) !== Number(action.payload.data.id));
+                state.loading = false;
+                state.error = null;
+            })
+            .addCase(deleteVacancyThunk.rejected, (state, action) => {
+                state.error = action.payload?.message || 'Ошибка при удалении вакансии';
                 state.loading = false;
             })
     }

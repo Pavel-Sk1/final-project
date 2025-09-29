@@ -38,12 +38,26 @@ export interface IOrder {
   updatedAt?: Date;
 }
 
+export interface ICreateAdminVacancy {
+  position: string;
+  location: string;
+  salary: string;
+  description: string;
+  is_active: boolean;
+}
+export interface IAdminVacancy extends ICreateAdminVacancy {
+  id: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
 
 export type AdminProductArrayType = Array<IAdminProduct>;
 export type OrderArrayType = Array<IOrder>;
+export type AdminVacancyArrayType = Array<IAdminVacancy>;
 
 export const ADMIN_API_ROUTES = {
   NEWS: "/admin/news",
   PRODUCT: "/admin/product",
   ORDER: "/admin/order",
+  VACANCY: "/admin/vacancy",
 };

@@ -7,8 +7,41 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // Пока нет связей с другими таблицами
     }
+    static validate({ position, location, salary, description, is_active }) {
+      if (!position || typeof position !== "string" || position.trim().length === 0) {
+        return {
+          isValid: false,
+          error: "Название вакансии не должно быть пустым",
+        };
+      }
+    if (!location || typeof location !== "string" || location.trim().length === 0) {
+      return {
+        isValid: false,
+        error: "Местоположение вакансии не должно быть пустым",
+      };
+    }
+    if (!salary || typeof salary !== "string" || salary.trim().length === 0) {
+      return {
+        isValid: false,
+        error: "Зарплата вакансии не должна быть пустой",
+      };
+    }
+    if (!description || typeof description !== "string" || description.trim().length === 0) {
+      return {
+        isValid: false,
+        error: "Описание вакансии не должно быть пустым",
+      };
+    }
+    if (typeof is_active !== "boolean") {
+      return {
+        isValid: false,
+        error: "Активность вакансии должна быть булевым значением",
+      };
+    }
+    return { isValid: true, error: null };
   }
-
+}
+  
   Vacancy.init(
     {
       id: {

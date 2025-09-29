@@ -8,6 +8,8 @@ import {
   AdminManageProductList,
   AdminNewsList,
   AdminProductList,
+  AdminVacancyList,
+  AdminCreateVacancyForm,
 } from "@/widgets";
 import { AdminCalculationsPage } from "@/widgets/adminCalculationsPage";
 
@@ -15,11 +17,13 @@ export function AdminPage() {
   const [createNews, setCreateNews] = useState(false);
   const [editNews, setEditNews] = useState(false);
   const [editProduct, setEditProduct] = useState(false);
+  const [editVacancies, setEditVacancies] = useState(false);
   const [proCreateProduct, setProCreateProduct] = useState(false);
   const [proEditProduct, setProEditProduct] = useState(false);
   const [tab, setTab] = useState("editMainPage");
   const [editCalculations, setEditCalculations] = useState(false);
   const [manageVacancies, setManageVacancies] = useState(false);
+  const [createVacancy, setCreateVacancy] = useState(false);
   const [manageContacts, setManageContacts] = useState(false);
   const [selectedDate, setSelectedDate] = useState(() => {
     // Устанавливаем сегодняшнюю дату по умолчанию
@@ -227,6 +231,20 @@ export function AdminPage() {
           <>
             <section className={styles.section}>
               <div className={styles.sectionHeader}>
+                <h2 className={styles.sectionTitle}>Создать вакансию</h2>
+                <button
+                  className={styles.toggleButton}
+                  onClick={() => setCreateVacancy((prev) => !prev)}
+                >
+                  {createVacancy ? "Скрыть" : "Создать"}
+                </button>
+              </div>
+              {createVacancy && (
+                <AdminCreateVacancyForm setCreateVacancy={setCreateVacancy} />
+              )}
+            </section>
+            <section className={styles.section}>
+              <div className={styles.sectionHeader}>
                 <h2 className={styles.sectionTitle}>Редактировать вакансии</h2>
                 <button
                   className={styles.toggleButton}
@@ -235,7 +253,7 @@ export function AdminPage() {
                   {manageVacancies ? "Скрыть" : "Редактировать"}
                 </button>
               </div>
-              {manageVacancies && <>ТУТ БУДЕТ СТРАНИЦА РЕДАКТИРОВАНИЯ ВАКАНСИЙ</>}
+              {manageVacancies && (<AdminVacancyList />)}
             </section>
           </>
         )}

@@ -1,4 +1,4 @@
-const { News, Product, TgOrder, TgUser } = require("../db/models");
+const { News, Product, TgOrder, TgUser, Vacancy } = require("../db/models");
 
 class AdminService {
   static async getAllNews() {
@@ -119,6 +119,42 @@ class AdminService {
       console.error("Error in AdminService.getOrdersByDate:", error);
       throw error;
     }
+  }
+
+  static async getAllVacancies() {
+    return await Vacancy.findAll();
+  }
+
+  static async getVacancyById(id) {
+    return await Vacancy.findByPk(id);
+  }
+
+  static async createVacancy(vacancy) {
+    return await Vacancy.create(vacancy);
+  }
+  static async updateVacancy(id, vacancy) {
+    const { position, location, salary, description, is_active } = vacancy;
+    const vacancyToUpdate = await Vacancy.findByPk(id);
+    if (position) {
+      vacancyToUpdate.position = position;
+    }
+    if (location) {
+      vacancyToUpdate.location = location;
+    }
+    if (salary) {
+      vacancyToUpdate.salary = salary;
+    }
+    if (description) {
+      vacancyToUpdate.description = description;
+    }
+    vacancyToUpdate.is_active = is_active;
+    await vacancyToUpdate.save();
+    return vacancyToUpdate;
+  }
+  static async deleteVacancy(id) {
+    const deletedVacancy = await Vacancy.findByPk(id);
+    await Vacancy.destroy({ where: { id } });
+    return deletedVacancy;
   }
 }
 
