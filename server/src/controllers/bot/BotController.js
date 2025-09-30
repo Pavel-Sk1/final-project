@@ -151,7 +151,7 @@ class BotController {
   async getProducts() {
     return await Product.findAll({
       include: [{ model: Category, as: "category" }],
-      where: { is_active: 1 },
+      where: { is_active: true },
       order: [
         ["category_id", "ASC"],
         ["name", "ASC"],
