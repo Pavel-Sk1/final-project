@@ -82,6 +82,16 @@ export function Navigation(): React.JSX.Element {
             Админ
           </NavLink>
         )}
+        {user && user.role.name !== "admin" && (
+          <NavLink
+            to={CLIENT_ROUTES.USER}
+            className={({ isActive }) =>
+              `btn-primary ${isActive && "btn-primary--active"}`
+            }
+          >
+            Личный кабинет
+          </NavLink>
+        )}
       </div>
 
       {/* Секция пользователя */}
