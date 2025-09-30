@@ -17,3 +17,4 @@ export { AdminCreateVacancyForm } from "./adminCreateVacancyForm";
 export { AdminPartnerForm } from "./adminPartnerForm";
 export { AdminPartnerList } from "./adminPartnerList";
 export { AdminPartnerCard } from "./adminPartnerCard";
+export { AdminMainContactList } from "./adminContactList";

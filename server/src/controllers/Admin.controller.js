@@ -5,6 +5,7 @@ const {
   News: NewsValidator,
   Product: ProductValidator,
   Vacancy: VacancyValidator,
+  MainContact: MainContactValidator,
 } = require("../db/models");
 
 class AdminController {
@@ -324,6 +325,38 @@ class AdminController {
         .json(formatResponse(200, "Вакансия удалена успешно", vacancy));
     } catch (error) {
       console.error("======AdminController.deleteVacancy===\n", error);
+      res
+        .status(500)
+        .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
+    }
+  }
+  static async getMainContact(req, res) {
+    try {
+      const mainContact = await AdminService.getMainContact();
+      res
+        .status(200)
+        .json(formatResponse(200, "Контакты получены успешно", mainContact));
+    } catch (error) {
+      console.error("======AdminController.getMainContact===\n", error);
+      res
+        .status(500)
+        .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
+    }
+  }
+  static async updateMainContact(req, res) {
+    try {
+      const { id } = req.params;
+      const { name, email, phone, telegram, address } = req.body;
+      const { isValid, error } = MainContactValidator.validate({ name, email, phone, telegram, address });
+      if (!isValid) {
+        return res.status(400).json(formatResponse(400, error, null, error));
+      }
+      const mainContact = await AdminService.updateMainContact(id, { name, email, phone, telegram, address });
+      res
+        .status(200)
+        .json(formatResponse(200, "Контакты обновлены успешно", mainContact));
+    } catch (error) {
+      console.error("======AdminController.updateMainContact===\n", error);
       res
         .status(500)
         .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));

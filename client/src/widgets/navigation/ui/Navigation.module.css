@@ -19,9 +19,11 @@
 }
 
 .brand {
+  max-height: 40px;
+  min-height: 40px;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   padding: 6px 10px;
   border-radius: 12px;
   background: #fff3ea;
@@ -92,26 +94,6 @@
   font-size: 0.9rem;
 }
 
-.signOutButton {
-  background: linear-gradient(45deg, var(--primary), var(--primary-dark));
-  color: var(--white);
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition);
-  font-size: 0.9rem;
-}
-
-.signOutButton:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow);
-}
-
-.signOutButton:active {
-  transform: translateY(0);
-}
 
 /* Адаптивность */
 @media (max-width: 768px) {

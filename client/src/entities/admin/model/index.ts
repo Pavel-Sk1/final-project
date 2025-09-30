@@ -50,6 +50,16 @@ export interface IAdminVacancy extends ICreateAdminVacancy {
   createdAt?: Date;
   updatedAt?: Date;
 }
+export interface IAdminMainContact {
+  id: number;
+  name?: string;
+  email?: string;
+  phone?: string;
+  telegram?: string;
+  address?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
 
 export type AdminProductArrayType = Array<IAdminProduct>;
 export type OrderArrayType = Array<IOrder>;
@@ -60,4 +70,5 @@ export const ADMIN_API_ROUTES = {
   PRODUCT: "/admin/product",
   ORDER: "/admin/order",
   VACANCY: "/admin/vacancy",
+  MAIN_CONTACT: "/admin/main-contact",
 };

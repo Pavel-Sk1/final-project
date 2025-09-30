@@ -14,6 +14,7 @@ import {
   AdminPartnerList,
 } from "@/widgets";
 import { AdminCalculationsPage } from "@/widgets/adminCalculationsPage";
+import { AdminMainContactList } from "@/widgets/adminContactList";
 
 export function AdminPage() {
   const [createNews, setCreateNews] = useState(false);
@@ -306,7 +307,7 @@ export function AdminPage() {
                   {manageContacts ? "Скрыть" : "Редактировать"}
                 </button>
               </div>
-              {manageContacts && <>ТУТ БУДЕТ СТРАНИЦА РЕДАКТИРОВАНИЯ КОНТАКТОВ</>}
+              {manageContacts && <AdminMainContactList />}
             </section>
           </>
         )}

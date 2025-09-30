@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import styles from './ContactPage.module.css'
 import { YMaps, Map, ObjectManager } from '@pbe/react-yandex-maps'
 import { geocode } from '@/features/geocoder/lib/geocoder'
+import { formatPhonePretty, formatTelHref } from '@/shared/lib/phone'
 
 export function ContactPage() {
   const dispatch = useAppDispatch()
@@ -25,10 +26,7 @@ export function ContactPage() {
     dispatch(getAllContactsThunk())
   }, [dispatch])
 
-  const formatPhone = (phone: number) => {
-    const phoneStr = phone.toString();
-    return `+7 (${phoneStr.slice(0, 3)}) ${phoneStr.slice(3, 6)}-${phoneStr.slice(6, 8)}-${phoneStr.slice(8)}`;
-  };
+  // форматирование вынесено в shared/lib/phone.ts
 
   if (loading) {
     return (
@@ -66,8 +64,8 @@ export function ContactPage() {
                   </div>
                   <div className={styles.item}>
                     <span className={styles.label}>Телефон:</span>
-                    <a href={`tel:+7${contact.phone}`} className={styles.link}>
-                      {formatPhone(contact.phone)}
+                    <a href={formatTelHref(contact.phone as unknown as string)} className={styles.link}>
+                      {formatPhonePretty(contact.phone as unknown as string)}
                     </a>
                   </div>
                   <div className={styles.item}>

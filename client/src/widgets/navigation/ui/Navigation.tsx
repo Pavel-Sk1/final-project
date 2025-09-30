@@ -32,7 +32,7 @@ export function Navigation(): React.JSX.Element {
               `btn-primary ${isActive && "btn-primary--active"}`
             }
           >
-            Admin
+            Админ
           </NavLink>
         )}
       </div>
@@ -41,23 +41,16 @@ export function Navigation(): React.JSX.Element {
       <div className={styles.userSection}>
         {user ? (
           <>
-            <span className={styles.userGreeting}>Hello, {user.login}!</span>
+            <span className={styles.userGreeting}>Привет, {user.login}!</span>
 
-            <button className={styles.signOutButton} onClick={handleSignOut}>
-              Sign Out
+            <button className={"btn-primary"} onClick={handleSignOut}>
+              Выход
             </button>
           </>
         ) : (
-          <div className="auth-buttons">
-            <NavLink
-              to={CLIENT_ROUTES.AUTH}
-              className={({ isActive }) =>
-                `btn-primary ${isActive && "btn-primary--active"}`
-              }
-            >
+            <button className={"btn-primary"} onClick={() => navigate(CLIENT_ROUTES.AUTH)}>
               Вход
-            </NavLink>
-          </div>
+            </button>
         )}
       </div>
     </nav>
