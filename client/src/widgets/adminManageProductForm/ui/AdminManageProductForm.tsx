@@ -349,6 +349,7 @@ export function AdminManageProductForm({
           className={styles.cancelButton}
           onClick={() => {
             setProCreateProduct?.(false);
+            onClose?.();
           }}
         >
           Отмена
