@@ -1,9 +1,16 @@
-const { User } = require('../db/models');
-const { Role } = require('../db/models');
+const { User, Role, Partner } = require('../db/models');
 
 class UserService {
   static async getByLogin(login) {
-    return (await User.findOne({ where: { login }, include: [{ model: Role, as: 'role', attributes: ['name'] }] }))?.get();
+    const user = await User.findOne({ 
+      where: { login }, 
+      include: [
+        { model: Role, as: 'role', attributes: ['name'] },
+        { model: Partner, as: 'partner' }
+      ] 
+    });
+    
+    return user ? user.get() : null;
   }
 
   static async create(userData) {

@@ -5,7 +5,10 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Partner extends Model {
     static associate(models) {
-      // Пока нет связей с другими таблицами
+      Partner.belongsTo(models.User, {
+        foreignKey: "user_id",
+        as: "user",
+      });
     }
   }
 
@@ -52,6 +55,14 @@ module.exports = (sequelize, DataTypes) => {
       status: {
         type: DataTypes.STRING,
         allowNull: true,
+      },
+      user_id: {
+        type: DataTypes.BIGINT,
+        allowNull: true,
+        references: {
+          model: "Users",
+          key: "id",
+        },
       },
     },
     {

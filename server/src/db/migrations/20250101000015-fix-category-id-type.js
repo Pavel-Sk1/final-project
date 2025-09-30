@@ -2,7 +2,6 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    // Исправляем тип category_id в таблице Products
     await queryInterface.changeColumn("Products", "category_id", {
       type: Sequelize.BIGINT,
       allowNull: true,
@@ -13,10 +12,23 @@ module.exports = {
       onUpdate: "CASCADE",
       onDelete: "SET NULL",
     });
+
+    await queryInterface.addConstraint('partner', {
+      fields: ['user_id'],
+      type: 'foreign key',
+      name: 'fk_partner_user_id',
+      references: {
+        table: 'Users',
+        field: 'id',
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'SET NULL',
+    });
   },
 
   async down(queryInterface, Sequelize) {
-    // Возвращаем обратно к STRING (если нужно)
+    await queryInterface.removeConstraint('partner', 'fk_partner_user_id');
+
     await queryInterface.changeColumn("Products", "category_id", {
       type: Sequelize.STRING,
       allowNull: true,
