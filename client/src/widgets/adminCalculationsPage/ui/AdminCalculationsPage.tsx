@@ -186,22 +186,33 @@ export function AdminCalculationsPage({
     }
   });
 
-  // Вычисляем общие суммы
+  // Вычисляем общие суммы и количества
   const totalByUser = new Map<string, number>();
   const totalByProduct = new Map<string, number>();
+  const quantityByProduct = new Map<string, { fried: number; baked: number }>();
 
   productOrdersMap.forEach((userOrdersMap, productKey) => {
     const product = productMap.get(productKey);
     if (!product) return;
 
     let productTotal = 0;
+    let productFriedQuantity = 0;
+    let productBakedQuantity = 0;
+
     userOrdersMap.forEach((variants, userId) => {
       const totalQuantity = variants.fried + variants.baked;
       const userTotal = totalByUser.get(userId) || 0;
       totalByUser.set(userId, userTotal + totalQuantity * product.price);
       productTotal += totalQuantity * product.price;
+      productFriedQuantity += variants.fried;
+      productBakedQuantity += variants.baked;
     });
+
     totalByProduct.set(productKey, productTotal);
+    quantityByProduct.set(productKey, {
+      fried: productFriedQuantity,
+      baked: productBakedQuantity,
+    });
   });
 
   // Функция для печати заявки
@@ -320,6 +331,7 @@ export function AdminCalculationsPage({
     });
 
     content += `
+            <th style="width: 8%;">Количество</th>
             <th style="width: 10%;">Итого (₽)</th>
           </tr>
         </thead>
@@ -351,6 +363,19 @@ export function AdminCalculationsPage({
           }
         });
 
+        const quantities = quantityByProduct.get(productKey);
+        const hasVariants = product.variants && product.variants.length > 0;
+        let quantityDisplay = "0";
+
+        if (quantities) {
+          if (hasVariants && (quantities.fried > 0 || quantities.baked > 0)) {
+            quantityDisplay = `${quantities.fried}/${quantities.baked}`;
+          } else {
+            quantityDisplay = `${quantities.fried + quantities.baked}`;
+          }
+        }
+
+        content += `<td style="text-align: center; font-weight: bold;">${quantityDisplay}</td>`;
         content += `<td style="text-align: center; font-weight: bold;">${
           totalByProduct.get(productKey) || 0
         }₽</td>`;
@@ -369,7 +394,20 @@ export function AdminCalculationsPage({
       content += `<td style="text-align: center;"><strong>${userTotal}₽</strong></td>`;
     });
 
+    // Общее количество всех продуктов с разделением на жареные/печеные
+    const totalFried = Array.from(quantityByProduct.values()).reduce(
+      (sum, quantities) => sum + quantities.fried,
+      0
+    );
+    const totalBaked = Array.from(quantityByProduct.values()).reduce(
+      (sum, quantities) => sum + quantities.baked,
+      0
+    );
+
+    const totalQuantityDisplay = `${totalFried + totalBaked}`;
+
     content += `
+          <td style="text-align: center;"><strong>${totalQuantityDisplay}</strong></td>
           <td style="text-align: center;"><strong>${totalAmount}₽</strong></td>
         </tr>
         </tbody>
@@ -377,6 +415,7 @@ export function AdminCalculationsPage({
 
       <div class="summary">
         <p><strong>Общая сумма заказа:</strong> ${totalAmount}₽</p>
+        <p><strong>Общее количество товаров:</strong> ${totalQuantityDisplay}</p>
         <p><strong>Количество позиций:</strong> ${productOrdersMap.size}</p>
         <p><strong>Количество магазинов:</strong> ${uniqueUserIds.length}</p>
       </div>
@@ -432,6 +471,12 @@ export function AdminCalculationsPage({
                 </th>
               );
             })}
+            <th
+              className={styles.tableHeader}
+              title="Общее количество товаров (жареные/печеные для продуктов с вариантами)"
+            >
+              Количество
+            </th>
             <th className={styles.tableHeader}>Итого</th>
           </tr>
         </thead>
@@ -483,8 +528,43 @@ export function AdminCalculationsPage({
                     );
                   })}
                   <td
+                    className={`${styles.tableCell} ${styles.quantityColumn}`}
+                    title={(() => {
+                      const quantities = quantityByProduct.get(productKey);
+                      if (!quantities) return "Нет заказов";
+
+                      const hasVariants =
+                        product?.variants && product.variants.length > 0;
+                      if (hasVariants) {
+                        return `Жареные: ${quantities.fried}, Печеные: ${
+                          quantities.baked
+                        }, Всего: ${quantities.fried + quantities.baked}`;
+                      } else {
+                        return `Общее количество: ${
+                          quantities.fried + quantities.baked
+                        }`;
+                      }
+                    })()}
+                  >
+                    {(() => {
+                      const quantities = quantityByProduct.get(productKey);
+                      if (!quantities) return 0;
+
+                      const hasVariants =
+                        product?.variants && product.variants.length > 0;
+                      if (
+                        hasVariants &&
+                        (quantities.fried > 0 || quantities.baked > 0)
+                      ) {
+                        return `${quantities.fried}/${quantities.baked}`;
+                      } else {
+                        return quantities.fried + quantities.baked;
+                      }
+                    })()}
+                  </td>
+                  <td
                     className={styles.tableCell}
-                    style={{ fontWeight: "bold", backgroundColor: "#f0f9ff" }}
+                    style={{ fontWeight: "bold", backgroundColor: "#fff4ec" }}
                   >
                     {totalByProduct.get(productKey) || 0}₽
                   </td>
@@ -492,10 +572,10 @@ export function AdminCalculationsPage({
               );
             }
           )}
-          <tr style={{ backgroundColor: "#f8fafc", fontWeight: "bold" }}>
+          <tr style={{ backgroundColor: "#fff7f2", fontWeight: "bold" }}>
             <td
               className={styles.tableCell}
-              style={{ backgroundColor: "#e0f2fe" }}
+              style={{ backgroundColor: "#fff4ec" }}
             >
               ИТОГО
             </td>
@@ -505,15 +585,24 @@ export function AdminCalculationsPage({
                 <td
                   key={userId}
                   className={styles.tableCell}
-                  style={{ backgroundColor: "#e0f2fe" }}
+                  style={{ backgroundColor: "#fff4ec" }}
                 >
                   {userTotal}₽
                 </td>
               );
             })}
             <td
+              className={`${styles.tableCell} ${styles.quantityColumn}`}
+              style={{ backgroundColor: "#fff0e6", fontWeight: "bold" }}
+            >
+              {Array.from(quantityByProduct.values()).reduce(
+                (sum, quantities) => sum + quantities.fried + quantities.baked,
+                0
+              )}
+            </td>
+            <td
               className={styles.tableCell}
-              style={{ backgroundColor: "#bae6fd", fontWeight: "bold" }}
+              style={{ backgroundColor: "#fff0e6", fontWeight: "bold" }}
             >
               {Array.from(totalByUser.values()).reduce(
                 (sum, total) => sum + total,
