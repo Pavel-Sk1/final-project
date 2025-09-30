@@ -40,7 +40,7 @@
   border-radius: var(--radius-sm);
   overflow: hidden;
   border: 1px solid var(--border);
-  position: relative;
+  margin-top: 2.5rem;
 }
 
 .itemImage img {
@@ -52,6 +52,13 @@
 
 .itemImage:hover img {
   transform: scale(1.05);
+}
+
+.itemStatus {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 2;
 }
 
 .itemContent {
@@ -100,25 +107,31 @@
 }
 
 .itemDescription:nth-of-type(4):before {
-  content: "🔘";
-}
-
-.itemDescription:nth-of-type(5):before {
   content: "🔧";
 }
 
-.itemDescription:nth-of-type(6):before {
+.itemDescription:nth-of-type(5):before {
   content: "🏷️";
 }
 
 .statusActive {
-  color: #28a745;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
   font-weight: 600;
+  display: inline-block;
 }
 
 .statusInactive {
-  color: var(--error);
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
   font-weight: 600;
+  display: inline-block;
 }
 
 .variantsContainer {

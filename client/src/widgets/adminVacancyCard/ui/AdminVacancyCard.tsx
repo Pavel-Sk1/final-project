@@ -30,16 +30,16 @@ export function AdminVacancyCard({
 
   return (
     <div key={vacancy.id} className={styles.vacancyItem}>
+      <div className={styles.itemStatus}>
+        <span className={vacancy.is_active ? styles.statusActive : styles.statusInactive}>
+          {vacancy.is_active ? 'Активна' : 'Неактивна'}
+        </span>
+      </div>
       <div className={styles.itemContent}>
         <h3 className={styles.itemTitle}>{vacancy.position}</h3>
         <p className={styles.itemLocation}>{vacancy.location}</p>
         <p className={styles.itemSalary}>{vacancy.salary}</p>
         <p className={styles.itemDescription}>{vacancy.description}</p>
-        <div className={styles.itemStatus}>
-          <span className={vacancy.is_active ? styles.statusActive : styles.statusInactive}>
-            {vacancy.is_active ? 'Активна' : 'Неактивна'}
-          </span>
-        </div>
       </div>
       <div className={styles.itemActions}>
         <button

@@ -40,14 +40,17 @@ export function AdminPartnerCard({
         <p className={styles.itemDescription}>{partner.contact_email}</p>
         <p className={styles.itemDescription}>{partner.contact_phone}</p>
         <p className={styles.itemDescription}>{partner.comment}</p>
-        <p className={`${styles.itemDescription} ${styles.statusItem}`}>
-          {partner.status === "active" && "✅ Активный"}
-          {partner.status === "inactive" && "❌ Неактивный"}
-          {partner.status === "pending" && "⏳ Ожидает"}
-          {partner.status === "suspended" && "⏸️ Приостановлен"}
-          {!["active", "inactive", "pending", "suspended"].includes(
-            partner.status
-          ) && partner.status}
+        <p className={`${styles.itemDescription} ${styles.statusItem} ${
+          partner.status === 'active' ? styles.statusActive :
+          partner.status === 'inactive' ? styles.statusInactive :
+          partner.status === 'pending' ? styles.statusPending :
+          partner.status === 'suspended' ? styles.statusSuspended : ''
+        }`}>
+          {partner.status === 'active' && 'Активный'}
+          {partner.status === 'inactive' && 'Неактивный'}
+          {partner.status === 'pending' && 'Ожидает'}
+          {partner.status === 'suspended' && 'Приостановлен'}
+          {!['active', 'inactive', 'pending', 'suspended'].includes(partner.status) && partner.status}
         </p>
       </div>
       <div className={styles.itemActions}>
