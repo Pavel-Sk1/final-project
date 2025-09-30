@@ -138,7 +138,7 @@ export function HomePage() {
       </div>
       <section className={styles.about}>
         <div className={styles.container}>
-          <h1 className={styles.aboutHeading}>О нас</h1>
+          <h1 className={styles.aboutHeading} id="about">О нас</h1>
           <div className={styles.aboutCard}>
             <h2 className={styles.aboutTitle}>
               Мы рядом, чтобы кормить вкусно
@@ -169,7 +169,7 @@ export function HomePage() {
           </div>
         </div>
       </section>
-      <section className={styles.categories}>
+      <section className={styles.categories} id="products">
         <div className={styles.container}>
           <h1 className={styles.aboutHeading}>Наша продукция</h1>
           <div
