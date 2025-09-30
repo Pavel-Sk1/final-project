@@ -7,7 +7,9 @@ type AdminCreateVacancyFormProps = {
   setCreateVacancy: (value: boolean) => void;
 };
 
-export function AdminCreateVacancyForm({ setCreateVacancy }: AdminCreateVacancyFormProps) {
+export function AdminCreateVacancyForm({
+  setCreateVacancy,
+}: AdminCreateVacancyFormProps) {
   const dispatch = useAppDispatch();
   const [vacancyInput, setVacancyInput] = useState<ICreateAdminVacancy>({
     position: "",
@@ -26,7 +28,9 @@ export function AdminCreateVacancyForm({ setCreateVacancy }: AdminCreateVacancyF
     setVacancyInput((prev) => ({ ...prev, [name]: value }));
   };
 
-  const onChangeIsActiveHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeIsActiveHandler = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setVacancyInput((prev) => ({ ...prev, is_active: event.target.checked }));
   };
 
@@ -71,7 +75,13 @@ export function AdminCreateVacancyForm({ setCreateVacancy }: AdminCreateVacancyF
     setIsSubmitting(true);
     try {
       await dispatch(createVacancyThunk(payload)).unwrap();
-      setVacancyInput({ position: "", location: "", salary: "", description: "", is_active: false });
+      setVacancyInput({
+        position: "",
+        location: "",
+        salary: "",
+        description: "",
+        is_active: false,
+      });
       setCreateVacancy(false);
     } catch (error: unknown) {
       setErrorMsg(getErrorMessage(error));
@@ -83,13 +93,15 @@ export function AdminCreateVacancyForm({ setCreateVacancy }: AdminCreateVacancyF
   return (
     <form className={styles.editForm} onSubmit={onSubmitHandler}>
       {errorMsg && (
-        <div style={{
-          padding: "0.75rem 1rem",
-          border: "1px solid var(--error, #ef4444)",
-          borderRadius: "6px",
-          color: "#ef4444",
-          background: "#fef2f2"
-        }}>
+        <div
+          style={{
+            padding: "0.75rem 1rem",
+            border: "1px solid var(--error, #ef4444)",
+            borderRadius: "6px",
+            color: "#ef4444",
+            background: "#fef2f2",
+          }}
+        >
           {errorMsg}
         </div>
       )}
@@ -138,21 +150,32 @@ export function AdminCreateVacancyForm({ setCreateVacancy }: AdminCreateVacancyF
         />
       </div>
       <div className={styles.formGroup}>
-        <label htmlFor="is_active">Показывать/скрыть на сайте</label>
-        <input
-          id="is_active"
-          type="checkbox"
-          name="is_active"
-          checked={vacancyInput.is_active}
-          onChange={onChangeIsActiveHandler}
-          className={styles.formInput}
-        />
+        <div className={styles.checkboxGroup}>
+          <input
+            id="is_active"
+            type="checkbox"
+            name="is_active"
+            checked={vacancyInput.is_active}
+            onChange={onChangeIsActiveHandler}
+            className={styles.formInput}
+          />
+          <label htmlFor="is_active">Показывать/скрыть на сайте</label>
+        </div>
       </div>
       <div className={styles.formActions}>
-        <button type="submit" className={styles.saveButton} disabled={isSubmitting}>
+        <button
+          type="submit"
+          className={styles.saveButton}
+          disabled={isSubmitting}
+        >
           {isSubmitting ? "Сохранение..." : "Сохранить"}
         </button>
-        <button type="button" className={styles.cancelButton} onClick={() => setCreateVacancy(false)} disabled={isSubmitting}>
+        <button
+          type="button"
+          className={styles.cancelButton}
+          onClick={() => setCreateVacancy(false)}
+          disabled={isSubmitting}
+        >
           Отмена
         </button>
       </div>

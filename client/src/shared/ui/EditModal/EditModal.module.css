@@ -13,5 +13,8 @@
     animation: fadeIn 0.2s ease-out;
     will-change: opacity;
     backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;    
+  }
+  .modalContent {
+    min-width: 60vw;
   }

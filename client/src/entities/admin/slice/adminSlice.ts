@@ -62,6 +62,12 @@ const adminSlice = createSlice({
     deleteOneNews: (state) => {
       state.news = null;
     },
+    editOneVacancy: (state, action) => {
+      state.vacancy = action.payload;
+    },
+    deleteOneVacancy: (state) => {
+      state.vacancy = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -290,5 +296,6 @@ const adminSlice = createSlice({
   },
 });
 
-export const { editOneNews, deleteOneNews } = adminSlice.actions;
+export const { editOneNews, deleteOneNews, editOneVacancy, deleteOneVacancy } =
+  adminSlice.actions;
 export const adminReducer = adminSlice.reducer;
