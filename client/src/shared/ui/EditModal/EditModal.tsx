@@ -2,7 +2,6 @@ import { useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import styles from "./EditModal.module.css";
 
-
 type AdminManageEditProductModalProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -47,7 +46,7 @@ export function EditModal({
 
   return createPortal(
     <section className={styles.backdrop} onClick={handleClickOutside}>
-      {memoizedContent}
+      <div className={styles.modalContent}>{memoizedContent}</div>
     </section>,
     document.body
   );

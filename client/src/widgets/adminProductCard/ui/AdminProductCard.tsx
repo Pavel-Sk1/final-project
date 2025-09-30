@@ -1,13 +1,23 @@
-import type { IAdminProduct, ICreateAdminProduct } from "@/entities";
+import { editOneProduct, type IAdminProduct } from "@/entities";
 import styles from "./AdminProductCard.module.css";
+import { EditModal, useAppDispatch } from "@/shared";
+import { useMemo, useState } from "react";
+import { AdminProductForm } from "@/widgets/adminProductForm";
 
 type AdminProductCardProps = {
-  product: IAdminProduct;
-  setEditOneProduct: (value: boolean) => void;
-  setEditOneProductId: (value: number) => void;
-  setProductInput: React.Dispatch<React.SetStateAction<ICreateAdminProduct>>;
+  product: IAdminProduct;  
 };
-export function AdminProductCard({ product, setEditOneProduct, setEditOneProductId, setProductInput }: AdminProductCardProps) {
+export function AdminProductCard({ product }: AdminProductCardProps) {
+  const dispatch = useAppDispatch();
+  const [isOpen, setIsOpen] = useState(false);
+  const memoizedProductForm = useMemo(() => {
+    return (
+      <AdminProductForm
+        product={product}
+        onClose={() => setIsOpen(false)}
+      />
+    )
+  }, [product, setIsOpen])
   return (
     <div key={product.id} className={styles.productItem}>
       <div className={styles.itemImage}>
@@ -19,13 +29,17 @@ export function AdminProductCard({ product, setEditOneProduct, setEditOneProduct
       <button
         className={styles.editButton}
         onClick={() => {
-          setEditOneProduct(true);
-          setEditOneProductId(product.id);
-          setProductInput({ img: product.img });
+          dispatch(editOneProduct(product));
+          setIsOpen(true);
         }}
       >
         Редактировать
       </button>
+      <EditModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        memoizedContent={memoizedProductForm}
+      />
     </div>
   );
 }
