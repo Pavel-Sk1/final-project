@@ -1,0 +1,482 @@
+/* CSS переменные доступны глобально */
+
+.profitChart {
+  padding: 20px;
+  background: linear-gradient(180deg, #ffffff, #fff9f5);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+
+.header {
+  margin-bottom: 30px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.totalStats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.statCard {
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
+  color: var(--white);
+  padding: 20px;
+  border-radius: var(--radius-sm);
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.statCard:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
+.statLabel {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.statValue {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.profitValue {
+  color: #fff4ec;
+}
+
+/* Диаграмма */
+.chartContainer {
+  margin-bottom: 40px;
+}
+
+.chartTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 8px;
+  height: 300px;
+  padding: 20px;
+  background: #fff9f5;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  overflow-x: auto;
+  min-width: 100%;
+}
+
+.chartItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80px;
+  flex-shrink: 0;
+}
+
+.chartBar {
+  height: 250px;
+  width: 40px;
+  background: #e0cfc6;
+  border-radius: 4px 4px 0 0;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 10px;
+}
+
+.barFill {
+  width: 100%;
+  border-radius: 4px 4px 0 0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.barFill:hover {
+  filter: brightness(1.1);
+  transform: scaleY(1.02);
+}
+
+.chartLabel {
+  text-align: center;
+  width: 100%;
+}
+
+.productName {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+  line-height: 1.2;
+  height: 24px;
+  overflow: hidden;
+}
+
+.productStats {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.quantity {
+  font-size: 10px;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+.profit {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+
+.profitability {
+  font-size: 10px;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Стили для столбца общей прибыли */
+.totalProfitItem {
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-sm);
+  padding: 4px;
+  background: linear-gradient(135deg, #fff9f5, #fff7f2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.totalProfitBar {
+  border: 2px solid var(--white);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.totalProfitBar::after {
+  content: "💰";
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+  background: var(--white);
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.totalProfitName {
+  font-weight: 700;
+  color: var(--primary-dark);
+  font-size: 13px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Таблица детальной информации */
+.detailsTable {
+  margin-top: 40px;
+}
+
+.tableTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.tableContainer {
+  overflow-x: auto;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--white);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table th {
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
+  color: var(--white);
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  border: none;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+
+.productCell {
+  font-weight: 600;
+  color: var(--primary-dark);
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.evenRow {
+  background-color: #fff9f5;
+}
+
+.oddRow {
+  background-color: var(--white);
+}
+
+.evenRow:hover,
+.oddRow:hover {
+  background-color: #fff7f2;
+}
+
+.positiveProfit {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.negativeProfit {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+.positivePercent {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.negativePercent {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+/* Стили для строки общей прибыли в таблице */
+.totalProfitRow {
+  background: linear-gradient(135deg, #fff9f5, #fff7f2) !important;
+  border-top: 3px solid var(--primary);
+  border-bottom: 3px solid var(--primary);
+}
+
+.totalProfitCell {
+  background: transparent !important;
+  font-weight: 700;
+  color: var(--primary-dark);
+  border-bottom: none !important;
+}
+
+.totalProfitRow:hover {
+  background: linear-gradient(135deg, #fff7f2, #fff5f0) !important;
+  transform: scale(1.01);
+  transition: all 0.2s ease;
+}
+
+/* Состояния загрузки и ошибок */
+.loadingState,
+.errorState,
+.emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  background: linear-gradient(180deg, #ffffff, #fff9f5);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+
+.loadingSpinner {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--border);
+  border-radius: 50%;
+  border-top-color: var(--primary);
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingText {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--primary-dark);
+}
+
+.errorState {
+  border-color: var(--error);
+}
+
+.errorIcon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.7;
+}
+
+.errorTitle {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--error);
+}
+
+.errorDescription {
+  font-size: 16px;
+  color: var(--error);
+  opacity: 0.8;
+}
+
+.emptyStateIcon {
+  font-size: 64px;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.emptyStateTitle {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--primary-dark);
+}
+
+.emptyStateDescription {
+  font-size: 16px;
+  color: var(--text-light);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .profitChart {
+    padding: 15px;
+  }
+
+  .totalStats {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .statCard {
+    padding: 15px;
+  }
+
+  .statValue {
+    font-size: 20px;
+  }
+
+  .chart {
+    height: 250px;
+    gap: 4px;
+    padding: 15px;
+  }
+
+  .chartItem {
+    min-width: 60px;
+  }
+
+  .chartBar {
+    height: 200px;
+    width: 30px;
+  }
+
+  .totalProfitItem {
+    padding: 2px;
+  }
+
+  .totalProfitBar::after {
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+  }
+
+  .productName {
+    font-size: 10px;
+  }
+
+  .table {
+    font-size: 12px;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 20px;
+  }
+
+  .chartTitle,
+  .tableTitle {
+    font-size: 18px;
+  }
+
+  .chart {
+    height: 200px;
+  }
+
+  .chartBar {
+    height: 150px;
+    width: 25px;
+  }
+
+  .chartItem {
+    min-width: 50px;
+  }
+
+  .totalProfitItem {
+    padding: 1px;
+  }
+
+  .totalProfitBar::after {
+    width: 18px;
+    height: 18px;
+    font-size: 12px;
+  }
+}
