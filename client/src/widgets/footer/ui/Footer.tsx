@@ -1,10 +1,35 @@
 import type { JSX } from 'react';
 import { useNavigate } from 'react-router';
+import { useCallback } from 'react';
 import { CLIENT_ROUTES } from '@/shared';
 import styles from './Footer.module.css';
 
 export function Footer(): JSX.Element {
   const navigate = useNavigate();
+  const scrollToAnchor = useCallback((id: string) => {
+    const doScroll = () => {
+      if (id === 'news') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+    if (window.location.pathname !== CLIENT_ROUTES.HOME) {
+      navigate(`${CLIENT_ROUTES.HOME}#${id}`);
+      setTimeout(doScroll, 50);
+    } else {
+      doScroll();
+    }
+  }, [navigate]);
+
+  const navigateOrScrollTop = useCallback((path: string) => {
+    if (window.location.pathname === path) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    navigate(path);
+  }, [navigate]);
 
   return (
     <footer className={styles.footer}>
@@ -15,19 +40,19 @@ export function Footer(): JSX.Element {
             <nav className={styles.footerNav}>
               <button
                 className={styles.footerLink}
-                onClick={() => navigate(CLIENT_ROUTES.HOME)}
+                onClick={() => scrollToAnchor('news')}
               >
                 Новости
               </button>
               <button
                 className={styles.footerLink}
-                onClick={() => navigate(CLIENT_ROUTES.HOME)}
+                onClick={() => scrollToAnchor('about')}
               >
                 О нас
               </button>
               <button
                 className={styles.footerLink}
-                onClick={() => navigate(CLIENT_ROUTES.HOME)}
+                onClick={() => scrollToAnchor('products')}
               >
                 Наша продукция
               </button>
@@ -57,13 +82,13 @@ export function Footer(): JSX.Element {
             <nav className={styles.footerNav}>
               <button
                 className={styles.footerLink}
-                onClick={() => navigate(CLIENT_ROUTES.VACANCY)}
+                onClick={() => navigateOrScrollTop(CLIENT_ROUTES.VACANCY)}
               >
                 Вакансии
               </button>
               <button
                 className={styles.footerLink}
-                onClick={() => navigate(CLIENT_ROUTES.CONTACT)}
+                onClick={() => navigateOrScrollTop(CLIENT_ROUTES.CONTACT)}
               >
                 Наши контакты
               </button>
