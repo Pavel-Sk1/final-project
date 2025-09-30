@@ -345,7 +345,7 @@ export function AdminManageProductForm({
         <button
           type="button"
           className={styles.cancelButton}
-          onClick={() => setProCreateProduct?.(false)}
+          onClick={() => {setProCreateProduct?.(false); setProEditOneProduct?.(false)}}
         >
           Отмена
         </button>

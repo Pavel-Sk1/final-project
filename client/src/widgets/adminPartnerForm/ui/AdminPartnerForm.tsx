@@ -32,7 +32,7 @@ export function AdminPartnerForm({
   setEditOnePartner = null,
 }: AdminPartnerFormProps) {
   const dispatch = useAppDispatch();
-  
+
   const [partnerInput, setPartnerInput] = useState<ICreatePartner | IPartner>(
     initialPartnerInput
   );
@@ -53,13 +53,17 @@ export function AdminPartnerForm({
     }
   }, [partner]);
 
-  const onChangePartnerHandler = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | React.ChangeEvent<HTMLSelectElement>) => {
+  const onChangePartnerHandler = (
+    event:
+      | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      | React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setPartnerInput((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));
   };
-  
+
   const onSubmitPartnerHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
@@ -82,96 +86,96 @@ export function AdminPartnerForm({
       <div className={styles.formGroup}>
         <label htmlFor="company_name">Название компании</label>
         <input
-        id="company_name"
-        type="text"
-        name="company_name"
-        placeholder="Введите название компании"
-        value={partnerInput.company_name}
-        onChange={onChangePartnerHandler}
-        className={styles.formInput}
+          id="company_name"
+          type="text"
+          name="company_name"
+          placeholder="Введите название компании"
+          value={partnerInput.company_name}
+          onChange={onChangePartnerHandler}
+          className={styles.formInput}
         />
       </div>
       <div className={styles.formGroup}>
         <label htmlFor="inn">ИНН</label>
         <input
-        id="inn"
-        type="text"
-        name="inn"
-        placeholder="Введите ИНН"
-        value={partnerInput.inn}
-        onChange={onChangePartnerHandler}
-        className={styles.formInput}
+          id="inn"
+          type="text"
+          name="inn"
+          placeholder="Введите ИНН"
+          value={partnerInput.inn}
+          onChange={onChangePartnerHandler}
+          className={styles.formInput}
         />
       </div>
       <div className={styles.formGroup}>
         <label htmlFor="ogrn">ОГРН</label>
         <input
-        id="ogrn"
-        type="text"
-        name="ogrn"
-        placeholder="Введите ОГРН"
-        value={partnerInput.ogrn}
-        onChange={onChangePartnerHandler}
-        className={styles.formInput}
+          id="ogrn"
+          type="text"
+          name="ogrn"
+          placeholder="Введите ОГРН"
+          value={partnerInput.ogrn}
+          onChange={onChangePartnerHandler}
+          className={styles.formInput}
         />
       </div>
       <div className={styles.formGroup}>
         <label htmlFor="address">Адрес</label>
         <input
-        id="address"
-        type="text"
-        name="address"
-        placeholder="Введите адрес"
-        value={partnerInput.address}
-        onChange={onChangePartnerHandler}
-        className={styles.formInput}
+          id="address"
+          type="text"
+          name="address"
+          placeholder="Введите адрес"
+          value={partnerInput.address}
+          onChange={onChangePartnerHandler}
+          className={styles.formInput}
         />
       </div>
       <div className={styles.formGroup}>
         <label htmlFor="contact_person">Контактное лицо</label>
         <input
-        id="contact_person"
-        type="text"
-        name="contact_person"
-        placeholder="Введите контактное лицо"
-        value={partnerInput.contact_person}
-        onChange={onChangePartnerHandler}
-        className={styles.formInput}
+          id="contact_person"
+          type="text"
+          name="contact_person"
+          placeholder="Введите контактное лицо"
+          value={partnerInput.contact_person}
+          onChange={onChangePartnerHandler}
+          className={styles.formInput}
         />
       </div>
       <div className={styles.formGroup}>
         <label htmlFor="contact_email">Email</label>
         <input
-        id="contact_email"
-        type="email"
-        name="contact_email"
-        placeholder="Введите email"
-        value={partnerInput.contact_email}
-        onChange={onChangePartnerHandler}
-        className={styles.formInput}
+          id="contact_email"
+          type="email"
+          name="contact_email"
+          placeholder="Введите email"
+          value={partnerInput.contact_email}
+          onChange={onChangePartnerHandler}
+          className={styles.formInput}
         />
       </div>
       <div className={styles.formGroup}>
         <label htmlFor="contact_phone">Телефон</label>
         <input
-        id="contact_phone"
-        type="tel"
-        name="contact_phone"
-        placeholder="Введите телефон"
-        value={partnerInput.contact_phone}
-        onChange={onChangePartnerHandler}
-        className={styles.formInput}
+          id="contact_phone"
+          type="tel"
+          name="contact_phone"
+          placeholder="Введите телефон"
+          value={partnerInput.contact_phone}
+          onChange={onChangePartnerHandler}
+          className={styles.formInput}
         />
       </div>
       <div className={styles.formGroup}>
         <label htmlFor="comment">Комментарий</label>
         <textarea
-        id="comment"
-        name="comment"
-        placeholder="Введите комментарий"
-        value={partnerInput.comment}
-        onChange={onChangePartnerHandler}
-        className={styles.formTextarea}
+          id="comment"
+          name="comment"
+          placeholder="Введите комментарий"
+          value={partnerInput.comment}
+          onChange={onChangePartnerHandler}
+          className={styles.formTextarea}
         />
       </div>
       <div className={styles.formGroup}>
@@ -194,7 +198,14 @@ export function AdminPartnerForm({
         <button type="submit" className={styles.saveButton}>
           Сохранить
         </button>
-        <button type="button" className={styles.cancelButton} onClick={() => setCreatePartner?.(false)}>
+        <button
+          type="button"
+          className={styles.cancelButton}
+          onClick={() => {
+            setCreatePartner?.(false);
+            setEditOnePartner?.(false);
+          }}
+        >
           Отмена
         </button>
       </div>
