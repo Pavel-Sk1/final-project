@@ -1,5 +1,5 @@
 import styles from "./AdminMainContactForm.module.css";
-import { updateMainContactThunk } from "@/entities";
+import { updateMainContactThunk, getAllContactsThunk } from "@/entities";
 import { formatPhoneInputMask, normalizePhoneDigits } from "@/shared/lib/phone";
 import type { AppDispatch } from "@/app/store/store";
 
@@ -53,11 +53,11 @@ export function AdminMainContactForm({
     setFormValues((prev) => ({ ...prev, [name]: value }));
   };
 
-  const onSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       const normalizedPhone = normalizePhoneDigits(formValues.phone);
-      dispatch(
+      await dispatch(
         updateMainContactThunk({
           id: editId,
           mainContact: {
@@ -69,11 +69,11 @@ export function AdminMainContactForm({
             address: formValues.address || undefined,
           },
         })
-      );
+      ).unwrap();
+      await dispatch(getAllContactsThunk()).unwrap();
+      setEditOne(false);
     } catch (error) {
       console.error(error);
-    } finally {
-      setEditOne(false);
     }
   };
 

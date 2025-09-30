@@ -179,7 +179,7 @@ class AdminService {
     if (phone) {
       const digits = String(phone).replace(/\D/g, "");
       const normalized = digits.startsWith("8") ? "7" + digits.slice(1) : digits;
-      contactToUpdate.phone = normalized; // phone хранится как STRING
+      contactToUpdate.phone = normalized; 
     }
     if (telegram) {
       contactToUpdate.telegram = telegram;

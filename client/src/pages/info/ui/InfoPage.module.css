@@ -35,6 +35,32 @@
     margin-top: 1.5rem;
   }
 
+.contacts {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text);
+  text-align: left;
+  margin-bottom: 2rem;
+  background: #fff7f2;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.contacts p {
+  margin: 0.5rem 0;
+}
+
+.contacts a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.contacts a:hover {
+  text-decoration: underline;
+}
+
 .text {
   font-size: 1rem;
   line-height: 1.6;
