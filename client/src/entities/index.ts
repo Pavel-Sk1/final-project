@@ -31,6 +31,9 @@ export {
 
 // admin
 export {
+  type IAdminMainContact,
+  getMainContactThunk,
+  updateMainContactThunk,
   type ICreateAdminNews,
   type IAdminNews,
   type AdminNewsArrayType,

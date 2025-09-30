@@ -19,7 +19,6 @@ export function AdminPage() {
   const [createNews, setCreateNews] = useState(false);
   const [editNews, setEditNews] = useState(false);
   const [editProduct, setEditProduct] = useState(false);
-  const [editVacancies, setEditVacancies] = useState(false);
   const [proCreateProduct, setProCreateProduct] = useState(false);
   const [proEditProduct, setProEditProduct] = useState(false);
   const [tab, setTab] = useState("editMainPage");

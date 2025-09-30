@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosInstance, type ServerResponseType } from "@/shared";
 import { AxiosError } from "axios";
-import { type ICreateAdminNews, type IAdminNews, type AdminNewsArrayType, type ICreateAdminProduct, type IAdminProduct, type AdminProductArrayType, type OrderArrayType, ADMIN_API_ROUTES, type AdminVacancyArrayType, type IAdminVacancy, type ICreateAdminVacancy } from "../model";
+import { type ICreateAdminNews, type IAdminNews, type AdminNewsArrayType, type ICreateAdminProduct, type IAdminProduct, type AdminProductArrayType, type OrderArrayType, ADMIN_API_ROUTES, type AdminVacancyArrayType, type IAdminVacancy, type ICreateAdminVacancy, type IAdminMainContact } from "../model";
 
 export const getAllAdminNewsThunk = createAsyncThunk<ServerResponseType<AdminNewsArrayType>, void, { rejectValue: ServerResponseType }>('***admin/getAllNews***', async (_, { rejectWithValue }) => {
     try {
@@ -156,6 +156,26 @@ export const updateVacancyThunk = createAsyncThunk<ServerResponseType<IAdminVaca
 export const deleteVacancyThunk = createAsyncThunk<ServerResponseType<IAdminVacancy>, number, { rejectValue: ServerResponseType }>('***admin/deleteVacancy***', async (id, { rejectWithValue }) => {
     try {
         const { data } = await axiosInstance.delete<ServerResponseType<IAdminVacancy>>(`${ADMIN_API_ROUTES.VACANCY}/${id}`);
+        return data;
+    } catch (error) {
+        const err = error as AxiosError<ServerResponseType>;
+        return rejectWithValue(err.response!.data);
+    }
+});
+
+export const getMainContactThunk = createAsyncThunk<ServerResponseType<IAdminMainContact>, void, { rejectValue: ServerResponseType }>('***admin/getMainContact***', async (_, { rejectWithValue }) => {
+    try {
+        const { data } = await axiosInstance.get<ServerResponseType<IAdminMainContact>>(ADMIN_API_ROUTES.MAIN_CONTACT);
+        return data;
+    } catch (error) {
+        const err = error as AxiosError<ServerResponseType>;
+        return rejectWithValue(err.response!.data);
+    }
+});
+
+export const updateMainContactThunk = createAsyncThunk<ServerResponseType<IAdminMainContact>, { id: number, mainContact: IAdminMainContact }, { rejectValue: ServerResponseType }>('***admin/updateMainContact***', async ({ id, mainContact }, { rejectWithValue }) => {
+    try {
+        const { data } = await axiosInstance.put<ServerResponseType<IAdminMainContact>>(`${ADMIN_API_ROUTES.MAIN_CONTACT}/${id}`, mainContact);
         return data;
     } catch (error) {
         const err = error as AxiosError<ServerResponseType>;
