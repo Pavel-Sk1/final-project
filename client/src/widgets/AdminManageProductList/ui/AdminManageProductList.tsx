@@ -1,15 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styles from "./AdminManageProductList.module.css";
 import { useAppDispatch, useAppSelector } from "@/shared";
 import { getAllProductsThunk } from "@/entities/products";
-import { AdminManageProductForm, AdminManageProductCard} from "@/widgets";
+import { AdminManageProductCard } from "@/widgets";
 
 export function AdminManageProductList() {
   const dispatch = useAppDispatch();
   const { products } = useAppSelector((state) => state.products);
 
-  const [proEditOneProduct, setProEditOneProduct] = useState(false);
-  const [proEditOneProductId, setProEditOneProductId] = useState(0);
+
 
   useEffect(() => {
     try {
@@ -21,23 +20,12 @@ export function AdminManageProductList() {
 
   return (
     <div className={styles.itemsContainer}>
-      {products.map((product) =>
-        proEditOneProduct && proEditOneProductId === product.id ? (
-          <AdminManageProductForm
-            key={product.id}
-            product={product}
-            setProCreateProduct={null}
-            setProEditOneProduct={setProEditOneProduct}
-          />
-        ) : (
-          <AdminManageProductCard
-            key={product.id}
-            product={product}
-            setProEditOneProduct={setProEditOneProduct}
-            setProEditOneProductId={setProEditOneProductId}
-          />
-        )
-      )}
+      {products.map((product) => (
+        <AdminManageProductCard
+          key={product.id}
+          product={product}          
+        />
+      ))}
     </div>
   );
 }

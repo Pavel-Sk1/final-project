@@ -2,19 +2,19 @@ import styles from "./AdminManageProductCard.module.css";
 import { useAppDispatch } from "@/shared";
 import type { IProduct } from "@/entities/products";
 import { deleteProductThunk } from "@/entities";
+import { editOneProduct } from "@/entities";
+import { useState } from "react";
+import { AdminManageEditProductModal } from "@/widgets/adminManageEditProductModal/ui/AdminManageEditProductModal";
 
 type AdminManageProductCardProps = {
-  product: IProduct;
-  setProEditOneProduct: (value: boolean) => void;
-  setProEditOneProductId: (value: number) => void;
+  product: IProduct;  
 };
 
 export function AdminManageProductCard({
-  product,
-  setProEditOneProduct,
-  setProEditOneProductId,
+  product,  
 }: AdminManageProductCardProps) {
   const dispatch = useAppDispatch();
+  const [isOpen, setIsOpen] = useState(false);
   const deleteProductHandler = () => {
     try {
       dispatch(deleteProductThunk(product.id));
@@ -61,9 +61,9 @@ export function AdminManageProductCard({
       <div className={styles.itemActions}>
         <button
           className={styles.editButton}
-          onClick={() => {
-            setProEditOneProduct(true);
-            setProEditOneProductId(product.id);
+          onClick={() => {            
+            dispatch(editOneProduct(product));
+            setIsOpen(true);
           }}
         >
           Редактировать
@@ -72,6 +72,10 @@ export function AdminManageProductCard({
           Удалить
         </button>
       </div>
+      <AdminManageEditProductModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
     </div>
   );
 }

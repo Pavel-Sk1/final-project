@@ -5,6 +5,8 @@ export {
   type IProductImage,
   type IProductArrayType,
   type ICreateProduct,
+  editOneProduct,
+  deleteOneProduct,
   updateFullProductThunk,
   deleteProductThunk,
 } from "./products";
