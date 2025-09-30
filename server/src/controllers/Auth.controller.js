@@ -11,10 +11,18 @@ class AuthController {
     try {
       const { refreshToken } = req.cookies;
 
-      const { user } = jwt.verify(
+      const { user: tokenUser } = jwt.verify(
         refreshToken,
         process.env.SECRET_REFRESH_TOKEN
       );
+
+      const user = await UserService.getByLogin(tokenUser.login);
+
+      if (!user) {
+        return res
+          .status(404)
+          .json(formatResponse(404, "Пользователь не найден", null, "Пользователь не найден"));
+      }
 
       const { accessToken, refreshToken: newRefreshToken } = generateJWTTokens({
         user,

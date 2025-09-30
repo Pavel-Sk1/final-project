@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router";
 import { useEffect } from "react";
 import { HomePage, SignInPage, InfoPage, VacancyPage } from "@/pages";
 import { AdminPage } from "@/pages/admin";
+import { UserPage } from "@/pages/user";
 import { Layout } from "./layout/Layout";
 import { CLIENT_ROUTES, useAppDispatch } from "@/shared";
 import { ProtectedRoute } from "@/shared";
@@ -29,6 +30,14 @@ export function App() {
             element={
               <ProtectedRoute>
                 <AdminPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={CLIENT_ROUTES.USER}
+            element={
+              <ProtectedRoute>
+                <UserPage />
               </ProtectedRoute>
             }
           />

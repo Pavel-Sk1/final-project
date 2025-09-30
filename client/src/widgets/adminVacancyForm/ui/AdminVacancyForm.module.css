@@ -92,7 +92,6 @@
   color: var(--text-light);
 }
 
-/* Стили для чекбокса */
 .checkboxGroup {
   display: flex;
   align-items: center;

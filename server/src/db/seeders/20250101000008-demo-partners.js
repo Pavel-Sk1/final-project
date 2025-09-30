@@ -17,6 +17,7 @@ module.exports = {
           contact_phone: "+7 (495) 123-45-67",
           comment: "Поставщик свежих овощей и зелени",
           status: "active",
+          user_id: 3, // user1
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -31,6 +32,7 @@ module.exports = {
           contact_phone: "+7 (496) 234-56-78",
           comment: "Поставщик мясных продуктов",
           status: "active",
+          user_id: 2, // manager1
           createdAt: new Date(),
           updatedAt: new Date(),
         },

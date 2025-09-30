@@ -1,0 +1,147 @@
+.userPage {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, var(--bg) 0%, var(--bg-contrast) 100%);
+  color: var(--text);
+  padding: 2rem 1rem;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pageTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 3rem;
+  color: var(--primary-dark);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.loading, .error {
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 2rem;
+  background: linear-gradient(180deg, #ffffff, #fff9f5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.error {
+  color: var(--error);
+}
+
+.userNav {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 3rem;
+  padding: 1.5rem;
+  background: linear-gradient(180deg, #ffffff, #fff9f5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.userNav::-webkit-scrollbar {
+  display: none;
+}
+
+.userNav button {
+  flex-shrink: 0;
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(135deg, #f8f4f0, #f0e6dc);
+  color: var(--text);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+
+.userNav button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.userNav button:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #fff3ea, #f8e6d6);
+  border-color: var(--accent);
+  box-shadow: 0 6px 20px rgba(120, 72, 36, 0.15);
+}
+
+.userNav button:hover::before {
+  left: 100%;
+}
+
+.userNav button.active {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: var(--white);
+  border-color: var(--primary-dark);
+  box-shadow: 0 6px 20px rgba(120, 72, 36, 0.25);
+  transform: translateY(-1px);
+}
+
+.userNav button.active::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+
+.userNav button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .userPage {
+    padding: 1rem 0.5rem;
+  }
+
+  .pageTitle {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .userNav {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .userNav button {
+    width: 100%;
+    max-width: 300px;
+  }
+}
