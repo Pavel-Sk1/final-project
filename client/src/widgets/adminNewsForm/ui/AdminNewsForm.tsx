@@ -1,28 +1,55 @@
+import { useEffect, useState } from "react";
 import styles from "./AdminNewsForm.module.css";
-import {  
+import {
+  createNewsThunk,
   updateNewsThunk,
   type IAdminNews,
   type ICreateAdminNews,
+  deleteOneNews,
 } from "@/entities";
-import type { AppDispatch } from "@/app/store/store";
+import { useAppDispatch } from "@/shared";
+
+const initialNewsInput: ICreateAdminNews = {
+  title: "",
+  description: "",
+  img: "",
+  is_active: false,
+};
 
 type AdminNewsFormProps = {
-  news: IAdminNews;
-  dispatch: AppDispatch;
-  setEditOneNews: (value: boolean) => void;
-  editOneNewsId: number;
-  newsInput: ICreateAdminNews;
-  setNewsInput: React.Dispatch<React.SetStateAction<ICreateAdminNews>>;
+  setCreateNews: React.Dispatch<React.SetStateAction<boolean>> | null;
+  news: IAdminNews | null;
+  onClose: (() => void) | null;
 };
 
 export function AdminNewsForm({
-  news,
-  dispatch,
-  setEditOneNews,
-  editOneNewsId,
-  newsInput,
-  setNewsInput,
+  setCreateNews = null,
+  news = null,
+  onClose = null,
 }: AdminNewsFormProps) {
+  const dispatch = useAppDispatch();
+  const [newsInput, setNewsInput] = useState<ICreateAdminNews | IAdminNews>(
+    news
+      ? {
+          title: news.title,
+          description: news.description,
+          img: news.img,
+          is_active: news.is_active,
+        }
+      : initialNewsInput
+  );
+
+  useEffect(() => {
+    if (news) {
+      setNewsInput({
+        title: news.title,
+        description: news.description,
+        img: news.img,
+        is_active: news.is_active,
+      });
+    }
+  }, [news]);
+
   const onChangeNewsHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewsInput((prev: ICreateAdminNews) => ({
       ...prev,
@@ -41,22 +68,28 @@ export function AdminNewsForm({
 
   const onSubmitNewsHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     try {
-      dispatch(updateNewsThunk({ id: editOneNewsId, news: newsInput }));
+      if (news) {
+        dispatch(updateNewsThunk({ id: news.id, news: newsInput }));
+      } else {
+        dispatch(createNewsThunk(newsInput));
+      }
     } catch (error) {
       console.error(error);
     } finally {
-      setEditOneNews(false);
+      setNewsInput(initialNewsInput);
+      setCreateNews?.(false);
+      onClose?.();
+      dispatch(deleteOneNews());
     }
   };
   return (
-    <form
-      key={news.id}
-      className={styles.editForm}
-      onSubmit={onSubmitNewsHandler}
-    >
+    <form className={styles.editForm} onSubmit={onSubmitNewsHandler}>
       <div className={styles.formGroup}>
+        <label htmlFor="title">Название</label>
         <input
+          id="title"
           type="text"
           name="title"
           placeholder="Название"
@@ -66,7 +99,9 @@ export function AdminNewsForm({
         />
       </div>
       <div className={styles.formGroup}>
+        <label htmlFor="description">Описание</label>
         <input
+          id="description"
           type="text"
           name="description"
           placeholder="Описание"
@@ -76,7 +111,9 @@ export function AdminNewsForm({
         />
       </div>
       <div className={styles.formGroup}>
+        <label htmlFor="img">URL изображения</label>
         <input
+          id="img"
           type="text"
           name="img"
           placeholder="URL изображения"
@@ -104,7 +141,11 @@ export function AdminNewsForm({
         <button
           type="button"
           className={styles.cancelButton}
-          onClick={() => setEditOneNews(false)}
+          onClick={() => {
+            setCreateNews?.(false);
+            onClose?.();
+            dispatch(deleteOneNews());
+          }}
         >
           Отмена
         </button>

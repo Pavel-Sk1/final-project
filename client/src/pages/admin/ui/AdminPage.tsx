@@ -2,8 +2,7 @@ import styles from "./AdminPage.module.css";
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks";
 import { getOrdersByDateThunk } from "@/entities";
-import {
-  AdminCreateNewsForm,
+import {  
   AdminManageProductForm,
   AdminManageProductList,
   AdminNewsList,
@@ -13,6 +12,7 @@ import {
   AdminPartnerForm,
   AdminPartnerList,
   AdminProfitChart,
+  AdminNewsForm,
 } from "@/widgets";
 import { AdminCalculationsPage } from "@/widgets/adminCalculationsPage";
 import { AdminMainContactList } from "@/widgets/adminContactList";
@@ -109,7 +109,11 @@ export function AdminPage() {
                 </button>
               </div>
               {createNews && (
-                <AdminCreateNewsForm setCreateNews={setCreateNews} />
+                <AdminNewsForm
+                  setCreateNews={setCreateNews}
+                  news={null}
+                  onClose={null}
+                />
               )}
             </section>
             <section className={styles.section}>
@@ -218,7 +222,7 @@ export function AdminPage() {
                 <AdminPartnerForm
                   setCreatePartner={setCreatePartner}
                   partner={null}
-                  setEditOnePartner={null}
+                  onClose={null}
                 />
               )}
             </section>

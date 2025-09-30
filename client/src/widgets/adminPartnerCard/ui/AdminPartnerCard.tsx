@@ -1,8 +1,7 @@
 import { useMemo, useState } from "react";
 import styles from "./AdminPartnerCard.module.css";
 import { useAppDispatch, EditModal } from "@/shared";
-import type { IPartner } from "@/entities";
-import { deletePartnerThunk, editOnePartner } from "@/entities";
+import { deletePartnerThunk, editOnePartner, type IPartner } from "@/entities";
 import { AdminPartnerForm } from "@/widgets";
 
 type AdminPartnerCardProps = {

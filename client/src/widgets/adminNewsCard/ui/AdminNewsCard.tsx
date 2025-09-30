@@ -1,25 +1,25 @@
-import {
-  deleteNewsThunk,
-  type IAdminNews,
-  type ICreateAdminNews,
-} from "@/entities";
+import { useMemo, useState } from "react";
 import styles from "./AdminNewsCard.module.css";
-import { useAppDispatch } from "@/shared";
+import { useAppDispatch, EditModal } from "@/shared";
+import { deleteNewsThunk, editOneNews, type IAdminNews } from "@/entities";
+import { AdminNewsForm } from "@/widgets/adminNewsForm";
 
 type AdminNewsCardProps = {
   news: IAdminNews;
-  setEditOneNews: (value: boolean) => void;
-  setEditOneNewsId: (value: number) => void;
-  setNewsInput: React.Dispatch<React.SetStateAction<ICreateAdminNews>>;
 };
 
-export function AdminNewsCard({
-  news,
-  setEditOneNews,
-  setEditOneNewsId,
-  setNewsInput,
-}: AdminNewsCardProps) {
+export function AdminNewsCard({ news }: AdminNewsCardProps) {
   const dispatch = useAppDispatch();
+  const [isOpen, setIsOpen] = useState(false);
+  const memoizedNewsForm = useMemo(() => {
+    return (
+      <AdminNewsForm
+        news={news}
+        onClose={() => setIsOpen(false)}
+        setCreateNews={null}
+      />
+    );
+  }, [news, setIsOpen]);
   const deleteNewsHandler = () => {
     try {
       dispatch(deleteNewsThunk(news.id));
@@ -41,14 +41,8 @@ export function AdminNewsCard({
         <button
           className={styles.editButton}
           onClick={() => {
-            setEditOneNews(true);
-            setEditOneNewsId(news.id);
-            setNewsInput({
-              title: news.title,
-              description: news.description,
-              img: news.img,
-              is_active: news.is_active,
-            });
+            dispatch(editOneNews(news));
+            setIsOpen(true);
           }}
         >
           Редактировать
@@ -57,6 +51,11 @@ export function AdminNewsCard({
           Удалить
         </button>
       </div>
+      <EditModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        memoizedContent={memoizedNewsForm}
+      />
     </div>
   );
 }

@@ -1,1 +1,1 @@
-export { AdminPartnerForm } from "./ui/adminPartnerForm";
+export { AdminPartnerForm } from "./ui/AdminPartnerForm";

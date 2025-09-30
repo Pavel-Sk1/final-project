@@ -52,6 +52,8 @@ export {
   getProductByIdThunk,
   updateProductThunk,
   adminReducer,
+  editOneNews,
+  deleteOneNews,
   type IOrder,
   type OrderArrayType,
   type IAdminVacancy,
