@@ -62,7 +62,7 @@ export  function InfoPage() {
           </table>
         </div>
         <div className={styles.buttonsContainer}>
-          <button className={styles.btn} onClick={handlePDF}>
+          <button className={"btn-primary"} onClick={handlePDF}>
             Скачать/Печать
           </button>
         </div>

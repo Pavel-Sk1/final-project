@@ -119,26 +119,7 @@
   flex-wrap: wrap;
 }
 
-.btn {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-  color: var(--white);
-  font-family: var(--font-base);
-  border: none;
-  border-radius: 8px;
-  padding: 12px 24px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  min-width: 200px;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
-}
+/* Кнопка использует общий стиль .btn-primary */
 
 @media (max-width: 768px) {
   .container {
