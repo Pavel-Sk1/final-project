@@ -12,6 +12,7 @@ import {
   AdminCreateVacancyForm,
   AdminPartnerForm,
   AdminPartnerList,
+  AdminProfitChart,
 } from "@/widgets";
 import { AdminCalculationsPage } from "@/widgets/adminCalculationsPage";
 import { AdminMainContactList } from "@/widgets/adminContactList";
@@ -29,6 +30,7 @@ export function AdminPage() {
   const [manageContacts, setManageContacts] = useState(false);
   const [createPartner, setCreatePartner] = useState(false);
   const [editPartners, setEditPartners] = useState(false);
+  const [editProfit, setEditProfit] = useState(false);
   const [selectedDate, setSelectedDate] = useState(() => {
     return new Date().toISOString().split("T")[0];
   });
@@ -39,12 +41,12 @@ export function AdminPage() {
   );
 
   useEffect(() => {
-    if (editCalculations && selectedDate) {
+    if ((editCalculations || editProfit) && selectedDate) {
       dispatch(
         getOrdersByDateThunk({ date: selectedDate, status: "confirmed" })
       );
     }
-  }, [editCalculations, selectedDate, dispatch]);
+  }, [editCalculations, editProfit, selectedDate, dispatch]);
 
   return (
     <div className={styles.adminPage}>
@@ -86,6 +88,12 @@ export function AdminPage() {
             onClick={() => setTab("manageContacts")}
           >
             Управление контактами
+          </button>
+          <button
+            className={tab === "profit" ? "active" : ""}
+            onClick={() => setTab("profit")}
+          >
+            Прибыль
           </button>
         </div>
         {tab === "editMainPage" && (
@@ -194,43 +202,46 @@ export function AdminPage() {
             </section>
           </>
         )}
-        {tab === "regPartners" && 
-        <>
-        <section className={styles.section}>
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Создать дистрибьютора</h2>
-            <button
-              className={styles.toggleButton}
-              onClick={() => setCreatePartner((prev) => !prev)}
-            >
-              {createPartner ? "Скрыть" : "Создать"}
-            </button>
-          </div>
-          {createPartner && (
-            <AdminPartnerForm 
-            setCreatePartner={setCreatePartner} 
-            partner={null}
-            setEditOnePartner={null}
-            />
-          )}
-        </section>
-        <section className={styles.section}>
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Редактировать дистрибьюторов</h2>
-            <button
-              className={styles.toggleButton}
-              onClick={() => setEditPartners((prev) => !prev)}
-            >
-              {editPartners ? "Скрыть" : "Редактировать"}
-            </button>
-          </div>
-          {editPartners && (
-            <>
-            <AdminPartnerList />
-            </>
-          )}
-        </section>
-        </>}
+        {tab === "regPartners" && (
+          <>
+            <section className={styles.section}>
+              <div className={styles.sectionHeader}>
+                <h2 className={styles.sectionTitle}>Создать дистрибьютора</h2>
+                <button
+                  className={styles.toggleButton}
+                  onClick={() => setCreatePartner((prev) => !prev)}
+                >
+                  {createPartner ? "Скрыть" : "Создать"}
+                </button>
+              </div>
+              {createPartner && (
+                <AdminPartnerForm
+                  setCreatePartner={setCreatePartner}
+                  partner={null}
+                  setEditOnePartner={null}
+                />
+              )}
+            </section>
+            <section className={styles.section}>
+              <div className={styles.sectionHeader}>
+                <h2 className={styles.sectionTitle}>
+                  Редактировать дистрибьюторов
+                </h2>
+                <button
+                  className={styles.toggleButton}
+                  onClick={() => setEditPartners((prev) => !prev)}
+                >
+                  {editPartners ? "Скрыть" : "Редактировать"}
+                </button>
+              </div>
+              {editPartners && (
+                <>
+                  <AdminPartnerList />
+                </>
+              )}
+            </section>
+          </>
+        )}
         {tab === "manageProducts" && (
           <>
             <section className={styles.section}>
@@ -245,7 +256,7 @@ export function AdminPage() {
               </div>
               {proCreateProduct && (
                 <AdminManageProductForm
-                  setProCreateProduct={setProCreateProduct}                  
+                  setProCreateProduct={setProCreateProduct}
                   product={null}
                   onClose={null}
                 />
@@ -261,7 +272,7 @@ export function AdminPage() {
                   {proEditProduct ? "Скрыть" : "Редактировать"}
                 </button>
               </div>
-              {proEditProduct && (<AdminManageProductList />)}
+              {proEditProduct && <AdminManageProductList />}
             </section>
           </>
         )}
@@ -291,7 +302,7 @@ export function AdminPage() {
                   {manageVacancies ? "Скрыть" : "Редактировать"}
                 </button>
               </div>
-              {manageVacancies && (<AdminVacancyList />)}
+              {manageVacancies && <AdminVacancyList />}
             </section>
           </>
         )}
@@ -308,6 +319,63 @@ export function AdminPage() {
                 </button>
               </div>
               {manageContacts && <AdminMainContactList />}
+            </section>
+          </>
+        )}
+        {tab === "profit" && (
+          <>
+            <section className={styles.section}>
+              <div className={styles.sectionHeader}>
+                <h2 className={styles.sectionTitle}>Анализ прибыли</h2>
+                <button
+                  className={styles.toggleButton}
+                  onClick={() => setEditProfit((prev) => !prev)}
+                >
+                  {editProfit ? "Скрыть" : "Показать"}
+                </button>
+              </div>
+              {editProfit && (
+                <div>
+                  <div
+                    style={{
+                      marginBottom: "20px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "16px",
+                    }}
+                  >
+                    <label
+                      htmlFor="profitDate"
+                      style={{ fontWeight: "500", color: "#374151" }}
+                    >
+                      📅 Дата для анализа:
+                    </label>
+                    <input
+                      type="date"
+                      id="profitDate"
+                      value={selectedDate}
+                      onChange={(e) => setSelectedDate(e.target.value)}
+                      style={{
+                        padding: "8px 12px",
+                        borderRadius: "4px",
+                        border: "1px solid #d1d5db",
+                        backgroundColor: "white",
+                        fontSize: "14px",
+                        minWidth: "150px",
+                      }}
+                    />
+                    <div style={{ fontSize: "14px", color: "#6b7280" }}>
+                      💰 Анализ прибыли по продуктам
+                    </div>
+                  </div>
+                  <AdminProfitChart
+                    orders={orders}
+                    loading={loading}
+                    error={error}
+                    selectedDate={selectedDate}
+                  />
+                </div>
+              )}
             </section>
           </>
         )}

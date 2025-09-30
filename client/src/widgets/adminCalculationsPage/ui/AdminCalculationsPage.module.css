@@ -1,8 +1,10 @@
+/* CSS переменные доступны глобально, импорт не нужен */
+
 .calculationsTable {
   margin: 20px 0;
   overflow-x: auto;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
 }
 
 .table {
@@ -13,8 +15,12 @@
 }
 
 .tableHeader {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
+  color: var(--white);
   padding: 12px 16px;
   text-align: left;
   font-weight: 600;
@@ -35,15 +41,15 @@
 
 .tableCell {
   padding: 12px 16px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border);
   font-size: 14px;
-  color: #374151;
+  color: var(--text);
 }
 
 .tableCell:first-child {
   font-weight: 600;
-  background-color: #f9fafb;
-  color: #1f2937;
+  background-color: #fff9f5;
+  color: var(--primary-dark);
 }
 
 .tableCell:not(:first-child) {
@@ -51,8 +57,15 @@
   font-weight: 500;
 }
 
+/* Стиль для колонки количества */
+.quantityColumn {
+  background-color: #fff4ec !important;
+  font-weight: 600 !important;
+  color: var(--primary-dark) !important;
+}
+
 .table tbody tr:hover {
-  background-color: #f3f4f6;
+  background-color: #fff7f2;
 }
 
 .table tbody tr:last-child td {
@@ -87,12 +100,12 @@
   font-size: 18px;
   font-weight: 600;
   margin-bottom: 8px;
-  color: #374151;
+  color: var(--primary-dark);
 }
 
 .emptyStateDescription {
   font-size: 14px;
-  color: #6b7280;
+  color: var(--text-light);
 }
 
 /* Стили для загрузки */
@@ -109,9 +122,9 @@
   display: inline-block;
   width: 32px;
   height: 32px;
-  border: 3px solid #e5e7eb;
+  border: 3px solid var(--border);
   border-radius: 50%;
-  border-top-color: #667eea;
+  border-top-color: var(--primary);
   animation: spin 1s ease-in-out infinite;
   margin-bottom: 16px;
 }
@@ -125,7 +138,7 @@
 .loadingText {
   font-size: 16px;
   font-weight: 500;
-  color: #374151;
+  color: var(--primary-dark);
 }
 
 /* Стили для ошибки */
@@ -163,21 +176,24 @@
   align-items: center;
   gap: 8px;
   padding: 10px 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
+  color: var(--white);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: var(--transition);
+  box-shadow: var(--shadow);
 }
 
 .printButton:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+  filter: brightness(1.05);
 }
 
 .printButton:active {

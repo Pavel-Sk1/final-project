@@ -129,7 +129,7 @@ class OrderService {
       const product = await Product.findOne({
         where: {
           id: productId,
-          is_active: 1,
+          is_active: true,
         },
         include: [
           {
@@ -227,7 +227,7 @@ class OrderService {
       const product = await Product.findOne({
         where: {
           id: productId,
-          is_active: 1,
+          is_active: true,
         },
         include: [
           {
@@ -330,7 +330,7 @@ class OrderService {
           {
             model: Product,
             as: "products",
-            where: { is_active: 1 },
+            where: { is_active: true },
             required: false,
           },
         ],
@@ -345,7 +345,7 @@ class OrderService {
   static async getActiveProducts() {
     try {
       return await Product.findAll({
-        where: { is_active: 1 },
+        where: { is_active: true },
         include: [
           {
             model: Category,
@@ -365,7 +365,7 @@ class OrderService {
       return await Product.findAll({
         where: {
           name: { [Op.iLike]: `%${query}%` },
-          is_active: 1,
+          is_active: true,
         },
         include: [
           {
@@ -402,7 +402,7 @@ class OrderService {
         const product = await Product.findOne({
           where: {
             name: { [Op.iLike]: `%${productName}%` },
-            is_active: 1,
+            is_active: true,
           },
           include: [
             {
