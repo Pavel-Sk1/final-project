@@ -15,6 +15,7 @@ export const store = configureStore({
         vacancy: vacancyReducer,
         contact: contactReducer,
         partner: partnerReducer,
+        
     },
 });
 

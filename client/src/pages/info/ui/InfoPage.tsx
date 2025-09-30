@@ -1,17 +1,20 @@
 
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/shared';
-import { getProductsThunk, type IProduct } from '@/entities';
+import { getProductsThunk, type IProduct, getAllContactsThunk, type MainContact } from '@/entities';
+import { formatPhonePretty, formatTelHref } from '@/shared/lib/phone';
 import { usePDF } from '@/features';
 import styles from './InfoPage.module.css';
 
 export  function InfoPage() {
   const dispatch = useAppDispatch();
   const { products, loading, error } = useAppSelector((state) => state.info);
+  const { contacts } = useAppSelector((state) => state.contact);
   const { generatePDF } = usePDF();
 
   useEffect(() => {
     dispatch(getProductsThunk());
+    dispatch(getAllContactsThunk());
   }, [dispatch]);
 
   const handlePDF = () => {
@@ -62,16 +65,28 @@ export  function InfoPage() {
           </table>
         </div>
         <div className={styles.buttonsContainer}>
-          <button className={styles.btn} onClick={handlePDF}>
+          <button className={"btn-primary"} onClick={handlePDF}>
             Скачать/Печать
           </button>
         </div>
         <h2 className={styles.subtitlecontacts}>Наши контакты:</h2>
         <div className={styles.contacts}>
-          <p>Телефон: +7 (999) 999-99-99</p>
-          <p>Email: info@example.com</p>
-          <p>Адрес: Москва, ул. Ленина, 1</p>
-          <a href="https://t.me/sixchains" target= "_blank" >@Telegram</a>
+          {contacts && contacts.length > 0 ? (
+            contacts.map((c: MainContact) => (
+              <div key={c.id}>
+                <p>
+                  Телефон: <a href={formatTelHref(c.phone as unknown as string)}>{formatPhonePretty(c.phone as unknown as string)}</a>
+                </p>
+                <p>
+                  Email: <a href={`mailto:${c.email}`}>{c.email}</a>
+                </p>
+                <p>Адрес: {c.address}</p>
+                <p>Telegram: <a href={c.telegram} target="_blank" rel="noreferrer">{c.telegram.replace('https://t.me/', '@')}</a></p>
+              </div>
+            ))
+          ) : (
+            <p>Контакты не найдены</p>
+          )}
         </div>
       </div>
     </div>

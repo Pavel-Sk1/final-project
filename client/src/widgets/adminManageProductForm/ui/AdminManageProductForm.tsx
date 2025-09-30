@@ -5,6 +5,7 @@ import { getAllCategoriesThunk } from "@/entities";
 import type { ICreateProduct, IProduct } from "@/entities/products";
 import {
   createProductThunk,
+  deleteOneProduct,
   updateFullProductThunk,
 } from "@/entities/products";
 
@@ -21,15 +22,15 @@ const initialProductInput: ICreateProduct = {
 };
 
 type AdminManageProductProps = {
+  onClose: (() => void) | null;
   setProCreateProduct: React.Dispatch<React.SetStateAction<boolean>> | null;
   product: IProduct | null;
-  setProEditOneProduct: React.Dispatch<React.SetStateAction<boolean>> | null;
 };
 
 export function AdminManageProductForm({
   setProCreateProduct = null,
   product = null,
-  setProEditOneProduct = null,
+  onClose = null,
 }: AdminManageProductProps) {
   const dispatch = useAppDispatch();
   const { categoriesArray } = useAppSelector((state) => state.categories);
@@ -103,7 +104,8 @@ export function AdminManageProductForm({
       setProductVariants("");
       setProductVariantsNames("");
       setProCreateProduct?.(false);
-      setProEditOneProduct?.(false);
+      onClose?.();
+      dispatch(deleteOneProduct());
     }
   };
 
@@ -345,7 +347,10 @@ export function AdminManageProductForm({
         <button
           type="button"
           className={styles.cancelButton}
-          onClick={() => setProCreateProduct?.(false)}
+          onClick={() => {
+            setProCreateProduct?.(false);
+            onClose?.();
+          }}
         >
           Отмена
         </button>

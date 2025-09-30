@@ -1,0 +1,28 @@
+.item {
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  display: grid;
+  gap: 8px;
+}
+.itemContent { display: grid; gap: 4px; }
+.itemTitle { font-weight: 600; }
+.itemText { color: #374151; font-size: 14px; }
+.itemActions { display: flex; gap: 8px; }
+.editButton {
+  padding: 0.6rem 1.2rem;
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow);
+  align-self: flex-start;
+}
+.editButton:hover { transform: translateY(-2px); filter: brightness(1.1); }
+.editButton:active { transform: translateY(0); }
+
+

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllAdminNewsThunk, getNewsByIdThunk, createNewsThunk, updateNewsThunk, deleteNewsThunk, getAllProductsThunk, getProductByIdThunk, updateProductThunk, createProductThunk, deleteProductThunk, getAllAdminVacanciesThunk, getVacancyByIdThunk, createVacancyThunk, updateVacancyThunk, deleteVacancyThunk } from "../api/adminThunkApi";
-import { type IAdminNews, type AdminNewsArrayType, type IAdminProduct, type AdminProductArrayType, type IAdminVacancy, type AdminVacancyArrayType } from "../model";
+import { getAllAdminNewsThunk, getNewsByIdThunk, createNewsThunk, updateNewsThunk, deleteNewsThunk, getAllProductsThunk, getProductByIdThunk, updateProductThunk, createProductThunk, deleteProductThunk, getAllAdminVacanciesThunk, getVacancyByIdThunk, createVacancyThunk, updateVacancyThunk, deleteVacancyThunk, getMainContactThunk, updateMainContactThunk } from "../api/adminThunkApi";
+import { type IAdminNews, type AdminNewsArrayType, type IAdminProduct, type AdminProductArrayType, type IAdminVacancy, type AdminVacancyArrayType, type IAdminMainContact } from "../model";
 
 
 type AdminState = {
@@ -10,6 +10,7 @@ type AdminState = {
     product: IAdminProduct | null;
     vacancyArray: AdminVacancyArrayType;
     vacancy: IAdminVacancy | null;
+    mainContact: IAdminMainContact | null;
     error: string | null;
     loading: boolean;    
 }
@@ -21,6 +22,7 @@ const initialState: AdminState = {
     product: null,
     vacancyArray: [],
     vacancy: null,
+    mainContact: null,
     error: null,
     loading: false,
 }
@@ -206,6 +208,30 @@ const adminSlice = createSlice({
             })
             .addCase(deleteVacancyThunk.rejected, (state, action) => {
                 state.error = action.payload?.message || 'Ошибка при удалении вакансии';
+                state.loading = false;
+            })
+            .addCase(getMainContactThunk.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(getMainContactThunk.fulfilled, (state, action) => {
+                state.mainContact = action.payload.data;
+                state.loading = false;
+                state.error = null;
+            })
+            .addCase(getMainContactThunk.rejected, (state, action) => {
+                state.error = action.payload?.message || 'Ошибка при получении вакансий';
+                state.loading = false;
+            })
+            .addCase(updateMainContactThunk.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(updateMainContactThunk.fulfilled, (state, action) => {
+                state.mainContact = action.payload.data;
+                state.loading = false;
+                state.error = null;
+            })
+            .addCase(updateMainContactThunk.rejected, (state, action) => {
+                state.error = action.payload?.message || 'Ошибка при обновлении вакансий';
                 state.loading = false;
             })
     }

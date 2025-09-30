@@ -1,6 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createProductThunk, deleteProductThunk, getAllProductImagesThunk, getAllProductsThunk, updateFullProductThunk } from "../api/productsThunkApi";
-import { type IProductArrayType, type IProductImage, type IProduct } from "../model";
+import {
+  createProductThunk,
+  deleteProductThunk,
+  getAllProductImagesThunk,
+  getAllProductsThunk,
+  updateFullProductThunk,
+} from "../api/productsThunkApi";
+import {
+  type IProductArrayType,
+  type IProductImage,
+  type IProduct,
+} from "../model";
 
 type ProductsState = {
   images: IProductImage[];
@@ -21,7 +31,14 @@ const initialState: ProductsState = {
 const productsSlice = createSlice({
   name: "products",
   initialState,
-  reducers: {},
+  reducers: {
+    editOneProduct: (state, action) => {
+      state.product = action.payload;
+    },
+    deleteOneProduct: (state) => {
+      state.product = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAllProductImagesThunk.pending, (state) => {
@@ -52,32 +69,38 @@ const productsSlice = createSlice({
       })
       .addCase(createProductThunk.rejected, (state, action) => {
         state.loading = false;
-        state.error =
-          action.payload?.message || "Ошибка при создании продукта";
+        state.error = action.payload?.message || "Ошибка при создании продукта";
       })
       .addCase(updateFullProductThunk.pending, (state) => {
         state.loading = true;
       })
       .addCase(updateFullProductThunk.fulfilled, (state, action) => {
-        state.products = state.products.map(product => product.id === action.payload.data.id ? action.payload.data : product);
+        state.products = state.products.map((product) =>
+          product.id === action.payload.data.id ? action.payload.data : product
+        );
         state.loading = false;
       })
       .addCase(updateFullProductThunk.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload?.message || "Ошибка при обновлении продукта";
+        state.error =
+          action.payload?.message || "Ошибка при обновлении продукта";
       })
       .addCase(deleteProductThunk.pending, (state) => {
         state.loading = true;
       })
       .addCase(deleteProductThunk.fulfilled, (state, action) => {
-        state.products = state.products.filter(product => product.id !== action.payload.data.id);
+        state.products = state.products.filter(
+          (product) => product.id !== action.payload.data.id
+        );
         state.loading = false;
       })
       .addCase(deleteProductThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload?.message || "Ошибка при удалении продукта";
-      })
+      });
   },
 });
+
+export const { editOneProduct, deleteOneProduct } = productsSlice.actions;
 
 export const productsReducer = productsSlice.reducer;

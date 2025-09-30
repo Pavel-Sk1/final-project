@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
 import styles from './vacancyPage.module.css';
 import { useAppDispatch, useAppSelector } from '@/shared';
-import { getAllVacanciesThunk, type IVacancy } from '@/entities';
+import { getAllVacanciesThunk, type IVacancy, getAllContactsThunk, type MainContact } from '@/entities';
+import { formatPhonePretty, formatTelHref } from '@/shared/lib/phone';
 
 export function VacancyPage() {
   const { loading, error, list } = useAppSelector((state) => state.vacancy);
+  const { contacts } = useAppSelector((state) => state.contact);
   const dispatch = useAppDispatch();
   const [expandedLocations, setExpandedLocations] = useState<Set<string>>(new Set());
   const [selectedVacancy, setSelectedVacancy] = useState<IVacancy | null>(null);
 
   useEffect(() => {
     dispatch(getAllVacanciesThunk());
+    dispatch(getAllContactsThunk());
   }, [dispatch]);
 
   const toggleLocation = (location: string) => {
@@ -87,10 +90,22 @@ export function VacancyPage() {
 
         <h2 className={styles.subtitlecontacts}>Наши контакты:</h2>
         <div className={styles.contacts}>
-          <p>Телефон: +7 (999) 999-99-99</p>
-          <p>Email: info@example.com</p>
-          <p>Адрес: Москва, ул. Ленина, 1</p>
-          <a href="https://t.me/sixchains" target="_blank">@Telegram</a>
+          {contacts && contacts.length > 0 ? (
+            contacts.map((c: MainContact) => (
+              <div key={c.id}>
+                <p>
+                  Телефон: <a href={formatTelHref(c.phone as unknown as string)}>{formatPhonePretty(c.phone as unknown as string)}</a>
+                </p>
+                <p>
+                  Email: <a href={`mailto:${c.email}`}>{c.email}</a>
+                </p>
+                <p>Адрес: {c.address}</p>
+                <p>Telegram: <a href={c.telegram} target="_blank" rel="noreferrer">{c.telegram.replace('https://t.me/', '@')}</a></p>
+              </div>
+            ))
+          ) : (
+            <p>Контакты не найдены</p>
+          )}
         </div>
       </div>
 

@@ -5,6 +5,8 @@ export {
   type IProductImage,
   type IProductArrayType,
   type ICreateProduct,
+  editOneProduct,
+  deleteOneProduct,
   updateFullProductThunk,
   deleteProductThunk,
 } from "./products";
@@ -31,6 +33,9 @@ export {
 
 // admin
 export {
+  type IAdminMainContact,
+  getMainContactThunk,
+  updateMainContactThunk,
   type ICreateAdminNews,
   type IAdminNews,
   type AdminNewsArrayType,

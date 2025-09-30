@@ -14,12 +14,12 @@ import {
   AdminPartnerList,
 } from "@/widgets";
 import { AdminCalculationsPage } from "@/widgets/adminCalculationsPage";
+import { AdminMainContactList } from "@/widgets/adminContactList";
 
 export function AdminPage() {
   const [createNews, setCreateNews] = useState(false);
   const [editNews, setEditNews] = useState(false);
   const [editProduct, setEditProduct] = useState(false);
-  const [editVacancies, setEditVacancies] = useState(false);
   const [proCreateProduct, setProCreateProduct] = useState(false);
   const [proEditProduct, setProEditProduct] = useState(false);
   const [tab, setTab] = useState("editMainPage");
@@ -245,9 +245,9 @@ export function AdminPage() {
               </div>
               {proCreateProduct && (
                 <AdminManageProductForm
-                  setProCreateProduct={setProCreateProduct}
-                  setProEditOneProduct={null}
+                  setProCreateProduct={setProCreateProduct}                  
                   product={null}
+                  onClose={null}
                 />
               )}
             </section>
@@ -307,7 +307,7 @@ export function AdminPage() {
                   {manageContacts ? "Скрыть" : "Редактировать"}
                 </button>
               </div>
-              {manageContacts && <>ТУТ БУДЕТ СТРАНИЦА РЕДАКТИРОВАНИЯ КОНТАКТОВ</>}
+              {manageContacts && <AdminMainContactList />}
             </section>
           </>
         )}

@@ -1,4 +1,4 @@
-const { News, Product, TgOrder, TgUser, Vacancy } = require("../db/models");
+const { News, Product, TgOrder, TgUser, Vacancy, MainContact } = require("../db/models");
 
 class AdminService {
   static async getAllNews() {
@@ -162,6 +162,33 @@ class AdminService {
     const deletedVacancy = await Vacancy.findByPk(id);
     await Vacancy.destroy({ where: { id } });
     return deletedVacancy;
+  }
+
+  static async getMainContact() {
+    return await MainContact.findAll();
+  }
+  static async updateMainContact(id, contact) {
+    const { name, email, phone, telegram, address } = contact;
+    const contactToUpdate = await MainContact.findByPk(id);
+    if (name) {
+      contactToUpdate.name = name;
+    }
+    if (email) {
+      contactToUpdate.email = email;
+    }
+    if (phone) {
+      const digits = String(phone).replace(/\D/g, "");
+      const normalized = digits.startsWith("8") ? "7" + digits.slice(1) : digits;
+      contactToUpdate.phone = normalized; 
+    }
+    if (telegram) {
+      contactToUpdate.telegram = telegram;
+    }
+    if (address) {
+      contactToUpdate.address = address;
+    }
+    await contactToUpdate.save();
+    return contactToUpdate;
   }
 }
 

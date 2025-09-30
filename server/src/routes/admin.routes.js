@@ -100,4 +100,16 @@ adminRouter
     checkRole("admin"),
     AdminController.deleteVacancy
   )
+  .get(
+    "/main-contact",
+    verifyAccessToken,
+    checkRole("admin"),
+    AdminController.getMainContact
+  )
+  .put(
+    "/main-contact/:id",
+    verifyAccessToken,
+    checkRole("admin"),
+    AdminController.updateMainContact
+  )
 module.exports = adminRouter;
