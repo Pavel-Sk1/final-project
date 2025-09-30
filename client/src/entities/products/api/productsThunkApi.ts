@@ -85,3 +85,4 @@ export const deleteProductThunk = createAsyncThunk<
     return rejectWithValue(err.response!.data);
   }
 });
+

@@ -244,9 +244,9 @@ export function AdminPage() {
               </div>
               {proCreateProduct && (
                 <AdminManageProductForm
-                  setProCreateProduct={setProCreateProduct}
-                  setProEditOneProduct={null}
+                  setProCreateProduct={setProCreateProduct}                  
                   product={null}
+                  onClose={null}
                 />
               )}
             </section>
