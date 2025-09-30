@@ -350,6 +350,7 @@ export function AdminManageProductForm({
           onClick={() => {
             setProCreateProduct?.(false);
             onClose?.();
+            dispatch(deleteOneProduct());
           }}
         >
           Отмена

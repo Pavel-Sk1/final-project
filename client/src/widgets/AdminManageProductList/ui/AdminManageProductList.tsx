@@ -8,8 +8,6 @@ export function AdminManageProductList() {
   const dispatch = useAppDispatch();
   const { products } = useAppSelector((state) => state.products);
 
-
-
   useEffect(() => {
     try {
       dispatch(getAllProductsThunk());
@@ -21,10 +19,7 @@ export function AdminManageProductList() {
   return (
     <div className={styles.itemsContainer}>
       {products.map((product) => (
-        <AdminManageProductCard
-          key={product.id}
-          product={product}          
-        />
+        <AdminManageProductCard key={product.id} product={product} />
       ))}
     </div>
   );

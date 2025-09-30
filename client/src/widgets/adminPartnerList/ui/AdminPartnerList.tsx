@@ -1,15 +1,12 @@
-import { getAllPartnersThunk } from "@/entities";
+import { useEffect } from "react";
 import styles from "./AdminPartnerList.module.css";
 import { useAppDispatch, useAppSelector } from "@/shared";
-import { AdminPartnerForm } from "@/widgets/adminPartnerForm";
-import { useEffect, useState } from "react";
-import { AdminPartnerCard } from "@/widgets/adminPartnerCard";
+import { getAllPartnersThunk } from "@/entities";
+import { AdminPartnerCard } from "@/widgets";
 
 export function AdminPartnerList() {
   const dispatch = useAppDispatch();
   const { partnersArray } = useAppSelector((state) => state.partner);
-  const [editOnePartner, setEditOnePartner] = useState(false);
-  const [editOnePartnerId, setEditOnePartnerId] = useState(0);
 
   useEffect(() => {
     try {
@@ -21,23 +18,9 @@ export function AdminPartnerList() {
 
   return (
     <div className={styles.itemsContainer}>
-      {partnersArray.map((partner) =>
-        editOnePartner && editOnePartnerId === partner.id ? (
-          <AdminPartnerForm
-            key={partner.id}
-            partner={partner}
-            setEditOnePartner={setEditOnePartner}
-            setCreatePartner={null}
-          />
-        ) : (
-          <AdminPartnerCard
-            key={partner.id}
-            partner={partner}
-            setEditOnePartner={setEditOnePartner}
-            setEditOnePartnerId={setEditOnePartnerId}
-          />
-        )
-      )}
+      {partnersArray.map((partner) => (
+        <AdminPartnerCard key={partner.id} partner={partner} />
+      ))}
     </div>
   );
 }

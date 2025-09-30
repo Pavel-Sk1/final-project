@@ -25,7 +25,14 @@ const initialState: PartnerState = {
 const partnerSlice = createSlice({
   name: "partner",
   initialState,
-  reducers: {},
+  reducers: {
+    editOnePartner: (state, action) => {
+      state.partner = action.payload;
+    },
+    deleteOnePartner: (state) => {
+      state.partner = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAllPartnersThunk.pending, (state) => {
@@ -98,4 +105,5 @@ const partnerSlice = createSlice({
   },
 });
 
+export const { editOnePartner, deleteOnePartner } = partnerSlice.actions;
 export const partnerReducer = partnerSlice.reducer;

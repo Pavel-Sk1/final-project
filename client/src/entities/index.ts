@@ -90,6 +90,8 @@ export {
   updatePartnerThunk,
   deletePartnerThunk,
   partnerReducer,
+  editOnePartner,
+  deleteOnePartner,
   type IPartner,
   type ICreatePartner,
   type PartnersArrayType,

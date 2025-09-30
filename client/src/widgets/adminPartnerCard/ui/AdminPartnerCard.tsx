@@ -1,20 +1,28 @@
+import { useMemo, useState } from "react";
 import styles from "./AdminPartnerCard.module.css";
-import { useAppDispatch } from "@/shared";
+import { useAppDispatch, EditModal } from "@/shared";
 import type { IPartner } from "@/entities";
-import { deletePartnerThunk } from "@/entities";
+import { deletePartnerThunk, editOnePartner } from "@/entities";
+import { AdminPartnerForm } from "@/widgets";
 
 type AdminPartnerCardProps = {
-  partner: IPartner;
-  setEditOnePartner: (value: boolean) => void;
-  setEditOnePartnerId: (value: number) => void;
+  partner: IPartner;  
 };
 
 export function AdminPartnerCard({
-  partner,
-  setEditOnePartner,
-  setEditOnePartnerId,
+  partner,  
 }: AdminPartnerCardProps) {
   const dispatch = useAppDispatch();
+  const [isOpen, setIsOpen] = useState(false);
+  const memoizedPartnerForm = useMemo(() => {
+    return (
+      <AdminPartnerForm
+        partner={partner}
+        onClose={() => setIsOpen(false)}
+        setCreatePartner={null}
+      />
+    )
+  }, [partner, setIsOpen])
   const deletePartnerHandler = () => {
     try {
       dispatch(deletePartnerThunk(partner.id));
@@ -47,8 +55,8 @@ export function AdminPartnerCard({
         <button
           className={styles.editButton}
           onClick={() => {
-            setEditOnePartner(true);
-            setEditOnePartnerId(partner.id);
+            dispatch(editOnePartner(partner));
+            setIsOpen(true);
           }}
         >
           Редактировать
@@ -57,6 +65,11 @@ export function AdminPartnerCard({
           Удалить
         </button>
       </div>
+      <EditModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        memoizedContent={memoizedPartnerForm}
+      />
     </div>
   );
 }

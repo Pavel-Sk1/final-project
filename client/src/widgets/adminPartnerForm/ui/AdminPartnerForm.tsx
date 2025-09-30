@@ -5,6 +5,7 @@ import {
   updatePartnerThunk,
   type IPartner,
   type ICreatePartner,
+  deleteOnePartner,
 } from "@/entities";
 import { useAppDispatch } from "@/shared";
 
@@ -23,18 +24,30 @@ const initialPartnerInput: ICreatePartner = {
 type AdminPartnerFormProps = {
   setCreatePartner: React.Dispatch<React.SetStateAction<boolean>> | null;
   partner: IPartner | null;
-  setEditOnePartner: React.Dispatch<React.SetStateAction<boolean>> | null;
+  onClose: (() => void) | null;
 };
 
 export function AdminPartnerForm({
   setCreatePartner = null,
   partner = null,
-  setEditOnePartner = null,
+  onClose = null,
 }: AdminPartnerFormProps) {
   const dispatch = useAppDispatch();
 
   const [partnerInput, setPartnerInput] = useState<ICreatePartner | IPartner>(
-    initialPartnerInput
+    partner
+      ? {
+          company_name: partner.company_name,
+          inn: partner.inn,
+          ogrn: partner.ogrn,
+          address: partner.address,
+          contact_person: partner.contact_person,
+          contact_email: partner.contact_email,
+          contact_phone: partner.contact_phone,
+          comment: partner.comment,
+          status: partner.status,
+        }
+      : initialPartnerInput   
   );
 
   useEffect(() => {
@@ -77,7 +90,8 @@ export function AdminPartnerForm({
     } finally {
       setPartnerInput(initialPartnerInput);
       setCreatePartner?.(false);
-      setEditOnePartner?.(false);
+      onClose?.();
+      dispatch(deleteOnePartner());
     }
   };
 
@@ -203,7 +217,8 @@ export function AdminPartnerForm({
           className={styles.cancelButton}
           onClick={() => {
             setCreatePartner?.(false);
-            setEditOnePartner?.(false);
+            onClose?.();
+            dispatch(deleteOnePartner());
           }}
         >
           Отмена

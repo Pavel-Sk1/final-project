@@ -1,10 +1,10 @@
+import { useMemo, useState } from "react";
 import styles from "./AdminManageProductCard.module.css";
-import { useAppDispatch } from "@/shared";
+import { useAppDispatch, EditModal } from "@/shared";
 import type { IProduct } from "@/entities/products";
-import { deleteProductThunk } from "@/entities";
-import { editOneProduct } from "@/entities";
-import { useState } from "react";
-import { AdminManageEditProductModal } from "@/widgets/adminManageEditProductModal/ui/AdminManageEditProductModal";
+import { deleteProductThunk, editOneProduct } from "@/entities";
+import { AdminManageProductForm } from "@/widgets";
+
 
 type AdminManageProductCardProps = {
   product: IProduct;  
@@ -15,6 +15,16 @@ export function AdminManageProductCard({
 }: AdminManageProductCardProps) {
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
+
+  const memoizedProductForm = useMemo(() => {
+    return (
+      <AdminManageProductForm
+        product={product}
+        onClose={() => setIsOpen(false)}
+        setProCreateProduct={null}
+      />
+    )
+  }, [product, setIsOpen])
   const deleteProductHandler = () => {
     try {
       dispatch(deleteProductThunk(product.id));
@@ -72,9 +82,10 @@ export function AdminManageProductCard({
           Удалить
         </button>
       </div>
-      <AdminManageEditProductModal
+      <EditModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
+        memoizedContent={memoizedProductForm}
       />
     </div>
   );
