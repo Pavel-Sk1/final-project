@@ -24,6 +24,11 @@ export function AdminManageProductCard({
   };
   return (
     <div className={styles.productItem}>
+      <div className={styles.itemStatus}>
+        <span className={product.is_active ? styles.statusActive : styles.statusInactive}>
+          {product.is_active ? 'Активен' : 'Неактивен'}
+        </span>
+      </div>
       <div className={styles.itemImage}>
         <img src={product.img} alt={product.name} />
       </div>
@@ -32,13 +37,6 @@ export function AdminManageProductCard({
         <p className={styles.itemDescription}>{product.price}</p>
         <p className={styles.itemDescription}>{product.recipe}</p>
         <p className={styles.itemDescription}>{product.weight}</p>
-        <p
-          className={`${styles.itemDescription} ${
-            product.is_active ? styles.statusActive : styles.statusInactive
-          }`}
-        >
-          {product.is_active ? "Активен" : "Неактивен"}
-        </p>
         {product.variants && product.variants.length > 0 && (
           <div className={styles.variantsContainer}>
             {product.variants.map((variant, index) => (

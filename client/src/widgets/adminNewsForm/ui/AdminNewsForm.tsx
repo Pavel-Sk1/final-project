@@ -86,16 +86,16 @@ export function AdminNewsForm({
         />
       </div>
       <div className={styles.formGroup}>
-        <label htmlFor="is_active">Показывать/скрыть на сайте</label>
-        <input
-          id="is_active"
-          type="checkbox"
-          name="is_active"
-          placeholder="Активность"
-          checked={newsInput.is_active}
-          onChange={onChangeNewsIsActiveHandler}
-          className={styles.formInput}
-        />
+        <div className={styles.checkboxGroup}>
+          <input
+            type="checkbox"
+            name="is_active"
+            id="is_active"
+            checked={newsInput.is_active}
+            onChange={onChangeNewsIsActiveHandler}
+          />
+          <label htmlFor="is_active">Активность новости</label>
+        </div>
       </div>
       <div className={styles.formActions}>
         <button type="submit" className={styles.saveButton}>

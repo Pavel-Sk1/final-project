@@ -66,6 +66,31 @@
   color: var(--text-light);
 }
 
+.checkboxGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: var(--light-blue);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.checkboxGroup input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.checkboxGroup label {
+  margin: 0;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--primary-dark);
+}
+
 .formActions {
   display: flex;
   gap: 1rem;

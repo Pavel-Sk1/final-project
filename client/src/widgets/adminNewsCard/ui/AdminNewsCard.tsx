@@ -30,6 +30,11 @@ export function AdminNewsCard({
 
   return (
     <div key={news.id} className={styles.newsItem}>
+      <div className={styles.itemStatus}>
+        <span className={news.is_active ? styles.statusActive : styles.statusInactive}>
+          {news.is_active ? 'Активна' : 'Неактивна'}
+        </span>
+      </div>
       <div className={styles.itemImage}>
         <img src={news.img} alt={news.title} />
       </div>

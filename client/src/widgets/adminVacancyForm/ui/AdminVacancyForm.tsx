@@ -97,16 +97,16 @@ export function AdminVacancyForm({
         />
       </div>
       <div className={styles.formGroup}>
-        <label htmlFor="is_active">Показывать/скрыть на сайте</label>
-        <input
-          id="is_active"
-          type="checkbox"
-          name="is_active"
-          placeholder="Активность"
-          checked={vacancyInput.is_active}
-          onChange={onChangeVacancyIsActiveHandler}
-          className={styles.formInput}
-        />
+        <div className={styles.checkboxGroup}>
+          <input
+            type="checkbox"
+            name="is_active"
+            id="is_active"
+            checked={vacancyInput.is_active}
+            onChange={onChangeVacancyIsActiveHandler}
+          />
+          <label htmlFor="is_active">Активность вакансии</label>
+        </div>
       </div>
       <div className={styles.formActions}>
         <button type="submit" className={styles.saveButton}>
