@@ -1,29 +1,61 @@
+import { useEffect, useState } from "react";
 import styles from "./AdminVacancyForm.module.css";
-import {  
+import {
+  createVacancyThunk,
+  deleteOneVacancy,
   updateVacancyThunk,
   type IAdminVacancy,
   type ICreateAdminVacancy,
 } from "@/entities";
-import type { AppDispatch } from "@/app/store/store";
+import { useAppDispatch } from "@/shared";
+
+const initialVacancyInput: ICreateAdminVacancy = {
+  position: "",
+  location: "",
+  salary: "",
+  description: "",
+  is_active: false,
+};
 
 type AdminVacancyFormProps = {
-  vacancy: IAdminVacancy;
-  dispatch: AppDispatch;
-  setEditOneVacancy: (value: boolean) => void;
-  editOneVacancyId: number;
-  vacancyInput: ICreateAdminVacancy;
-  setVacancyInput: React.Dispatch<React.SetStateAction<ICreateAdminVacancy>>;
+  setCreateVacancy: React.Dispatch<React.SetStateAction<boolean>> | null;
+  vacancy: IAdminVacancy | null;
+  onClose: (() => void) | null;
 };
 
 export function AdminVacancyForm({
+  setCreateVacancy = null,
   vacancy,
-  dispatch,
-  setEditOneVacancy,
-  editOneVacancyId,
-  vacancyInput,
-  setVacancyInput,
+  onClose = null,
 }: AdminVacancyFormProps) {
-  const onChangeVacancyHandler = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const dispatch = useAppDispatch();
+  const [vacancyInput, setVacancyInput] = useState<ICreateAdminVacancy>(
+    vacancy
+      ? {
+          position: vacancy.position,
+          location: vacancy.location,
+          salary: vacancy.salary,
+          description: vacancy.description,
+          is_active: vacancy.is_active,
+        }
+      : initialVacancyInput
+  );
+
+  useEffect(() => {
+    if (vacancy) {
+      setVacancyInput({
+        position: vacancy.position,
+        location: vacancy.location,
+        salary: vacancy.salary,
+        description: vacancy.description,
+        is_active: vacancy.is_active,
+      });
+    }
+  }, [vacancy]);
+
+  const onChangeVacancyHandler = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setVacancyInput((prev: ICreateAdminVacancy) => ({
       ...prev,
       [event.target.name]: event.target.value,
@@ -42,20 +74,23 @@ export function AdminVacancyForm({
   const onSubmitVacancyHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      dispatch(updateVacancyThunk({ id: editOneVacancyId, vacancy: vacancyInput }));
+      if (vacancy) {
+        dispatch(updateVacancyThunk({ id: vacancy.id, vacancy: vacancyInput }));
+      } else {
+        dispatch(createVacancyThunk(vacancyInput));
+      }
     } catch (error) {
       console.error(error);
     } finally {
-      setEditOneVacancy(false);
+      setVacancyInput(initialVacancyInput);
+      setCreateVacancy?.(false);
+      onClose?.();
+      dispatch(deleteOneVacancy());
     }
   };
-  
+
   return (
-    <form
-      key={vacancy.id}
-      className={styles.editForm}
-      onSubmit={onSubmitVacancyHandler}
-    >
+    <form className={styles.editForm} onSubmit={onSubmitVacancyHandler}>
       <div className={styles.formGroup}>
         <input
           type="text"
@@ -115,7 +150,11 @@ export function AdminVacancyForm({
         <button
           type="button"
           className={styles.cancelButton}
-          onClick={() => setEditOneVacancy(false)}
+          onClick={() => {
+            setCreateVacancy?.(false);
+            onClose?.();
+            dispatch(deleteOneVacancy());
+          }}
         >
           Отмена
         </button>

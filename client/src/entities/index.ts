@@ -54,6 +54,8 @@ export {
   adminReducer,
   editOneNews,
   deleteOneNews,
+  editOneVacancy,
+  deleteOneVacancy,
   type IOrder,
   type OrderArrayType,
   type IAdminVacancy,

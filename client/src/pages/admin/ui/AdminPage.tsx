@@ -7,12 +7,12 @@ import {
   AdminManageProductList,
   AdminNewsList,
   AdminProductList,
-  AdminVacancyList,
-  AdminCreateVacancyForm,
+  AdminVacancyList,  
   AdminPartnerForm,
   AdminPartnerList,
   AdminProfitChart,
   AdminNewsForm,
+  AdminVacancyForm,
 } from "@/widgets";
 import { AdminCalculationsPage } from "@/widgets/adminCalculationsPage";
 import { AdminMainContactList } from "@/widgets/adminContactList";
@@ -293,7 +293,11 @@ export function AdminPage() {
                 </button>
               </div>
               {createVacancy && (
-                <AdminCreateVacancyForm setCreateVacancy={setCreateVacancy} />
+                <AdminVacancyForm
+                  setCreateVacancy={setCreateVacancy}
+                  vacancy={null}
+                  onClose={null}
+                />
               )}
             </section>
             <section className={styles.section}>

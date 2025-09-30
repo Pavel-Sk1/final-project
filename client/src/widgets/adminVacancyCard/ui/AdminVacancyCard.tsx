@@ -1,25 +1,31 @@
+import { useMemo, useState } from "react";
 import {
   deleteVacancyThunk,
-  type IAdminVacancy,
-  type ICreateAdminVacancy,
+  editOneVacancy,
+  type IAdminVacancy,  
 } from "@/entities";
 import styles from "./AdminVacancyCard.module.css";
-import { useAppDispatch } from "@/shared";
+import { useAppDispatch, EditModal } from "@/shared";
+import { AdminVacancyForm } from "@/widgets/adminVacancyForm";
 
 type AdminVacancyCardProps = {
-  vacancy: IAdminVacancy;
-  setEditOneVacancy: (value: boolean) => void;
-  setEditOneVacancyId: (value: number) => void;
-  setVacancyInput: React.Dispatch<React.SetStateAction<ICreateAdminVacancy>>;
+  vacancy: IAdminVacancy;  
 };
 
 export function AdminVacancyCard({
-  vacancy,
-  setEditOneVacancy,
-  setEditOneVacancyId,
-  setVacancyInput,
+  vacancy,  
 }: AdminVacancyCardProps) {
   const dispatch = useAppDispatch();
+  const [isOpen, setIsOpen] = useState(false);
+  const memoizedVacancyForm = useMemo(() => {
+    return (
+      <AdminVacancyForm
+        vacancy={vacancy}
+        onClose={() => setIsOpen(false)}
+        setCreateVacancy={null}
+      />
+    )
+  }, [vacancy, setIsOpen])
   const deleteVacancyHandler = () => {
     try {
       dispatch(deleteVacancyThunk(vacancy.id));
@@ -45,15 +51,8 @@ export function AdminVacancyCard({
         <button
           className={styles.editButton}
           onClick={() => {
-            setEditOneVacancy(true);
-            setEditOneVacancyId(vacancy.id);
-            setVacancyInput({
-              position: vacancy.position,
-              location: vacancy.location,
-              salary: vacancy.salary,
-              description: vacancy.description,
-              is_active: vacancy.is_active,
-            });
+            dispatch(editOneVacancy(vacancy));
+            setIsOpen(true);
           }}
         >
           Редактировать
@@ -62,6 +61,11 @@ export function AdminVacancyCard({
           Удалить
         </button>
       </div>
+      <EditModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        memoizedContent={memoizedVacancyForm}
+      />
     </div>
   );
 }

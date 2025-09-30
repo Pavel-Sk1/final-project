@@ -1,3 +1,3 @@
 export { type IAdminVacancy, type AdminVacancyArrayType, type ICreateAdminNews, type IAdminNews, type AdminNewsArrayType, type ICreateAdminProduct, type IAdminProduct, type AdminProductArrayType, type OrderArrayType,type IOrder, ADMIN_API_ROUTES, type ICreateAdminVacancy, type IAdminMainContact } from './model';
 export { getAllAdminNewsThunk, getNewsByIdThunk, createNewsThunk, updateNewsThunk, deleteNewsThunk, getAllProductsThunk, getProductByIdThunk, updateProductThunk, getOrdersByDateThunk, getAllAdminVacanciesThunk, getVacancyByIdThunk, createVacancyThunk, updateVacancyThunk, deleteVacancyThunk, getMainContactThunk, updateMainContactThunk } from './api/adminThunkApi';
-export { adminReducer, editOneNews, deleteOneNews } from './slice/adminSlice';
+export { adminReducer, editOneNews, deleteOneNews, editOneVacancy, deleteOneVacancy } from './slice/adminSlice';
