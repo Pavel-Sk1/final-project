@@ -7,7 +7,6 @@ module.exports = {
       "MainContacts",
       [
         {
-          id: 1,
           user_id: 1,
           name: "Ресторан 'Главный'",
           email: "info@restaurant.ru",

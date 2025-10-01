@@ -7,7 +7,6 @@ module.exports = {
       "feedback",
       [
         {
-          id: 1,
           user_name: "Анна Петрова",
           user_contact: "anna.petrova@email.com",
           message:
@@ -18,7 +17,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 2,
           user_name: "Михаил Иванов",
           user_contact: "+7 (999) 123-45-67",
           message:
@@ -29,7 +27,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 3,
           user_name: "Елена Смирнова",
           user_contact: "elena.smirnova@email.com",
           message:
@@ -40,7 +37,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 4,
           user_name: "Дмитрий Козлов",
           user_contact: "+7 (999) 234-56-78",
           message:
@@ -51,7 +47,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 5,
           user_name: "Ольга Васильева",
           user_contact: "olga.vasilieva@email.com",
           message:
@@ -62,7 +57,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 6,
           user_name: "Алексей Морозов",
           user_contact: "+7 (999) 345-67-89",
           message:
@@ -73,7 +67,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 7,
           user_name: "Татьяна Новикова",
           user_contact: "tatiana.novikova@email.com",
           message:

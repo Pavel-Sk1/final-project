@@ -7,7 +7,6 @@ module.exports = {
       "tg_users",
       [
         {
-          id: 9,
           tg_user_id: "870993655",
           tg_username: "developer",
           first_name: "Developer",

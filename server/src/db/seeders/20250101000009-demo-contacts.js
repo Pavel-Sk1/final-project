@@ -7,7 +7,6 @@ module.exports = {
       "contacts",
       [
         {
-          id: 1,
           type: "phone",
           value: "+7 (495) 123-45-67",
           label: "Основной телефон",
@@ -15,7 +14,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 2,
           type: "phone",
           value: "+7 (495) 234-56-78",
           label: "Телефон доставки",
@@ -23,7 +21,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 3,
           type: "email",
           value: "info@restaurant.ru",
           label: "Общая почта",
@@ -31,7 +28,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 4,
           type: "email",
           value: "orders@restaurant.ru",
           label: "Заказы",
@@ -39,7 +35,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 5,
           type: "address",
           value: "Москва, ул. Тверская, 15",
           label: "Основной ресторан",
@@ -47,7 +42,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 6,
           type: "address",
           value: "Москва, ул. Арбат, 25",
           label: "Филиал на Арбате",
@@ -55,7 +49,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 7,
           type: "social",
           value: "@restaurant_moscow",
           label: "Instagram",
@@ -63,7 +56,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 8,
           type: "social",
           value: "restaurant.moscow",
           label: "Telegram",
@@ -71,7 +63,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 9,
           type: "working_hours",
           value: "10:00 - 23:00",
           label: "Ежедневно",
@@ -79,7 +70,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: 10,
           type: "working_hours",
           value: "10:00 - 02:00",
           label: "Доставка",
