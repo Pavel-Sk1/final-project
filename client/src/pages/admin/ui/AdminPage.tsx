@@ -2,12 +2,11 @@ import styles from "./AdminPage.module.css";
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks";
 import { getOrdersByDateThunk } from "@/entities";
-import {  
+import {
   AdminManageProductForm,
-  AdminManageProductList,
   AdminNewsList,
   AdminProductList,
-  AdminVacancyList,  
+  AdminVacancyList,
   AdminPartnerForm,
   AdminPartnerList,
   AdminProfitChart,
@@ -163,18 +162,8 @@ export function AdminPage() {
               </div>
               {editCalculations && (
                 <div>
-                  <div
-                    style={{
-                      marginBottom: "20px",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "16px",
-                    }}
-                  >
-                    <label
-                      htmlFor="orderDate"
-                      style={{ fontWeight: "500", color: "#374151" }}
-                    >
+                  <div className={styles.dateSelectorContainer}>
+                    <label htmlFor="orderDate" className={styles.dateLabel}>
                       📅 Дата заказов:
                     </label>
                     <input
@@ -182,16 +171,9 @@ export function AdminPage() {
                       id="orderDate"
                       value={selectedDate}
                       onChange={(e) => setSelectedDate(e.target.value)}
-                      style={{
-                        padding: "8px 12px",
-                        borderRadius: "4px",
-                        border: "1px solid #d1d5db",
-                        backgroundColor: "white",
-                        fontSize: "14px",
-                        minWidth: "150px",
-                      }}
+                      className={styles.dateInput}
                     />
-                    <div style={{ fontSize: "14px", color: "#6b7280" }}>
+                    <div className={styles.dateInfo}>
                       ✅ Только подтвержденные заказы
                     </div>
                   </div>
@@ -276,7 +258,7 @@ export function AdminPage() {
                   {proEditProduct ? "Скрыть" : "Редактировать"}
                 </button>
               </div>
-              {proEditProduct && <AdminManageProductList />}
+              {proEditProduct && <AdminProductList />}
             </section>
           </>
         )}
@@ -344,18 +326,8 @@ export function AdminPage() {
               </div>
               {editProfit && (
                 <div>
-                  <div
-                    style={{
-                      marginBottom: "20px",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "16px",
-                    }}
-                  >
-                    <label
-                      htmlFor="profitDate"
-                      style={{ fontWeight: "500", color: "#374151" }}
-                    >
+                  <div className={styles.dateSelectorContainer}>
+                    <label htmlFor="profitDate" className={styles.dateLabel}>
                       📅 Дата для анализа:
                     </label>
                     <input
@@ -363,16 +335,9 @@ export function AdminPage() {
                       id="profitDate"
                       value={selectedDate}
                       onChange={(e) => setSelectedDate(e.target.value)}
-                      style={{
-                        padding: "8px 12px",
-                        borderRadius: "4px",
-                        border: "1px solid #d1d5db",
-                        backgroundColor: "white",
-                        fontSize: "14px",
-                        minWidth: "150px",
-                      }}
+                      className={styles.dateInput}
                     />
-                    <div style={{ fontSize: "14px", color: "#6b7280" }}>
+                    <div className={styles.dateInfo}>
                       💰 Анализ прибыли по продуктам
                     </div>
                   </div>

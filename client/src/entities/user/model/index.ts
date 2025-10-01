@@ -26,7 +26,6 @@ export interface IPartner {
   updatedAt: Date;
 }
 
-
 export interface IUser {
   id: number;
   login: string;
@@ -38,7 +37,6 @@ export interface IUser {
   createdAt: Date;
   updatedAt: Date;
 }
-
 
 export type UserResponseType = {
   user: IUser;

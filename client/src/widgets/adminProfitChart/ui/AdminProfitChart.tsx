@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import styles from "./AdminProfitChart.module.css";
-import type { IOrder } from "@/entities";
+import type { IOrder } from "@/entities/calculations";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -15,7 +15,6 @@ import {
 } from "chart.js";
 import { Bar, Doughnut, Line } from "react-chartjs-2";
 
-// Регистрируем компоненты Chart.js
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -37,11 +36,7 @@ type AdminProfitChartProps = {
 
 type FilterPeriod = "all" | "today" | "week" | "month" | "custom";
 
-// Расширенный интерфейс для заказа с дополнительной информацией
-interface ExtendedOrderItem {
-  product_id: number;
-  quantity: number;
-  variant?: string;
+interface ExtendedOrder extends IOrder {
   product?: {
     id: number;
     name: string;
@@ -51,9 +46,8 @@ interface ExtendedOrderItem {
   };
 }
 
-// Хардкод себестоимости продуктов
 const PRODUCT_COSTS: Record<string, number> = {
-  // Основные продукты
+  
   'Пирог "Славянский"': 13.11,
   Провансалька: 14.51,
   "Плюшка с маком": 5.29,
@@ -67,7 +61,6 @@ const PRODUCT_COSTS: Record<string, number> = {
   Сырники: 10,
   "Запеканка творожная": 153.33,
 
-  // Пироги с начинками - добавляем разные варианты написания
   "Пирог с творогом жар/печ": 6,
   "Пирог с повидлом жар/печ": 4.62,
   "Пирог с повидло жар/печ": 4.62,
@@ -79,7 +72,6 @@ const PRODUCT_COSTS: Record<string, number> = {
   "Пирог с картошкой жар/печ": 3.64,
   "Пирог с яблоком": 6,
 
-  // Пресные пироги
   "Пирог пресный с картошкой": 15,
   "Пирог пресный с капустой": 15,
   "Пирог пресный с яблоками": 15,
@@ -89,9 +81,8 @@ const PRODUCT_COSTS: Record<string, number> = {
   "Пирог пресный с курагой": 15,
 };
 
-// Простая функция для поиска себестоимости по названию продукта
 const findProductCost = (productName: string): number => {
-  // Ищем точное совпадение
+  
   if (PRODUCT_COSTS[productName]) {
     console.log(
       `Found cost for "${productName}": ${PRODUCT_COSTS[productName]}`
@@ -99,7 +90,6 @@ const findProductCost = (productName: string): number => {
     return PRODUCT_COSTS[productName];
   }
 
-  // Если ничего не найдено, выводим предупреждение
   console.warn(`No cost found for product: "${productName}"`);
   return 0;
 };
@@ -110,12 +100,11 @@ export function AdminProfitChart({
   error = null,
   selectedDate,
 }: AdminProfitChartProps) {
-  // Состояние для фильтров
+  
   const [filterPeriod, setFilterPeriod] = useState<FilterPeriod>("all");
   const [customDateFrom, setCustomDateFrom] = useState("");
   const [customDateTo, setCustomDateTo] = useState("");
 
-  // Функция для фильтрации заказов по периоду
   const getFilteredOrders = useMemo(() => {
     if (!orders || !Array.isArray(orders)) return [];
 
@@ -145,23 +134,23 @@ export function AdminProfitChart({
         if (customDateFrom && customDateTo) {
           startDate = new Date(customDateFrom);
           endDate = new Date(customDateTo);
-          endDate.setHours(23, 59, 59, 999); // Включаем весь день
+          endDate.setHours(23, 59, 59, 999); 
         }
         break;
       case "all":
       default:
-        return orders; // Возвращаем все заказы
+        return orders; 
     }
 
     if (!startDate || !endDate) return orders;
 
     return orders.filter((order) => {
+      if (!order.createdAt) return false;
       const orderDate = new Date(order.createdAt);
       return orderDate >= startDate! && orderDate < endDate!;
     });
   }, [orders, filterPeriod, customDateFrom, customDateTo]);
 
-  // Форматируем дату для отображения
   const formatDate = (dateString: string) => {
     if (!dateString) return "Сегодня";
 
@@ -190,13 +179,30 @@ export function AdminProfitChart({
     }
   };
 
-  // Вычисляем данные для диаграммы
+  const getPeriodTitle = () => {
+    switch (filterPeriod) {
+      case "today":
+        return "сегодня";
+      case "week":
+        return "последние 7 дней";
+      case "month":
+        return "текущий месяц";
+      case "custom":
+        if (customDateFrom && customDateTo) {
+          return `${formatDate(customDateFrom)} - ${formatDate(customDateTo)}`;
+        }
+        return "выбранный период";
+      case "all":
+      default:
+        return "все время";
+    }
+  };
+
   const profitData = useMemo(() => {
     if (!getFilteredOrders || getFilteredOrders.length === 0) return [];
 
-    const extendedOrders = orders as ExtendedOrder[];
+    const extendedOrders = getFilteredOrders as ExtendedOrder[];
 
-    // Собираем все уникальные названия продуктов для отладки
     const allProductNames = new Set<string>();
     extendedOrders.forEach((order) => {
       const productName = order.product?.name || `Продукт #${order.product_id}`;
@@ -219,15 +225,12 @@ export function AdminProfitChart({
       }
     >();
 
-    // Группируем заказы по продуктам
     extendedOrders.forEach((order) => {
       const productName = order.product?.name || `Продукт #${order.product_id}`;
       const productPrice = order.product?.price || 0;
 
-      // Ищем себестоимость по названию продукта
       const costPerUnit = findProductCost(productName);
 
-      // Отладочная информация
       console.log(
         "Product:",
         productName,
@@ -259,7 +262,6 @@ export function AdminProfitChart({
       }
     });
 
-    // Преобразуем в массив и сортируем по прибыли
     const result = Array.from(productStats.entries())
       .map(([name, stats]) => ({
         name,
@@ -267,14 +269,12 @@ export function AdminProfitChart({
       }))
       .sort((a, b) => b.totalProfit - a.totalProfit);
 
-    // Отладочная информация о результатах
     console.log("Profit calculation results:", result);
     console.log("Total products processed:", result.length);
 
     return result;
-  }, [orders]);
+  }, [getFilteredOrders]);
 
-  // Общие показатели
   const totalStats = useMemo(() => {
     return profitData.reduce(
       (acc, item) => ({
@@ -287,13 +287,12 @@ export function AdminProfitChart({
     );
   }, [profitData]);
 
-  // Данные для графиков Chart.js
   const chartData = useMemo(() => {
-    // Топ-10 продуктов по прибыли
+    
     const topProducts = profitData.slice(0, 10);
 
     return {
-      // Данные для столбчатой диаграммы прибыли
+      
       barChart: {
         labels: topProducts.map((item) =>
           item.name.length > 20 ? `${item.name.substring(0, 20)}...` : item.name
@@ -313,7 +312,6 @@ export function AdminProfitChart({
         ],
       },
 
-      // Данные для круговой диаграммы выручки
       doughnutChart: {
         labels: topProducts.map((item) =>
           item.name.length > 15 ? `${item.name.substring(0, 15)}...` : item.name
@@ -332,7 +330,6 @@ export function AdminProfitChart({
         ],
       },
 
-      // Данные для линейного графика рентабельности
       lineChart: {
         labels: topProducts.map((item) =>
           item.name.length > 15 ? `${item.name.substring(0, 15)}...` : item.name
@@ -355,7 +352,6 @@ export function AdminProfitChart({
     };
   }, [profitData]);
 
-  // Если загрузка
   if (loading) {
     return (
       <div className={styles.loadingState}>
@@ -365,7 +361,6 @@ export function AdminProfitChart({
     );
   }
 
-  // Если ошибка
   if (error) {
     return (
       <div className={styles.errorState}>
@@ -376,7 +371,6 @@ export function AdminProfitChart({
     );
   }
 
-  // Если нет заказов
   if (!orders || orders.length === 0) {
     return (
       <div className={styles.emptyState}>
@@ -394,7 +388,7 @@ export function AdminProfitChart({
 
   return (
     <div className={styles.profitChart}>
-      {/* Фильтры по периодам */}
+      {}
       <div className={styles.filtersContainer}>
         <div className={styles.filterGroup}>
           <label className={styles.filterLabel}>Период:</label>
@@ -471,10 +465,10 @@ export function AdminProfitChart({
         </div>
       </div>
 
-      {/* Новые графики Chart.js */}
+      {}
       <div className={styles.modernChartsContainer}>
         <div className={styles.chartsGrid}>
-          {/* Столбчатая диаграмма прибыли */}
+          {}
           <div className={styles.chartCard}>
             <h3 className={styles.chartTitle}>
               📊 Топ-10 продуктов по прибыли
@@ -505,7 +499,7 @@ export function AdminProfitChart({
                       beginAtZero: true,
                       ticks: {
                         callback: function (value) {
-                          return value.toFixed(0) + "₽";
+                          return Number(value).toFixed(0) + "₽";
                         },
                       },
                     },
@@ -521,7 +515,7 @@ export function AdminProfitChart({
             </div>
           </div>
 
-          {/* Круговая диаграмма выручки */}
+          {}
           <div className={styles.chartCard}>
             <h3 className={styles.chartTitle}>🥧 Распределение выручки</h3>
             <div className={styles.chartWrapper}>
@@ -561,7 +555,7 @@ export function AdminProfitChart({
             </div>
           </div>
 
-          {/* Линейный график рентабельности */}
+          {}
           <div className={styles.chartCard}>
             <h3 className={styles.chartTitle}>📈 Рентабельность продуктов</h3>
             <div className={styles.chartWrapper}>
@@ -589,7 +583,7 @@ export function AdminProfitChart({
                       beginAtZero: true,
                       ticks: {
                         callback: function (value) {
-                          return value.toFixed(0) + "%";
+                          return Number(value).toFixed(0) + "%";
                         },
                       },
                     },
@@ -664,7 +658,7 @@ export function AdminProfitChart({
                 );
               })}
 
-              {/* Строка общей прибыли */}
+              {}
               <tr className={styles.totalProfitRow}>
                 <td
                   className={`${styles.productCell} ${styles.totalProfitCell}`}

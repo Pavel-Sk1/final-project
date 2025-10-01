@@ -7,7 +7,6 @@ export function UserPage() {
   const [tab, setTab] = useState("profile");
   const { user, loading, error } = useAppSelector((state) => state.user);
 
-
   if (loading) {
     return (
       <div className={styles.userPage}>

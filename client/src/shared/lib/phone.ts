@@ -44,4 +44,3 @@ export function formatPhoneInputMask(value: string): string {
   return formatted;
 }
 
-

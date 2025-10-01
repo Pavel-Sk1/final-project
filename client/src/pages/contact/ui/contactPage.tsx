@@ -17,7 +17,7 @@ export function ContactPage() {
       if (coords) {
         setCoordinates([coords.lat, coords.lon]);
       } else {
-        setCoordinates([55.75, 37.57]); // Москва по умолчанию, если не нашли координаты
+        setCoordinates([55.75, 37.57]); 
       }
     });
   }, [contacts])
@@ -25,8 +25,6 @@ export function ContactPage() {
   useEffect(() => {
     dispatch(getAllContactsThunk())
   }, [dispatch])
-
-  // форматирование вынесено в shared/lib/phone.ts
 
   if (loading) {
     return (
@@ -71,7 +69,7 @@ export function ContactPage() {
                   <div className={styles.item}>
                     <span className={styles.label}>Telegram:</span>
                     <a href={contact.telegram} target="_blank" rel="noopener noreferrer" className={styles.link}>
-                      {contact.telegram.replace('https://t.me/', '@')}
+                    {contact.telegram.replace('https://t.me/', '@')}
                     </a>
                   </div>
                   <div className={styles.item}>

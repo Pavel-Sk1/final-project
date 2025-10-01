@@ -145,8 +145,6 @@
   flex-wrap: wrap;
 }
 
-/* Кнопка использует общий стиль .btn-primary */
-
 @media (max-width: 768px) {
   .container {
     padding: 1rem;

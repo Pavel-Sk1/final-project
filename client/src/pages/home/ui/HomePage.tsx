@@ -105,14 +105,8 @@ export function HomePage() {
           {news.length > 0 ? (
             newsTransition((style, item) => (
               <animated.div
-                style={{
-                  position: "absolute",
-                  left: 16,
-                  right: 16,
-                  top: 0,
-                  ...style,
-                }}
-                className={styles.newsCard}
+                style={style}
+                className={`${styles.newsCard} ${styles.animatedNewsCard}`}
               >
                 {item?.img ? (
                   <img
@@ -138,7 +132,9 @@ export function HomePage() {
       </div>
       <section className={styles.about}>
         <div className={styles.container}>
-          <h1 className={styles.aboutHeading} id="about">О нас</h1>
+          <h1 className={styles.aboutHeading} id="about">
+            О нас
+          </h1>
           <div className={styles.aboutCard}>
             <h2 className={styles.aboutTitle}>
               Мы рядом, чтобы кормить вкусно
@@ -189,14 +185,8 @@ export function HomePage() {
               <div className={styles.images_stage}>
                 {slideTransition((style) => (
                   <animated.div
-                    style={{
-                      position: "absolute",
-                      left: 0,
-                      right: 0,
-                      top: 0,
-                      ...style,
-                    }}
-                    className={styles.images_grid}
+                    style={style}
+                    className={`${styles.images_grid} ${styles.animatedSliderGrid}`}
                   >
                     {getVisibleImages.map((image, index) => (
                       <div

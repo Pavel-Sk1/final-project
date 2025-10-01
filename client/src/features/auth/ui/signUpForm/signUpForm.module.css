@@ -1,4 +1,4 @@
-/* Стили для формы регистрации */
+
 .signUpForm {
   padding: 2rem;
   background: linear-gradient(180deg, #ffffff, #fff9f5);
@@ -101,7 +101,6 @@
   color: #28a745;
 }
 
-/* Адаптивность */
 @media (max-width: 480px) {
   .signUpForm {
     padding: 1.5rem;

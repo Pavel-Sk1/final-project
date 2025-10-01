@@ -20,32 +20,15 @@ module.exports = {
           updatedAt: new Date(),
         },
         {          
-          login: "manager1",
-          password: hashedPassword,
-          phone: "+7 (999) 234-56-78",
-          role_id: 2, // manager
-          is_active: true,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {          
           login: "user1",
           password: hashedPassword,
           phone: "+7 (999) 345-67-89",
-          role_id: 3, // user
+          role_id: 2, // user
           is_active: true,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
-        {          
-          login: "moderator1",
-          password: hashedPassword,
-          phone: "+7 (999) 456-78-90",
-          role_id: 4, // moderator
-          is_active: true,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
+
       ],
       {}
     );

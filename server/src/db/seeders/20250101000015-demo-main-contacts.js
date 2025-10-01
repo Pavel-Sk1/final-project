@@ -12,7 +12,7 @@ module.exports = {
           email: "info@restaurant.ru",
           phone: 1234567234,
           telegram: "https://t.me/restaurant_main",
-          address: "ул. Пушкина, 85, Пермь",
+          address: "ул. Проспект строителей, 12, Иваново",
           createdAt: new Date(),
           updatedAt: new Date(),
         },

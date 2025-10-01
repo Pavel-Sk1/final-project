@@ -5,28 +5,24 @@ import { AxiosError } from 'axios';
 import { CLIENT_ROUTES, useAppDispatch } from '@/shared';
 import styles from './signInForm.module.css';
 
-// Начальные данные для формы входа
 const INITIAL_INPUTS_DATA: ISignInData = {
   login: '',
   password: '',
 };
 
 export function SignInForm() {
-  // Состояние для хранения данных формы
+  
   const [inputs, setInputs] = useState<ISignInData>(INITIAL_INPUTS_DATA);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  // Обработчик изменения полей формы
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputs((prev) => ({ ...prev, [event.target.name]: event.target.value }));
   };
 
-  // Обработчик отправки формы
   const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // Валидация данных формы
     const { isValid, error } = UserValidator.validateSignInData(inputs);
 
     if (!isValid) {
@@ -35,7 +31,7 @@ export function SignInForm() {
     }
 
     try {
-      // Отправка запроса на вход
+      
       dispatch(signInThunk(inputs))
         .unwrap()
         .then((res) => {

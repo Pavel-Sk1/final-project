@@ -1,4 +1,4 @@
-/* Стили для формы входа */
+
 .signInForm {
   padding: 2rem;
   background: linear-gradient(180deg, #ffffff, #fff9f5);
@@ -84,7 +84,6 @@
   border: 1px solid #f5c6cb;
 }
 
-/* Адаптивность */
 @media (max-width: 480px) {
   .signInForm {
     padding: 1.5rem;

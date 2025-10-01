@@ -1,4 +1,13 @@
-const { News, Product, TgOrder, TgUser, Vacancy, MainContact } = require("../db/models");
+const {
+  News,
+  Product,
+  TgOrder,
+  TgUser,
+  Vacancy,
+  MainContact,
+  User,
+  Partner,
+} = require("../db/models");
 
 class AdminService {
   static async getAllNews() {
@@ -121,7 +130,46 @@ class AdminService {
         order: [["createdAt", "DESC"]],
       });
 
-      return orders;
+      // Дополнительно получаем данные партнеров для каждого заказа
+      const ordersWithPartners = await Promise.all(
+        orders.map(async (order) => {
+          const orderData = order.toJSON();
+
+          // Получаем данные партнера через отдельный запрос
+          if (order.tgUser) {
+            try {
+              const user = await User.findByPk(order.tgUser.tg_user_id, {
+                include: [
+                  {
+                    model: Partner,
+                    as: "partner",
+                    attributes: [
+                      "id",
+                      "company_name",
+                      "contact_person",
+                      "contact_email",
+                      "contact_phone",
+                    ],
+                  },
+                ],
+              });
+
+              if (user) {
+                orderData.tgUser.user = user.toJSON();
+              }
+            } catch (error) {
+              console.log(
+                `Could not fetch partner data for user ${order.tgUser.tg_user_id}:`,
+                error.message
+              );
+            }
+          }
+
+          return orderData;
+        })
+      );
+
+      return ordersWithPartners;
     } catch (error) {
       console.error("Error in AdminService.getOrdersByDate:", error);
       throw error;
@@ -178,8 +226,10 @@ class AdminService {
     }
     if (phone) {
       const digits = String(phone).replace(/\D/g, "");
-      const normalized = digits.startsWith("8") ? "7" + digits.slice(1) : digits;
-      contactToUpdate.phone = normalized; 
+      const normalized = digits.startsWith("8")
+        ? "7" + digits.slice(1)
+        : digits;
+      contactToUpdate.phone = normalized;
     }
     if (telegram) {
       contactToUpdate.telegram = telegram;

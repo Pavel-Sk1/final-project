@@ -220,3 +220,29 @@
     padding: 1rem;
   }
 }
+
+.dateSelectorContainer {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.dateLabel {
+  font-weight: 500;
+  color: #374151;
+}
+
+.dateInput {
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #d1d5db;
+  background-color: white;
+  font-size: 14px;
+  min-width: 150px;
+}
+
+.dateInfo {
+  font-size: 14px;
+  color: #6b7280;
+}

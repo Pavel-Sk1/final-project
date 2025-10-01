@@ -11,6 +11,14 @@ module.exports = (sequelize, DataTypes) => {
         sourceKey: "tg_user_id",
         as: "orders",
       });
+
+      // Связь с User через tg_user_id (который равен User.id)
+      TgUser.belongsTo(models.User, {
+        foreignKey: "tg_user_id",
+        targetKey: "id",
+        as: "user",
+        constraints: false, // Отключаем автоматические ограничения
+      });
     }
   }
 
