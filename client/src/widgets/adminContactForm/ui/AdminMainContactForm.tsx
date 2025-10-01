@@ -34,22 +34,53 @@ export function AdminMainContactForm({
   formValues,
   setFormValues,
 }: AdminMainContactFormProps) {
+  const isDeletingText = (oldValue: string, newValue: string): boolean => {
+    return newValue.length < oldValue.length;
+  };
+
+  const handleAddressAutocomplete = (value: string, currentValue: string): string => {
+    const trimmedValue = value.trim();
+    
+    if (trimmedValue === "п" && !currentValue.includes("проспект")) {
+      return "проспект ";
+    }
+    if (trimmedValue === "б" && !currentValue.includes("бульвар")) {
+      return "бульвар ";
+    }
+    if (trimmedValue === "у" && !currentValue.includes("улица")) {
+      return "улица ";
+    }
+    
+    return value;
+  };
+
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+    
     if (name === "phone") {
       const formatted = formatPhoneInputMask(value);
       setFormValues((prev) => ({ ...prev, phone: formatted }));
       return;
     }
+    
     if (name === "address") {
-      const next = value;
-      if (next.trim() === "") {
-        setFormValues((prev) => ({ ...prev, address: "ул. " }));
+      const currentValue = formValues.address;
+      
+      if (value === "") {
+        setFormValues((prev) => ({ ...prev, address: "" }));
         return;
       }
-      setFormValues((prev) => ({ ...prev, address: next }));
+      
+      if (isDeletingText(currentValue, value)) {
+        setFormValues((prev) => ({ ...prev, address: value }));
+        return;
+      }
+      
+      const newAddressValue = handleAddressAutocomplete(value, currentValue);
+      setFormValues((prev) => ({ ...prev, address: newAddressValue }));
       return;
     }
+    
     setFormValues((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -128,7 +159,7 @@ export function AdminMainContactForm({
         <input
           type="text"
           name="address"
-          placeholder="Улица, Номер дома, Город"
+          placeholder="улица(проспект, бульвар), Номер дома, Город"
           value={formValues.address}
           onChange={onChangeHandler}
           className={styles.formInput}

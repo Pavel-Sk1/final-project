@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       if (typeof address !== 'string') {
         return false;
       }
-      const addressPattern = /^ул\.\s*([\p{L}\s.-]+),\s*(\d+),\s*([\p{L}\s.-]+)$/u;
+      const addressPattern = /^((проспект)|(бульвар)|(улица))\s*([\p{L}\s.-]+),\s*(\d+),\s*([\p{L}\s.-]+)$/u;
       return addressPattern.test(address.trim());
     }
     static validate({ email, phone, telegram, address }) {
