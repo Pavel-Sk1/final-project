@@ -3,13 +3,18 @@ import styles from "./AdminPartnerForm.module.css";
 import {
   createPartnerThunk,
   updatePartnerThunk,
-  type IPartner,
-  type ICreatePartner,
+  type IPartnerWithUser,
+  type ICreatePartnerWithUser,
   deleteOnePartner,
+  signUpThunk,
 } from "@/entities";
-import { useAppDispatch } from "@/shared";
+import { useAppDispatch, useAppSelector } from "@/shared";
 
-const initialPartnerInput: ICreatePartner = {
+const initialPartnerInput: ICreatePartnerWithUser = {
+  login: "",
+  phone: "",
+  password: "",
+  role_id: 0,
   company_name: "",
   inn: "",
   ogrn: "",
@@ -23,7 +28,7 @@ const initialPartnerInput: ICreatePartner = {
 
 type AdminPartnerFormProps = {
   setCreatePartner: React.Dispatch<React.SetStateAction<boolean>> | null;
-  partner: IPartner | null;
+  partner: IPartnerWithUser | null;
   onClose: (() => void) | null;
 };
 
@@ -33,10 +38,14 @@ export function AdminPartnerForm({
   onClose = null,
 }: AdminPartnerFormProps) {
   const dispatch = useAppDispatch();
+  const { userToCreate } = useAppSelector((state) => state.user);
 
-  const [partnerInput, setPartnerInput] = useState<ICreatePartner | IPartner>(
+  const [partnerInput, setPartnerInput] = useState<ICreatePartnerWithUser>(
     partner
       ? {
+          login: partner.user.login,
+          phone: partner.user.phone,
+          role_id: partner.user.role_id,
           company_name: partner.company_name,
           inn: partner.inn,
           ogrn: partner.ogrn,
@@ -47,7 +56,7 @@ export function AdminPartnerForm({
           comment: partner.comment,
           status: partner.status,
         }
-      : initialPartnerInput   
+      : initialPartnerInput
   );
 
   useEffect(() => {
@@ -62,6 +71,9 @@ export function AdminPartnerForm({
         contact_phone: partner.contact_phone,
         comment: partner.comment,
         status: partner.status,
+        login: partner.user.login,
+        phone: partner.user.phone,
+        role_id: partner.user.role_id,
       });
     }
   }, [partner]);
@@ -81,9 +93,42 @@ export function AdminPartnerForm({
     event.preventDefault();
     try {
       if (partner) {
-        dispatch(updatePartnerThunk({ id: partner.id, partner: partnerInput }));
+        const partnerToUpdate = {
+          company_name: partnerInput.company_name,
+          inn: partnerInput.inn,
+          ogrn: partnerInput.ogrn,
+          address: partnerInput.address,
+          contact_person: partnerInput.contact_person,
+          contact_email: partnerInput.contact_email,
+          contact_phone: partnerInput.contact_phone,
+          comment: partnerInput.comment,
+          status: partnerInput.status,
+        };
+        dispatch(
+          updatePartnerThunk({ id: partner.id, partner: partnerToUpdate })
+        );
       } else {
-        dispatch(createPartnerThunk(partnerInput));
+        dispatch(
+          signUpThunk({
+            login: partnerInput.login,
+            password: partnerInput.password || "",
+            phone: partnerInput.phone,
+            role_id: partnerInput.role_id,
+          })
+        );
+        const partnerToCreate = {
+          company_name: partnerInput.company_name,
+          inn: partnerInput.inn,
+          ogrn: partnerInput.ogrn,
+          address: partnerInput.address,
+          contact_person: partnerInput.contact_person,
+          contact_email: partnerInput.contact_email,
+          contact_phone: partnerInput.contact_phone,
+          comment: partnerInput.comment,
+          status: partnerInput.status,
+          user_id: userToCreate?.id,
+        };
+        dispatch(createPartnerThunk(partnerToCreate));
       }
     } catch (error) {
       console.error(error);
@@ -97,6 +142,57 @@ export function AdminPartnerForm({
 
   return (
     <form className={styles.editForm} onSubmit={onSubmitPartnerHandler}>
+      <div className={styles.formGroup}>
+        <label htmlFor="login">Логин</label>
+        <input
+          id="login"
+          type="text"
+          name="login"
+          placeholder="Введите логин"
+          value={partnerInput.login}
+          onChange={onChangePartnerHandler}
+          className={styles.formInput}
+        />
+      </div>
+      {!partner && (
+      <div className={styles.formGroup}>
+        <label htmlFor="password">Пароль</label>
+        <input
+          id="password"
+          type="password"
+          name="password"
+          placeholder="Введите пароль"
+          value={partnerInput.password}
+          onChange={onChangePartnerHandler}
+          className={styles.formInput}
+        />
+      </div>)}
+      <div className={styles.formGroup}>
+        <label htmlFor="phone">Телефон</label>
+        <input
+          id="phone"
+          type="text"
+          name="phone"
+          placeholder="Введите телефон"
+          value={partnerInput.phone}
+          onChange={onChangePartnerHandler}
+          className={styles.formInput}
+        />
+      </div>
+      <div className={styles.formGroup}>
+        <label htmlFor="role_id">Роль</label>
+        <select
+          id="role_id"
+          name="role_id"
+          value={partnerInput.role_id}
+          onChange={onChangePartnerHandler}
+          className={styles.formInput}
+        >
+          <option value="">Выберите роль</option>
+          <option value={1}>Администратор</option>
+          <option value={3}>Пользователь</option>
+        </select>
+      </div>
       <div className={styles.formGroup}>
         <label htmlFor="company_name">Название компании</label>
         <input

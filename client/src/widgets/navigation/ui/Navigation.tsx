@@ -72,7 +72,7 @@ export function Navigation(): React.JSX.Element {
             </li>
           </ul>
         </div>
-        {user?.role.name === "admin" && (
+        {user?.role?.name === "admin" && (
           <NavLink
             to={CLIENT_ROUTES.ADMIN}
             className={({ isActive }) =>
@@ -82,7 +82,7 @@ export function Navigation(): React.JSX.Element {
             Админ
           </NavLink>
         )}
-        {user && user.role.name !== "admin" && (
+        {user && user.role?.name !== "admin" && (
           <NavLink
             to={CLIENT_ROUTES.USER}
             className={({ isActive }) =>

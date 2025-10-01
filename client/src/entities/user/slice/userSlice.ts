@@ -5,6 +5,7 @@ import { refreshTokensThunk, signUpThunk, signInThunk, signOutThunk } from '../a
 // Тип состояния пользователя (тип всего слайса)
 type UserState = {
     user: IUser | null;
+    userToCreate: IUser | null;
     error: string | null;
     loading?: boolean;
     isInitialized?: boolean;
@@ -13,6 +14,7 @@ type UserState = {
 // Начальное состояние пользователя
 const initialState: UserState = {
     user: null,
+    userToCreate: null,
     error: null,
     loading: false,
     isInitialized: false,
@@ -49,8 +51,8 @@ const userSlice = createSlice({
                 state.loading = true;
             })
             // Успешная регистрация
-            .addCase(signUpThunk.fulfilled, (state, action) => {
-                state.user = action.payload.data.user;
+            .addCase(signUpThunk.fulfilled, (state, action) => {                
+                state.userToCreate = action.payload.data.user;
                 state.loading = false;
                 state.isInitialized = true;
                 state.error = null;

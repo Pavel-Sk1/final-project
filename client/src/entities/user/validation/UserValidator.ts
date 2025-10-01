@@ -59,7 +59,7 @@ export class UserValidator {
     };
   }
 
-  static validateSignUpData({ login, email, password, repeatPassword }: ISignUpData) {
+  static validateSignUpData({ login, password }: ISignUpData) {
     if (
       !login ||
       typeof login !== 'string' ||
@@ -69,19 +69,7 @@ export class UserValidator {
         isValid: false,
         error: 'Поле login не должно быть пустым',
       };
-    }
-
-    if (
-      !email ||
-      typeof email !== 'string' ||
-      email.trim().length === 0 ||
-      !this.validateEmail(email)
-    ) {
-      return {
-        isValid: false,
-        error: 'Email должен быть валидным',
-      };
-    }
+    }    
 
     if (
       !password ||
@@ -95,27 +83,7 @@ export class UserValidator {
           'Пароль не должен быть пустым, должен содержать одну большую букву, одну маленькую, один специальный символ, и не должен быть короче 8 символов',
       };
     }
-
-    if (
-      !repeatPassword ||
-      typeof repeatPassword !== 'string' ||
-      repeatPassword.trim().length === 0 ||
-      !this.validatePassword(repeatPassword)
-    ) {
-      return {
-        isValid: false,
-        error:
-          'Пароль не должен быть пустым, должен содержать одну большую букву, одну маленькую, один специальный символ, и не должен быть короче 8 символов',
-      };
-    }
-
-    if (password !== repeatPassword) {
-      return {
-        isValid: false,
-        error: 'Пароли не совпадают',
-      };
-    }
-
+    
     return {
       isValid: true,
       error: null,

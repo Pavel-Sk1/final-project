@@ -41,7 +41,7 @@ export function SignInForm() {
         .then((res) => {
           setInputs(INITIAL_INPUTS_DATA);
           const role = res.data.user.role;
-          if (role.name === 'admin') {
+          if (role?.name === 'admin') {
             navigate(CLIENT_ROUTES.ADMIN);
           } else {
             navigate(CLIENT_ROUTES.HOME);
