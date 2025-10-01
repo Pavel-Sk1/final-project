@@ -8,6 +8,7 @@ export { AdminNewsCard } from "./adminNewsCard";
 export { AdminProductCard } from "./adminProductCard";
 export { AdminManageProductForm } from "./adminManageProductForm";
 export { AdminManageProductCard } from "./adminManageProductCard";
+export { AdminManageProductList } from "./adminManageProductList";
 export { AdminVacancyList } from "./adminVacancyList";
 export { AdminVacancyForm } from "./adminVacancyForm";
 export { AdminVacancyCard } from "./adminVacancyCard";

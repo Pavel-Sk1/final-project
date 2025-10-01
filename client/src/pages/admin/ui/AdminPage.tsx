@@ -12,6 +12,7 @@ import {
   AdminProfitChart,
   AdminNewsForm,
   AdminVacancyForm,
+  AdminManageProductList,
 } from "@/widgets";
 import { AdminCalculationsPage } from "@/widgets/adminCalculationsPage";
 import { AdminMainContactList } from "@/widgets/adminContactList";
@@ -258,7 +259,7 @@ export function AdminPage() {
                   {proEditProduct ? "Скрыть" : "Редактировать"}
                 </button>
               </div>
-              {proEditProduct && <AdminProductList />}
+              {proEditProduct && <AdminManageProductList />}
             </section>
           </>
         )}
