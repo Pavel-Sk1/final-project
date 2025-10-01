@@ -17,7 +17,7 @@ class PartnerService {
     }
     static async updatePartner(id, partner) {
         const { company_name, inn, ogrn, address, contact_person, contact_email, contact_phone, comment, status } = partner;
-        const partnerToUpdate = await Partner.findByPk(id);
+        const partnerToUpdate = await Partner.findByPk(id, { include: [{ model: User, as: 'user' }] });
         if (company_name) {
             partnerToUpdate.company_name = company_name;
         }

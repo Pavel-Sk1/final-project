@@ -44,6 +44,7 @@ module.exports = {
           contact_phone: "+7 (495) 345-67-89",
           comment: "Поставщик молочных продуктов и сыров",
           status: "pending",
+          user_id: 3, // user1
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -57,6 +58,7 @@ module.exports = {
           contact_phone: "+7 (495) 456-78-90",
           comment: "Поставщик безалкогольных напитков",
           status: "active",
+          user_id: 4, // moderator1
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -70,6 +72,7 @@ module.exports = {
           contact_phone: "+7 (495) 567-89-01",
           comment: "Поставщик хлебобулочных изделий",
           status: "inactive",
+          user_id: 3, // user1
           createdAt: new Date(),
           updatedAt: new Date(),
         },

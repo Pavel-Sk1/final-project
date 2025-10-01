@@ -4,7 +4,6 @@ const checkRole = require('../middleware/checkRole');
 const verifyAccessToken = require('../middleware/verifyAccessToken');
 
 router.get('/', PartnerController.getAllPartners);
-router.get('/:id', PartnerController.getPartnerById);
 router.get('/user', verifyAccessToken, checkRole('admin'), PartnerController.getAllPartnersWithUser);
 router.post('/', verifyAccessToken, checkRole('admin'), PartnerController.createPartner);
 router.put('/:id', verifyAccessToken, checkRole('admin'), PartnerController.updatePartner);

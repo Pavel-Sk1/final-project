@@ -19,8 +19,7 @@ export const refreshTokensThunk = createAsyncThunk<ServerResponseType<UserRespon
 // Регистрация
 export const signUpThunk = createAsyncThunk<ServerResponseType<UserResponseType>, ISignUpData, { rejectValue: ServerResponseType }>('***user/signUp***', async (userData, { rejectWithValue }) => {
     try {
-        const { data } = await axiosInstance.post<ServerResponseType<UserResponseType>>(USER_API_ROUTES.SIGN_UP, userData);
-        setAccessToken(data.data.accessToken);
+        const { data } = await axiosInstance.post<ServerResponseType<UserResponseType>>(USER_API_ROUTES.SIGN_UP, userData);        
         return data;
     } catch (error) {
         const err = error as AxiosError<ServerResponseType>;
