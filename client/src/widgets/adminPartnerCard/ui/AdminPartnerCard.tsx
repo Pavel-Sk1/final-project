@@ -32,8 +32,8 @@ export function AdminPartnerCard({
   return (
     <div className={styles.partnerItem}>
       <div className={styles.itemContent}>
-        <h3 className={styles.itemTitle}>{partner.user.login}</h3>
-        <p className={styles.itemDescription}>{partner.user.phone}</p>        
+        <h3 className={styles.itemTitle}>{partner.user?.login}</h3>        
+        <p className={styles.itemDescription}>{partner.user?.phone}</p>        
         <h3 className={styles.itemTitle}>{partner.company_name}</h3>
         <p className={styles.itemDescription}>{partner.inn}</p>
         <p className={styles.itemDescription}>{partner.ogrn}</p>

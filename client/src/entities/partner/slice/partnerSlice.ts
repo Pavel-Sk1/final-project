@@ -108,8 +108,9 @@ const partnerSlice = createSlice({
         state.loading = true;
       })
       .addCase(deletePartnerThunk.fulfilled, (state, action) => {
-        state.partnersArray = state.partnersArray.filter(
-          (partner) => partner.id !== action.payload.data.id
+
+        state.partnersArrayWithUser = state.partnersArrayWithUser.filter(
+          (partner) => Number(partner.id) !== Number(action.payload.data.id)
         );
         state.loading = false;
         state.error = null;

@@ -104,6 +104,7 @@ class PartnerController {
   }
   static async deletePartner(req, res) {
     try {
+      console.log("======PartnerController.deletePartner===\n", req.params.id);
       const partner = await PartnerService.deletePartner(req.params.id);
       if (!partner) {
         return res
