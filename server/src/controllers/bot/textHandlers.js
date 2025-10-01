@@ -63,9 +63,9 @@ class TextHandlers {
     // Парсим варианты
     const quantities = inputText.split("/").map((q) => parseInt(q.trim()));
 
-    if (quantities.some((q) => isNaN(q) || q < 0 || q > 100)) {
+    if (quantities.some((q) => isNaN(q) || q < 0)) {
       await ctx.reply(
-        "Пожалуйста, введите числа от 0 до 100 через слеш (например: 10/15):"
+        "Пожалуйста, введите числа от 0 через слеш (например: 10/15):"
       );
       return;
     }
@@ -123,10 +123,8 @@ class TextHandlers {
   async handleSimpleQuantity(ctx, productId, inputText, userState) {
     const quantity = parseInt(inputText);
 
-    if (isNaN(quantity) || quantity < 0 || quantity > 100) {
-      await ctx.reply(
-        "Пожалуйста, введите число от 0 до 100 (0 для удаления):"
-      );
+    if (isNaN(quantity) || quantity < 0) {
+      await ctx.reply("Пожалуйста, введите число от 0 (0 для удаления):");
       return;
     }
 

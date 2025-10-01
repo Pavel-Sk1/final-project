@@ -25,6 +25,7 @@ process.once("SIGTERM", () => bot.stop("SIGTERM"));
 
 bot.launch();
 console.log("🤖 Telegram бот поставщика запущен!");
-console.log(
-  '📱 Бот готов принимать заказы от магазинов'
-);
+console.log("📱 Бот готов принимать заказы от магазинов");
+
+// Экспортируем бот для использования в других модулях
+module.exports = bot;

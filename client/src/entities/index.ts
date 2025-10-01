@@ -57,7 +57,7 @@ export {
   deleteOneNews,
   editOneVacancy,
   deleteOneVacancy,
-  type IOrder,
+  type IOrder as IAdminOrder,
   type OrderArrayType,
   type IAdminVacancy,
   type ICreateAdminVacancy,
@@ -106,3 +106,16 @@ export {
   type PartnersArrayWithUserType,
   PARTNER_API_ROUTES,
 } from "./partner";
+
+// orders
+export {
+  ordersReducer,
+  createOrderThunk,
+  getUserOrdersThunk,
+  clearOrdersError,
+  type IOrder,
+  type ICreateOrder,
+  type IOrderItem,
+  type IOrderProduct,
+  ORDERS_API_ROUTES,
+} from "./orders";

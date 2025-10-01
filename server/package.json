@@ -5,6 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/app.js",
+    "start:server-only": "node src/app.js",
+    "start:bot-only": "node telegram.bot.js",
     "db": "sequelize db:drop && sequelize db:create && sequelize db:migrate",
     "db:seed": "sequelize db:seed:all",
     "db:reset": "sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all"

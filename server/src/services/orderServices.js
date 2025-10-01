@@ -148,6 +148,10 @@ class OrderService {
       let totalPrice = 0;
       let totalQuantity = 0;
 
+      // Используем текущее время для группировки товаров в один заказ (как в веб-версии)
+      const orderTimestamp = new Date();
+      orderTimestamp.setMilliseconds(0);
+
       // Создаем заказы для каждого варианта
       for (const [variant, quantity] of Object.entries(variantQuantities)) {
         if (quantity > 0) {
@@ -159,6 +163,8 @@ class OrderService {
               variant: variant, // Добавляем сохранение варианта
               user_comment: userComment,
               status: "pending",
+              createdAt: orderTimestamp,
+              updatedAt: orderTimestamp,
             },
             { transaction }
           );
@@ -245,6 +251,10 @@ class OrderService {
       // Рассчитываем итоговую цену
       const totalPrice = product.price * quantity;
 
+      // Используем текущее время для группировки товаров в один заказ (как в веб-версии)
+      const orderTimestamp = new Date();
+      orderTimestamp.setMilliseconds(0);
+
       // Создаем заказ
       const order = await TgOrder.create(
         {
@@ -253,6 +263,8 @@ class OrderService {
           quantity: quantity,
           user_comment: userComment,
           status: "pending",
+          createdAt: orderTimestamp,
+          updatedAt: orderTimestamp,
         },
         { transaction }
       );
