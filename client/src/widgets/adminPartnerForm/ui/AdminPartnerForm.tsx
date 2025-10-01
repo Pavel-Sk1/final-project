@@ -8,7 +8,7 @@ import {
   deleteOnePartner,
   signUpThunk,
 } from "@/entities";
-import { useAppDispatch, useAppSelector } from "@/shared";
+import { useAppDispatch } from "@/shared";
 
 const initialPartnerInput: ICreatePartnerWithUser = {
   login: "",
@@ -38,7 +38,7 @@ export function AdminPartnerForm({
   onClose = null,
 }: AdminPartnerFormProps) {
   const dispatch = useAppDispatch();
-  const { userToCreate } = useAppSelector((state) => state.user);
+  // const { userToCreate } = useAppSelector((state) => state.user);
 
   const [partnerInput, setPartnerInput] = useState<ICreatePartnerWithUser>(
     partner
@@ -89,7 +89,9 @@ export function AdminPartnerForm({
     }));
   };
 
-  const onSubmitPartnerHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmitPartnerHandler = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
     try {
       if (partner) {
@@ -108,7 +110,7 @@ export function AdminPartnerForm({
           updatePartnerThunk({ id: partner.id, partner: partnerToUpdate })
         );
       } else {
-        await dispatch(
+        const signUpResult = await dispatch(
           signUpThunk({
             login: partnerInput.login,
             password: partnerInput.password || "",
@@ -117,19 +119,23 @@ export function AdminPartnerForm({
           })
         );
         
-        const partnerToCreate = {
-          company_name: partnerInput.company_name,
-          inn: partnerInput.inn,
-          ogrn: partnerInput.ogrn,
-          address: partnerInput.address,
-          contact_person: partnerInput.contact_person,
-          contact_email: partnerInput.contact_email,
-          contact_phone: partnerInput.contact_phone,
-          comment: partnerInput.comment,
-          status: partnerInput.status,
-          user_id: userToCreate?.id,
-        };
-        dispatch(createPartnerThunk(partnerToCreate));
+        // Проверяем, что регистрация прошла успешно
+        if (signUpThunk.fulfilled.match(signUpResult) && signUpResult.payload.data.user) {
+          const createdUser = signUpResult.payload.data.user;
+          const partnerToCreate = {
+            company_name: partnerInput.company_name,
+            inn: partnerInput.inn,
+            ogrn: partnerInput.ogrn,
+            address: partnerInput.address,
+            contact_person: partnerInput.contact_person,
+            contact_email: partnerInput.contact_email,
+            contact_phone: partnerInput.contact_phone,
+            comment: partnerInput.comment,
+            status: partnerInput.status,
+            user_id: createdUser.id,
+          };
+          await dispatch(createPartnerThunk(partnerToCreate));
+        }
       }
     } catch (error) {
       console.error(error);
@@ -156,18 +162,19 @@ export function AdminPartnerForm({
         />
       </div>
       {!partner && (
-      <div className={styles.formGroup}>
-        <label htmlFor="password">Пароль</label>
-        <input
-          id="password"
-          type="password"
-          name="password"
-          placeholder="Введите пароль"
-          value={partnerInput.password}
-          onChange={onChangePartnerHandler}
-          className={styles.formInput}
-        />
-      </div>)}
+        <div className={styles.formGroup}>
+          <label htmlFor="password">Пароль</label>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            placeholder="Введите пароль"
+            value={partnerInput.password}
+            onChange={onChangePartnerHandler}
+            className={styles.formInput}
+          />
+        </div>
+      )}
       <div className={styles.formGroup}>
         <label htmlFor="phone">Телефон</label>
         <input
@@ -191,7 +198,7 @@ export function AdminPartnerForm({
         >
           <option value="">Выберите роль</option>
           <option value={1}>Администратор</option>
-          <option value={3}>Пользователь</option>
+          <option value={2}>Пользователь</option>
         </select>
       </div>
       <div className={styles.formGroup}>
