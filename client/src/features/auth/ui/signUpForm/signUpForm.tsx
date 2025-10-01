@@ -7,10 +7,10 @@ import styles from './signUpForm.module.css';
 
 // Начальные данные для формы регистрации
 const INITIAL_INPUTS_DATA: ISignUpData = {
-  login: '',
-  email: '',
+  login: '',  
   password: '',
-  repeatPassword: '',
+  phone: '',
+  role_id: 0,
 };
 
 export function SignUpForm() {
@@ -73,7 +73,7 @@ export function SignUpForm() {
         />
       </div>
 
-      <div className={styles.inputGroup}>
+      {/* <div className={styles.inputGroup}>
         <input
           type='email'
           name='email'
@@ -83,7 +83,7 @@ export function SignUpForm() {
           className={styles.formInput}
           required
         />
-      </div>
+      </div> */}
 
       <div className={styles.inputGroup}>
         <input
@@ -97,7 +97,7 @@ export function SignUpForm() {
         />
       </div>
 
-      <div className={styles.inputGroup}>
+      {/* <div className={styles.inputGroup}>
         <input
           type='password'
           name='repeatPassword'
@@ -107,7 +107,7 @@ export function SignUpForm() {
           className={styles.formInput}
           required
         />
-      </div>
+      </div> */}
 
       <button type='submit' className={styles.submitButton}>
         Sign Up

@@ -1,11 +1,11 @@
 import { useMemo, useState } from "react";
 import styles from "./AdminPartnerCard.module.css";
 import { useAppDispatch, EditModal } from "@/shared";
-import { deletePartnerThunk, editOnePartner, type IPartner } from "@/entities";
+import { deletePartnerThunk, editOnePartner, type IPartnerWithUser } from "@/entities";
 import { AdminPartnerForm } from "@/widgets";
 
 type AdminPartnerCardProps = {
-  partner: IPartner;  
+  partner: IPartnerWithUser;  
 };
 
 export function AdminPartnerCard({
@@ -32,6 +32,9 @@ export function AdminPartnerCard({
   return (
     <div className={styles.partnerItem}>
       <div className={styles.itemContent}>
+        <h3 className={styles.itemDescription}>{partner.user.login}</h3>
+        <p className={styles.itemDescription}>{partner.user.phone}</p>
+        <p className={styles.itemDescription}>{partner.user.role?.name}</p>
         <h3 className={styles.itemTitle}>{partner.company_name}</h3>
         <p className={styles.itemDescription}>{partner.inn}</p>
         <p className={styles.itemDescription}>{partner.ogrn}</p>

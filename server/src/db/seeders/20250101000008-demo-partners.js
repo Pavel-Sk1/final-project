@@ -6,8 +6,7 @@ module.exports = {
     await queryInterface.bulkInsert(
       "partner",
       [
-        {
-          id: 1,
+        {          
           company_name: "ООО 'Свежие продукты'",
           inn: "1234567890",
           ogrn: "1234567890123",
@@ -21,8 +20,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
-        {
-          id: 2,
+        {          
           company_name: "ИП Петров А.А.",
           inn: "0987654321",
           ogrn: "9876543210987",
@@ -36,8 +34,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
-        {
-          id: 3,
+        {          
           company_name: "ЗАО 'Молочные продукты'",
           inn: "1122334455",
           ogrn: "1122334455667",
@@ -50,8 +47,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
-        {
-          id: 4,
+        {          
           company_name: "ООО 'Напитки и соки'",
           inn: "5566778899",
           ogrn: "5566778899001",
@@ -64,8 +60,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
-        {
-          id: 5,
+        {          
           company_name: "ИП Смирнова Е.В.",
           inn: "9988776655",
           ogrn: "9988776655443",

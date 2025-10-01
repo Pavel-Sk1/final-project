@@ -1,16 +1,16 @@
 import { useEffect } from "react";
 import styles from "./AdminPartnerList.module.css";
 import { useAppDispatch, useAppSelector } from "@/shared";
-import { getAllPartnersThunk } from "@/entities";
+import { getAllPartnersWithUserThunk } from "@/entities";
 import { AdminPartnerCard } from "@/widgets";
 
 export function AdminPartnerList() {
   const dispatch = useAppDispatch();
-  const { partnersArray } = useAppSelector((state) => state.partner);
+  const { partnersArrayWithUser } = useAppSelector((state) => state.partner);
 
   useEffect(() => {
     try {
-      dispatch(getAllPartnersThunk());
+      dispatch(getAllPartnersWithUserThunk());
     } catch (error) {
       console.error(error);
     }
@@ -18,7 +18,7 @@ export function AdminPartnerList() {
 
   return (
     <div className={styles.itemsContainer}>
-      {partnersArray.map((partner) => (
+      {partnersArrayWithUser.map((partner) => (
         <AdminPartnerCard key={partner.id} partner={partner} />
       ))}
     </div>

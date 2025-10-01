@@ -22,6 +22,29 @@ class PartnerController {
         );
     }
   }
+  static async getAllPartnersWithUser(req, res) {
+    try {
+      const partners = await PartnerService.getAllPartnersWithUser();
+      if (!partners) {
+        return res
+          .status(404)
+          .json(formatResponse(404, "Партнеры не найдены", null));
+      }
+      return res.json(
+        formatResponse(200, "Партнеры получены успешно", partners)
+      );
+    } catch ({ message }) {
+      console.error(
+        "======PartnerController.getAllPartnersWithUser===\n",
+        message
+      );
+      return res
+        .status(500)
+        .json(
+          formatResponse(500, "Ошибка при получении партнеров", null, message)
+        );
+    }
+  }
   static async getPartnerById(req, res) {
     try {
       const partner = await PartnerService.getPartnerById(req.params.id);

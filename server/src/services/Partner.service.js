@@ -1,8 +1,13 @@
-const { Partner } = require("../db/models");
+const { Partner, User } = require("../db/models");
 
 class PartnerService {
     static async getAllPartners() {
         return await Partner.findAll();
+    }
+    static async getAllPartnersWithUser() {
+        return await Partner.findAll({
+            include: [{ model: User, as: 'user' }]
+        });
     }
     static async getPartnerById(id) {
         return await Partner.findByPk(id);

@@ -22,7 +22,8 @@ export {
 export {
   type IUser,
   type ISignInData,
-  type ISignUpData,
+  type ISignUpData,  
+  USER_API_ROUTES,
   UserValidator,
   signOutThunk,
   signInThunk,
@@ -89,6 +90,7 @@ export {
 // partner
 export {
   getAllPartnersThunk,
+  getAllPartnersWithUserThunk,
   getPartnerByIdThunk,
   createPartnerThunk,
   updatePartnerThunk,
@@ -99,5 +101,8 @@ export {
   type IPartner,
   type ICreatePartner,
   type PartnersArrayType,
+  type IPartnerWithUser,
+  type ICreatePartnerWithUser,
+  type PartnersArrayWithUserType,
   PARTNER_API_ROUTES,
 } from "./partner";

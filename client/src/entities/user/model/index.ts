@@ -3,9 +3,11 @@ export interface ISignInData {
   login: string;
 }
 
-export interface ISignUpData extends ISignInData {
-  email: string;
-  repeatPassword: string;
+export interface ISignUpData {
+  password: string;
+  login: string;
+  phone: string;
+  role_id: number;
 }
 
 export interface IPartner {
@@ -24,10 +26,14 @@ export interface IPartner {
   updatedAt: Date;
 }
 
-export interface IUser extends ISignUpData {
+
+export interface IUser {
   id: number;
+  login: string;
+  password?: string;
+  phone: string;
   role_id: number;
-  role: { name: string };
+  role?: { name: string };
   partner?: IPartner;
   createdAt: Date;
   updatedAt: Date;

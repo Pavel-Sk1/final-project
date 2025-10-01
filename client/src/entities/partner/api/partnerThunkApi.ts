@@ -1,13 +1,26 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosInstance, type ServerResponseType } from "@/shared";
 import { AxiosError } from "axios";
-import { type PartnersArrayType, type IPartner, type ICreatePartner, PARTNER_API_ROUTES } from "../model";
+import { type PartnersArrayType, type IPartner, type ICreatePartner, PARTNER_API_ROUTES, type PartnersArrayWithUserType } from "../model";
 
 export const getAllPartnersThunk = createAsyncThunk<ServerResponseType<PartnersArrayType>, void, { rejectValue: ServerResponseType }>(
     "***partner/getAllPartners***",
     async (_, { rejectWithValue }) => {
         try {
             const { data } = await axiosInstance.get<ServerResponseType<PartnersArrayType>>(PARTNER_API_ROUTES.LIST);
+            return data;
+        } catch (error) {
+            const err = error as AxiosError<ServerResponseType>;
+            return rejectWithValue(err.response!.data);
+        }
+    }
+);
+
+export const getAllPartnersWithUserThunk = createAsyncThunk<ServerResponseType<PartnersArrayWithUserType>, void, { rejectValue: ServerResponseType }>(
+    "***partner/getAllPartnersWithUser***",
+    async (_, { rejectWithValue }) => {
+        try {
+            const { data } = await axiosInstance.get<ServerResponseType<PartnersArrayWithUserType>>(PARTNER_API_ROUTES.LIST_WITH_USER);
             return data;
         } catch (error) {
             const err = error as AxiosError<ServerResponseType>;

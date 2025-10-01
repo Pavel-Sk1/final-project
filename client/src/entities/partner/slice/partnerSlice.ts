@@ -5,11 +5,13 @@ import {
   createPartnerThunk,
   updatePartnerThunk,
   deletePartnerThunk,
+  getAllPartnersWithUserThunk,
 } from "../api/partnerThunkApi";
-import { type PartnersArrayType, type IPartner } from "../model";
+import { type PartnersArrayType, type IPartner, type PartnersArrayWithUserType } from "../model";
 
 type PartnerState = {
   partnersArray: PartnersArrayType;
+  partnersArrayWithUser: PartnersArrayWithUserType;
   partner: IPartner | null;
   loading: boolean;
   error: string | null;
@@ -17,6 +19,7 @@ type PartnerState = {
 
 const initialState: PartnerState = {
   partnersArray: [],
+  partnersArrayWithUser: [],
   partner: null,
   loading: false,
   error: null,
@@ -44,6 +47,19 @@ const partnerSlice = createSlice({
         state.error = null;
       })
       .addCase(getAllPartnersThunk.rejected, (state, action) => {
+        state.error =
+          action.payload?.message || "Ошибка при получении партнеров";
+        state.loading = false;
+      })
+      .addCase(getAllPartnersWithUserThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllPartnersWithUserThunk.fulfilled, (state, action) => {
+        state.partnersArrayWithUser = action.payload.data;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(getAllPartnersWithUserThunk.rejected, (state, action) => {
         state.error =
           action.payload?.message || "Ошибка при получении партнеров";
         state.loading = false;
