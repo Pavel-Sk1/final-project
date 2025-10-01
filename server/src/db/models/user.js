@@ -14,6 +14,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "user_id",
         as: "partner",
       });
+      User.hasOne(models.TgUser, {
+        foreignKey: "tg_user_id",
+        sourceKey: "id",
+        as: "tgUser",
+        constraints: false, // Отключаем автоматические ограничения
+      });
     }
 
     static validateEmail(email) {
@@ -84,7 +90,7 @@ module.exports = (sequelize, DataTypes) => {
           error:
             "Пароль не должен быть пустым, должен содержать одну большую букву, одну маленькую, один специальный символ, и не должен быть короче 8 символов",
         };
-      }      
+      }
 
       return {
         isValid: true,

@@ -25,4 +25,3 @@
 .editButton:hover { transform: translateY(-2px); filter: brightness(1.1); }
 .editButton:active { transform: translateY(0); }
 
-

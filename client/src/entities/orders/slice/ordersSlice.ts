@@ -39,7 +39,7 @@ const ordersSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Get user orders
+      
       .addCase(getUserOrdersThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -56,7 +56,7 @@ const ordersSlice = createSlice({
         state.loading = false;
         state.error = action.payload?.message || "Ошибка получения заказов";
       })
-      // Create order
+      
       .addCase(createOrderThunk.pending, (state) => {
         state.createOrderLoading = true;
         state.createOrderError = null;
@@ -74,7 +74,7 @@ const ordersSlice = createSlice({
         state.createOrderError =
           action.payload?.message || "Ошибка создания заказа";
       })
-      // Delete order
+      
       .addCase(deleteOrderThunk.pending, (state) => {
         state.deleteOrderLoading = true;
         state.deleteOrderError = null;

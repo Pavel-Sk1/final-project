@@ -56,7 +56,7 @@ export function UserOrders() {
     const items: IOrderItem[] = [];
 
     Object.entries(orderItems).forEach(([productId, itemData]) => {
-      // Добавляем жареные пироги
+      
       if (itemData.fried > 0) {
         items.push({
           product_id: parseInt(productId),
@@ -64,7 +64,7 @@ export function UserOrders() {
           variant: "ж",
         });
       }
-      // Добавляем печеные пироги
+      
       if (itemData.baked > 0) {
         items.push({
           product_id: parseInt(productId),
@@ -72,7 +72,7 @@ export function UserOrders() {
           variant: "п",
         });
       }
-      // Добавляем обычные продукты
+      
       if (itemData.regular > 0) {
         items.push({
           product_id: parseInt(productId),
@@ -443,7 +443,7 @@ export function UserOrders() {
                             <span>Цена</span>
                           </div>
                           {order.items.map((item, index) => {
-                            // Используем данные о продукте, которые приходят с сервера
+                            
                             const product = item.product;
                             return (
                               <div key={index} className={styles.orderItem}>

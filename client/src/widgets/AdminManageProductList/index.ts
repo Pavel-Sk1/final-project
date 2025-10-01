@@ -1,1 +1,0 @@
-export { AdminManageProductList } from "./ui/AdminManageProductList";

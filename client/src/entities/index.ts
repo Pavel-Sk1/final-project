@@ -32,7 +32,6 @@ export {
   userReducer,
 } from "./user";
 
-// admin
 export {
   type IAdminMainContact,
   getMainContactThunk,
@@ -69,7 +68,6 @@ export {
   deleteVacancyThunk,
 } from "./admin";
 
-// calculations
 export {
   getOrdersByDateThunk,
   calculationsReducer,
@@ -77,7 +75,6 @@ export {
   CALCULATIONS_API_ROUTES,
 } from "./calculations";
 
-// categories
 export {
   getAllCategoriesThunk,
   categoriesReducer,
@@ -87,7 +84,6 @@ export {
   CATEGORIES_API_ROUTES,
 } from "./categories";
 
-// partner
 export {
   getAllPartnersThunk,
   getAllPartnersWithUserThunk,
@@ -107,7 +103,6 @@ export {
   PARTNER_API_ROUTES,
 } from "./partner";
 
-// orders
 export {
   ordersReducer,
   createOrderThunk,

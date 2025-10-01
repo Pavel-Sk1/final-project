@@ -94,7 +94,7 @@ export function Navigation(): React.JSX.Element {
         )}
       </div>
 
-      {/* Секция пользователя */}
+      {}
       <div className={styles.userSection}>
         {user ? (
           <>

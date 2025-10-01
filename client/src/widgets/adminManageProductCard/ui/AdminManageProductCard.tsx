@@ -5,7 +5,6 @@ import type { IProduct } from "@/entities/products";
 import { deleteProductThunk, editOneProduct } from "@/entities";
 import { AdminManageProductForm } from "@/widgets";
 
-
 type AdminManageProductCardProps = {
   product: IProduct;  
 };

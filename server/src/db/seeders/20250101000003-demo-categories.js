@@ -7,35 +7,30 @@ module.exports = {
       "categories",
       [
         {
-          id: 1,
           name: "Пироги",
           description: "Классическая итальянская пицца с различными начинками",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          id: 2,
           name: "Хот-Доги",
           description: "Сочные бургеры с мясом и овощами",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          id: 3,
           name: "Тесто",
           description: "Холодные и горячие напитки",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          id: 4,
           name: "Готовые блюда",
           description: "Сладкие десерты и выпечка",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          id: 5,
           name: "Салаты",
           description: "Свежие салаты с различными ингредиентами",
           createdAt: new Date(),

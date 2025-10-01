@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-
 export async function geocode(address: string) {
-  const url = 'https://nominatim.openstreetmap.org/search';
+  const url = 'https://nominatim.openstreetmap.org/search'
 
   try {
     const response = await axios.get(url, {

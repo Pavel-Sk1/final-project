@@ -58,7 +58,6 @@
   color: var(--text-light);
 }
 
-/* Стили для вариантов */
 .variantsSection {
   background: var(--light-blue);
   border: 1px solid var(--border);
@@ -157,7 +156,6 @@
   transform: translateY(0);
 }
 
-/* Стили для чекбокса */
 .checkboxGroup {
   display: flex;
   align-items: center;

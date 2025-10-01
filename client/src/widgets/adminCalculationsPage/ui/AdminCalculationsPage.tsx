@@ -1,5 +1,5 @@
 import styles from "./AdminCalculationsPage.module.css";
-import type { IOrder } from "@/entities";
+import type { IOrder } from "@/entities/calculations";
 
 type AdminCalculationsPageProps = {
   orders: IOrder[];
@@ -8,38 +8,19 @@ type AdminCalculationsPageProps = {
   selectedDate?: string;
 };
 
-// Расширенный интерфейс для заказа с дополнительной информацией
-interface ExtendedOrder extends IOrder {
-  variant?: string; // Явно добавляем для TypeScript
-  product?: {
-    id: number;
-    name: string;
-    price: number;
-    variants?: string[];
-    variant_names?: string[];
-  };
-  tgUser?: {
-    tg_user_id: string;
-    first_name?: string;
-    last_name?: string;
-    tg_username?: string;
-  };
-}
-
 export function AdminCalculationsPage({
   orders,
   loading = false,
   error = null,
   selectedDate,
 }: AdminCalculationsPageProps) {
-  // Форматируем дату для отображения
+  
   const formatDate = (dateString: string) => {
     if (!dateString) return "Сегодня";
 
     try {
       const date = new Date(dateString);
 
-      // Проверяем, что дата валидна
       if (isNaN(date.getTime())) {
         return "Неверная дата";
       }
@@ -65,7 +46,6 @@ export function AdminCalculationsPage({
     }
   };
 
-  // Если загрузка
   if (loading) {
     return (
       <div className={styles.loadingState}>
@@ -75,7 +55,6 @@ export function AdminCalculationsPage({
     );
   }
 
-  // Если ошибка
   if (error) {
     return (
       <div className={styles.errorState}>
@@ -86,7 +65,6 @@ export function AdminCalculationsPage({
     );
   }
 
-  // Если нет заказов
   if (!orders || orders.length === 0) {
     return (
       <div className={styles.emptyState}>
@@ -100,10 +78,8 @@ export function AdminCalculationsPage({
     );
   }
 
-  // Приводим заказы к расширенному типу
-  const extendedOrders = orders as ExtendedOrder[];
+  const extendedOrders = orders as IOrder[];
 
-  // Дополнительная проверка на случай, если orders пришел как пустой массив
   if (!extendedOrders || extendedOrders.length === 0) {
     return (
       <div className={styles.emptyState}>
@@ -117,14 +93,20 @@ export function AdminCalculationsPage({
     );
   }
 
-  // Получаем уникальные tg_user_id с информацией о пользователях
   const userMap = new Map<string, { name: string; username?: string }>();
   extendedOrders.forEach((order) => {
     if (order.tgUser) {
-      const displayName =
-        order.tgUser.first_name ||
-        order.tgUser.tg_username ||
-        `ID: ${order.tgUser.tg_user_id}`;
+      
+      let displayName = `ID: ${order.tgUser.tg_user_id}`;
+
+      if (order.tgUser.user?.partner?.company_name) {
+        displayName = order.tgUser.user.partner.company_name;
+      } else if (order.tgUser.first_name) {
+        displayName = order.tgUser.first_name;
+      } else if (order.tgUser.tg_username) {
+        displayName = order.tgUser.tg_username;
+      }
+
       userMap.set(order.tgUser.tg_user_id, {
         name: displayName,
         username: order.tgUser.tg_username,
@@ -134,7 +116,6 @@ export function AdminCalculationsPage({
 
   const uniqueUserIds = Array.from(userMap.keys());
 
-  // Получаем уникальные продукты и создаем объект для группировки
   const productMap = new Map<
     string,
     {
@@ -150,10 +131,9 @@ export function AdminCalculationsPage({
   >();
 
   extendedOrders.forEach((order) => {
-    // Создаем уникальный ключ для продукта
+    
     const productKey = `${order.product_id}`;
 
-    // Сохраняем информацию о продукте
     if (order.product && !productMap.has(productKey)) {
       productMap.set(productKey, {
         name: order.product.name,
@@ -163,7 +143,6 @@ export function AdminCalculationsPage({
       });
     }
 
-    // Группируем заказы по продуктам и пользователям с учетом вариантов
     if (!productOrdersMap.has(productKey)) {
       productOrdersMap.set(productKey, new Map());
     }
@@ -175,18 +154,16 @@ export function AdminCalculationsPage({
 
     const userVariants = userOrdersMap.get(order.tg_user_id)!;
 
-    // Определяем, к какому варианту относится заказ
     if (order.variant === "ж" || order.variant === "жар") {
       userVariants.fried += order.quantity;
     } else if (order.variant === "п" || order.variant === "печ") {
       userVariants.baked += order.quantity;
     } else {
-      // Если вариант не определен, добавляем к жареному (по умолчанию)
+      
       userVariants.fried += order.quantity;
     }
   });
 
-  // Вычисляем общие суммы и количества
   const totalByUser = new Map<string, number>();
   const totalByProduct = new Map<string, number>();
   const quantityByProduct = new Map<string, { fried: number; baked: number }>();
@@ -215,7 +192,6 @@ export function AdminCalculationsPage({
     });
   });
 
-  // Функция для печати заявки
   const handlePrintOrder = () => {
     const printWindow = window.open("", "_blank");
     if (!printWindow) return;
@@ -298,7 +274,6 @@ export function AdminCalculationsPage({
     }, 250);
   };
 
-  // Генерация содержимого для печати
   const generatePrintContent = () => {
     const totalAmount = Array.from(totalByUser.values()).reduce(
       (sum, total) => sum + total,
@@ -322,7 +297,6 @@ export function AdminCalculationsPage({
             <th style="width: 30%;">Наименование товара</th>
     `;
 
-    // Добавляем заголовки для каждого магазина
     uniqueUserIds.forEach((userId) => {
       const userInfo = userMap.get(userId);
       content += `<th style="width: ${Math.floor(
@@ -338,7 +312,6 @@ export function AdminCalculationsPage({
         <tbody>
     `;
 
-    // Добавляем строки с продуктами
     Array.from(productOrdersMap.entries()).forEach(
       ([productKey, userOrdersMap]) => {
         const product = productMap.get(productKey);
@@ -383,7 +356,6 @@ export function AdminCalculationsPage({
       }
     );
 
-    // Добавляем итоговую строку
     content += `
         <tr class="total-row">
           <td><strong>ИТОГО</strong></td>
@@ -394,7 +366,6 @@ export function AdminCalculationsPage({
       content += `<td style="text-align: center;"><strong>${userTotal}₽</strong></td>`;
     });
 
-    // Общее количество всех продуктов с разделением на жареные/печеные
     const totalFried = Array.from(quantityByProduct.values()).reduce(
       (sum, quantities) => sum + quantities.fried,
       0
@@ -426,21 +397,8 @@ export function AdminCalculationsPage({
 
   return (
     <div className={styles.calculationsTable}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "16px",
-        }}
-      >
-        <div
-          style={{
-            fontSize: "16px",
-            fontWeight: "600",
-            color: "#374151",
-          }}
-        >
+      <div className={styles.tableHeaderContainer}>
+        <div className={styles.tableTitle}>
           ✅ Подтвержденные заказы за{" "}
           {selectedDate ? formatDate(selectedDate) : "выбранную дату"} (
           {orders.length} заказов)
@@ -500,7 +458,6 @@ export function AdminCalculationsPage({
                     const totalQuantity = variants.fried + variants.baked;
                     const total = totalQuantity * (product?.price || 0);
 
-                    // Проверяем, есть ли варианты у продукта
                     const hasVariants =
                       product?.variants && product.variants.length > 0;
 
@@ -562,48 +519,33 @@ export function AdminCalculationsPage({
                       }
                     })()}
                   </td>
-                  <td
-                    className={styles.tableCell}
-                    style={{ fontWeight: "bold", backgroundColor: "#fff4ec" }}
-                  >
+                  <td className={`${styles.tableCell} ${styles.boldCell}`}>
                     {totalByProduct.get(productKey) || 0}₽
                   </td>
                 </tr>
               );
             }
           )}
-          <tr style={{ backgroundColor: "#fff7f2", fontWeight: "bold" }}>
-            <td
-              className={styles.tableCell}
-              style={{ backgroundColor: "#fff4ec" }}
-            >
-              ИТОГО
-            </td>
+          <tr className={styles.totalRow}>
+            <td className={`${styles.tableCell} ${styles.totalCell}`}>ИТОГО</td>
             {uniqueUserIds.map((userId) => {
               const userTotal = totalByUser.get(userId) || 0;
               return (
                 <td
                   key={userId}
-                  className={styles.tableCell}
-                  style={{ backgroundColor: "#fff4ec" }}
+                  className={`${styles.tableCell} ${styles.totalCell}`}
                 >
                   {userTotal}₽
                 </td>
               );
             })}
-            <td
-              className={`${styles.tableCell} ${styles.quantityColumn}`}
-              style={{ backgroundColor: "#fff0e6", fontWeight: "bold" }}
-            >
+            <td className={`${styles.tableCell} ${styles.totalQuantityCell}`}>
               {Array.from(quantityByProduct.values()).reduce(
                 (sum, quantities) => sum + quantities.fried + quantities.baked,
                 0
               )}
             </td>
-            <td
-              className={styles.tableCell}
-              style={{ backgroundColor: "#fff0e6", fontWeight: "bold" }}
-            >
+            <td className={`${styles.tableCell} ${styles.totalQuantityCell}`}>
               {Array.from(totalByUser.values()).reduce(
                 (sum, total) => sum + total,
                 0

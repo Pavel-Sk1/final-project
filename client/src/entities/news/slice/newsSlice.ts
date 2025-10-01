@@ -36,4 +36,3 @@ const newsSlice = createSlice({
 
 export const newsReducer = newsSlice.reducer;
 
-
