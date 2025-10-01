@@ -93,7 +93,7 @@ const partnerSlice = createSlice({
         state.loading = true;
       })
       .addCase(updatePartnerThunk.fulfilled, (state, action) => {
-        state.partnersArray = state.partnersArray.map((partner) =>
+        state.partnersArrayWithUser = state.partnersArrayWithUser.map((partner) =>
           partner.id === action.payload.data.id ? action.payload.data : partner
         );
         state.loading = false;

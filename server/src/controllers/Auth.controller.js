@@ -49,11 +49,11 @@ class AuthController {
   }
 
   static async signUp(req, res) {
-    const { login, password } = req.body;
+    const { login, password, phone, role_id } = req.body;
 
     const { isValid, error } = User.validateSignUpData({
       login,
-      password,
+      password,      
     });
 
     if (!isValid) {
@@ -80,6 +80,8 @@ class AuthController {
       const newUser = await UserService.create({
         login: normalizedLogin,
         password,
+        phone,
+        role_id,
       });
 
       if (!newUser) {
@@ -94,19 +96,14 @@ class AuthController {
             )
           );
       }
-      
-      const { accessToken, refreshToken } = generateJWTTokens({
-        user: newUser,
-      });
 
       return res
-        .status(201)
-        .cookie("refreshToken", refreshToken, cookieConfig)
+        .status(201)        
         .json(
           formatResponse(
             201,
             "Пользователь успешно зарегистрирован",
-            { accessToken, user: newUser },
+            { accessToken: "", user: newUser },
             null
           )
         );

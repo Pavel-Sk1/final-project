@@ -89,7 +89,7 @@ export function AdminPartnerForm({
     }));
   };
 
-  const onSubmitPartnerHandler = (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmitPartnerHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       if (partner) {
@@ -108,7 +108,7 @@ export function AdminPartnerForm({
           updatePartnerThunk({ id: partner.id, partner: partnerToUpdate })
         );
       } else {
-        dispatch(
+        await dispatch(
           signUpThunk({
             login: partnerInput.login,
             password: partnerInput.password || "",
@@ -116,6 +116,7 @@ export function AdminPartnerForm({
             role_id: partnerInput.role_id,
           })
         );
+        
         const partnerToCreate = {
           company_name: partnerInput.company_name,
           inn: partnerInput.inn,
