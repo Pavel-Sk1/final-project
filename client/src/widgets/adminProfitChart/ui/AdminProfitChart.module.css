@@ -389,6 +389,198 @@
   color: var(--text-light);
 }
 
+/* Фильтры */
+.filtersContainer {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: linear-gradient(135deg, #fff9f5, #fff7f2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filterLabel {
+  font-weight: 600;
+  color: var(--primary-dark);
+  font-size: 14px;
+}
+
+.filterSelect {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  color: var(--text);
+  font-size: 14px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.filterSelect:hover {
+  border-color: var(--primary);
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
+}
+
+.customDateGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dateInput {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  color: var(--text);
+  font-size: 14px;
+  transition: var(--transition);
+}
+
+.dateInput:hover {
+  border-color: var(--primary);
+}
+
+.dateInput:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
+}
+
+.dateSeparator {
+  color: var(--text-light);
+  font-weight: 600;
+}
+
+/* Адаптивность для фильтров */
+@media (max-width: 768px) {
+  .filtersContainer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+
+  .filterGroup {
+    justify-content: space-between;
+  }
+
+  .customDateGroup {
+    justify-content: center;
+  }
+}
+
+/* Новые графики Chart.js */
+.modernChartsContainer {
+  margin: 40px 0;
+}
+
+.chartsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.chartCard {
+  background: linear-gradient(180deg, #ffffff, #fff9f5);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  padding: 25px;
+  transition: var(--transition);
+}
+
+.chartCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.chartCard .chartTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 20px;
+  text-align: center;
+  padding-bottom: 15px;
+  border-bottom: 2px solid var(--border);
+}
+
+.chartWrapper {
+  height: 350px;
+  position: relative;
+  background: #fff;
+  border-radius: var(--radius-sm);
+  padding: 15px;
+  border: 1px solid var(--border);
+}
+
+/* Специальные стили для разных типов графиков */
+.chartCard:nth-child(1) .chartWrapper {
+  background: linear-gradient(135deg, #fff9f5, #fff7f2);
+}
+
+.chartCard:nth-child(2) .chartWrapper {
+  background: linear-gradient(135deg, #f0f8ff, #e6f3ff);
+}
+
+.chartCard:nth-child(3) .chartWrapper {
+  background: linear-gradient(135deg, #f0fff0, #e6ffe6);
+}
+
+/* Адаптивность для новых графиков */
+@media (max-width: 1200px) {
+  .chartsGrid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .chartCard {
+    padding: 20px;
+  }
+
+  .chartWrapper {
+    height: 300px;
+    padding: 10px;
+  }
+
+  .chartCard .chartTitle {
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chartCard {
+    padding: 15px;
+  }
+
+  .chartWrapper {
+    height: 250px;
+    padding: 8px;
+  }
+
+  .chartCard .chartTitle {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+}
+
 /* Адаптивность */
 @media (max-width: 768px) {
   .profitChart {

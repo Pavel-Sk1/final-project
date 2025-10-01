@@ -1,6 +1,32 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import styles from "./AdminProfitChart.module.css";
 import type { IOrder } from "@/entities";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  PointElement,
+  LineElement,
+} from "chart.js";
+import { Bar, Doughnut, Line } from "react-chartjs-2";
+
+// Регистрируем компоненты Chart.js
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  PointElement,
+  LineElement
+);
 
 type AdminProfitChartProps = {
   orders: IOrder[];
@@ -9,8 +35,12 @@ type AdminProfitChartProps = {
   selectedDate?: string;
 };
 
+type FilterPeriod = "all" | "today" | "week" | "month" | "custom";
+
 // Расширенный интерфейс для заказа с дополнительной информацией
-interface ExtendedOrder extends IOrder {
+interface ExtendedOrderItem {
+  product_id: number;
+  quantity: number;
   variant?: string;
   product?: {
     id: number;
@@ -80,6 +110,57 @@ export function AdminProfitChart({
   error = null,
   selectedDate,
 }: AdminProfitChartProps) {
+  // Состояние для фильтров
+  const [filterPeriod, setFilterPeriod] = useState<FilterPeriod>("all");
+  const [customDateFrom, setCustomDateFrom] = useState("");
+  const [customDateTo, setCustomDateTo] = useState("");
+
+  // Функция для фильтрации заказов по периоду
+  const getFilteredOrders = useMemo(() => {
+    if (!orders || !Array.isArray(orders)) return [];
+
+    const now = new Date();
+    let startDate: Date | null = null;
+    let endDate: Date | null = null;
+
+    switch (filterPeriod) {
+      case "today":
+        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        endDate = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate() + 1
+        );
+        break;
+      case "week":
+        startDate = new Date(now);
+        startDate.setDate(now.getDate() - 7);
+        endDate = new Date(now);
+        break;
+      case "month":
+        startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+        endDate = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+        break;
+      case "custom":
+        if (customDateFrom && customDateTo) {
+          startDate = new Date(customDateFrom);
+          endDate = new Date(customDateTo);
+          endDate.setHours(23, 59, 59, 999); // Включаем весь день
+        }
+        break;
+      case "all":
+      default:
+        return orders; // Возвращаем все заказы
+    }
+
+    if (!startDate || !endDate) return orders;
+
+    return orders.filter((order) => {
+      const orderDate = new Date(order.createdAt);
+      return orderDate >= startDate! && orderDate < endDate!;
+    });
+  }, [orders, filterPeriod, customDateFrom, customDateTo]);
+
   // Форматируем дату для отображения
   const formatDate = (dateString: string) => {
     if (!dateString) return "Сегодня";
@@ -111,7 +192,7 @@ export function AdminProfitChart({
 
   // Вычисляем данные для диаграммы
   const profitData = useMemo(() => {
-    if (!orders || orders.length === 0) return [];
+    if (!getFilteredOrders || getFilteredOrders.length === 0) return [];
 
     const extendedOrders = orders as ExtendedOrder[];
 
@@ -206,6 +287,74 @@ export function AdminProfitChart({
     );
   }, [profitData]);
 
+  // Данные для графиков Chart.js
+  const chartData = useMemo(() => {
+    // Топ-10 продуктов по прибыли
+    const topProducts = profitData.slice(0, 10);
+
+    return {
+      // Данные для столбчатой диаграммы прибыли
+      barChart: {
+        labels: topProducts.map((item) =>
+          item.name.length > 20 ? `${item.name.substring(0, 20)}...` : item.name
+        ),
+        datasets: [
+          {
+            label: "Прибыль (₽)",
+            data: topProducts.map((item) => item.totalProfit),
+            backgroundColor: topProducts.map(
+              (_, index) => `hsl(${(index * 36) % 360}, 70%, 50%)`
+            ),
+            borderColor: topProducts.map(
+              (_, index) => `hsl(${(index * 36) % 360}, 70%, 40%)`
+            ),
+            borderWidth: 2,
+          },
+        ],
+      },
+
+      // Данные для круговой диаграммы выручки
+      doughnutChart: {
+        labels: topProducts.map((item) =>
+          item.name.length > 15 ? `${item.name.substring(0, 15)}...` : item.name
+        ),
+        datasets: [
+          {
+            data: topProducts.map((item) => item.totalRevenue),
+            backgroundColor: topProducts.map(
+              (_, index) => `hsl(${(index * 36) % 360}, 70%, 60%)`
+            ),
+            borderColor: topProducts.map(
+              (_, index) => `hsl(${(index * 36) % 360}, 70%, 40%)`
+            ),
+            borderWidth: 2,
+          },
+        ],
+      },
+
+      // Данные для линейного графика рентабельности
+      lineChart: {
+        labels: topProducts.map((item) =>
+          item.name.length > 15 ? `${item.name.substring(0, 15)}...` : item.name
+        ),
+        datasets: [
+          {
+            label: "Рентабельность (%)",
+            data: topProducts.map((item) =>
+              item.totalRevenue > 0
+                ? (item.totalProfit / item.totalRevenue) * 100
+                : 0
+            ),
+            borderColor: "rgb(75, 192, 192)",
+            backgroundColor: "rgba(75, 192, 192, 0.2)",
+            tension: 0.4,
+            fill: true,
+          },
+        ],
+      },
+    };
+  }, [profitData]);
+
   // Если загрузка
   if (loading) {
     return (
@@ -243,18 +392,50 @@ export function AdminProfitChart({
     );
   }
 
-  // Максимальная прибыль для масштабирования диаграммы (включая общую прибыль)
-  const maxProfit = Math.max(
-    ...profitData.map((item) => item.totalProfit),
-    totalStats.totalProfit
-  );
-
   return (
     <div className={styles.profitChart}>
+      {/* Фильтры по периодам */}
+      <div className={styles.filtersContainer}>
+        <div className={styles.filterGroup}>
+          <label className={styles.filterLabel}>Период:</label>
+          <select
+            className={styles.filterSelect}
+            value={filterPeriod}
+            onChange={(e) => setFilterPeriod(e.target.value as FilterPeriod)}
+          >
+            <option value="all">Все время</option>
+            <option value="today">Сегодня</option>
+            <option value="week">Последние 7 дней</option>
+            <option value="month">Текущий месяц</option>
+            <option value="custom">Выбранный период</option>
+          </select>
+        </div>
+
+        {filterPeriod === "custom" && (
+          <div className={styles.customDateGroup}>
+            <input
+              type="date"
+              className={styles.dateInput}
+              value={customDateFrom}
+              onChange={(e) => setCustomDateFrom(e.target.value)}
+              placeholder="От"
+            />
+            <span className={styles.dateSeparator}>—</span>
+            <input
+              type="date"
+              className={styles.dateInput}
+              value={customDateTo}
+              onChange={(e) => setCustomDateTo(e.target.value)}
+              placeholder="До"
+            />
+          </div>
+        )}
+      </div>
+
       <div className={styles.header}>
         <h2 className={styles.title}>
           📈 Анализ прибыли за{" "}
-          {selectedDate ? formatDate(selectedDate) : "выбранную дату"}
+          {selectedDate ? formatDate(selectedDate) : getPeriodTitle()}
         </h2>
         <div className={styles.totalStats}>
           <div className={styles.statCard}>
@@ -290,99 +471,137 @@ export function AdminProfitChart({
         </div>
       </div>
 
-      <div className={styles.chartContainer}>
-        <h3 className={styles.chartTitle}>Прибыль по продуктам</h3>
-        <div className={styles.chart}>
-          {profitData.map((item) => {
-            const barHeight =
-              maxProfit > 0 ? (item.totalProfit / maxProfit) * 100 : 0;
-            const profitabilityPercent =
-              item.totalRevenue > 0
-                ? (item.totalProfit / item.totalRevenue) * 100
-                : 0;
-
-            return (
-              <div key={item.name} className={styles.chartItem}>
-                <div className={styles.chartBar}>
-                  <div
-                    className={styles.barFill}
-                    style={{
-                      height: `${Math.max(barHeight, 2)}%`,
-                      backgroundColor:
-                        item.totalProfit >= 0
-                          ? `hsl(${120 - profitabilityPercent * 1.2}, 70%, 50%)`
-                          : "#dc3545",
-                    }}
-                    title={`${item.name}: ${item.totalProfit.toFixed(
-                      2
-                    )}₽ прибыли`}
-                  />
-                </div>
-                <div className={styles.chartLabel}>
-                  <div className={styles.productName} title={item.name}>
-                    {item.name.length > 15
-                      ? `${item.name.substring(0, 15)}...`
-                      : item.name}
-                  </div>
-                  <div className={styles.productStats}>
-                    <div className={styles.quantity}>
-                      {item.totalQuantity} шт.
-                    </div>
-                    <div className={styles.profit}>
-                      {item.totalProfit >= 0 ? "+" : ""}
-                      {item.totalProfit.toFixed(0)}₽
-                    </div>
-                    <div className={styles.profitability}>
-                      {profitabilityPercent.toFixed(0)}%
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-
-          {/* Столбец общей прибыли */}
-          <div className={`${styles.chartItem} ${styles.totalProfitItem}`}>
-            <div className={styles.chartBar}>
-              <div
-                className={`${styles.barFill} ${styles.totalProfitBar}`}
-                style={{
-                  height: `${Math.max(
-                    maxProfit > 0
-                      ? (totalStats.totalProfit / maxProfit) * 100
-                      : 0,
-                    2
-                  )}%`,
-                  backgroundColor:
-                    totalStats.totalProfit >= 0 ? "#28a745" : "#dc3545",
+      {/* Новые графики Chart.js */}
+      <div className={styles.modernChartsContainer}>
+        <div className={styles.chartsGrid}>
+          {/* Столбчатая диаграмма прибыли */}
+          <div className={styles.chartCard}>
+            <h3 className={styles.chartTitle}>
+              📊 Топ-10 продуктов по прибыли
+            </h3>
+            <div className={styles.chartWrapper}>
+              <Bar
+                data={chartData.barChart}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                    title: {
+                      display: false,
+                    },
+                    legend: {
+                      display: false,
+                    },
+                    tooltip: {
+                      callbacks: {
+                        label: function (context) {
+                          return `Прибыль: ${context.parsed.y.toFixed(2)}₽`;
+                        },
+                      },
+                    },
+                  },
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                      ticks: {
+                        callback: function (value) {
+                          return value.toFixed(0) + "₽";
+                        },
+                      },
+                    },
+                    x: {
+                      ticks: {
+                        maxRotation: 45,
+                        minRotation: 45,
+                      },
+                    },
+                  },
                 }}
-                title={`Общая прибыль: ${totalStats.totalProfit.toFixed(2)}₽`}
               />
             </div>
-            <div className={styles.chartLabel}>
-              <div
-                className={`${styles.productName} ${styles.totalProfitName}`}
-              >
-                Общая прибыль
-              </div>
-              <div className={styles.productStats}>
-                <div className={styles.quantity}>
-                  {totalStats.totalQuantity} шт.
-                </div>
-                <div className={styles.profit}>
-                  {totalStats.totalProfit >= 0 ? "+" : ""}
-                  {totalStats.totalProfit.toFixed(0)}₽
-                </div>
-                <div className={styles.profitability}>
-                  {totalStats.totalRevenue > 0
-                    ? (
-                        (totalStats.totalProfit / totalStats.totalRevenue) *
-                        100
-                      ).toFixed(0)
-                    : 0}
-                  %
-                </div>
-              </div>
+          </div>
+
+          {/* Круговая диаграмма выручки */}
+          <div className={styles.chartCard}>
+            <h3 className={styles.chartTitle}>🥧 Распределение выручки</h3>
+            <div className={styles.chartWrapper}>
+              <Doughnut
+                data={chartData.doughnutChart}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                    legend: {
+                      position: "bottom" as const,
+                      labels: {
+                        padding: 20,
+                        usePointStyle: true,
+                      },
+                    },
+                    tooltip: {
+                      callbacks: {
+                        label: function (context) {
+                          const total = context.dataset.data.reduce(
+                            (a: number, b: number) => a + b,
+                            0
+                          );
+                          const percentage = (
+                            (context.parsed / total) *
+                            100
+                          ).toFixed(1);
+                          return `${context.label}: ${context.parsed.toFixed(
+                            2
+                          )}₽ (${percentage}%)`;
+                        },
+                      },
+                    },
+                  },
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Линейный график рентабельности */}
+          <div className={styles.chartCard}>
+            <h3 className={styles.chartTitle}>📈 Рентабельность продуктов</h3>
+            <div className={styles.chartWrapper}>
+              <Line
+                data={chartData.lineChart}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                    legend: {
+                      display: false,
+                    },
+                    tooltip: {
+                      callbacks: {
+                        label: function (context) {
+                          return `Рентабельность: ${context.parsed.y.toFixed(
+                            1
+                          )}%`;
+                        },
+                      },
+                    },
+                  },
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                      ticks: {
+                        callback: function (value) {
+                          return value.toFixed(0) + "%";
+                        },
+                      },
+                    },
+                    x: {
+                      ticks: {
+                        maxRotation: 45,
+                        minRotation: 45,
+                      },
+                    },
+                  },
+                }}
+              />
             </div>
           </div>
         </div>

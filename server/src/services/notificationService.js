@@ -1,6 +1,22 @@
 const { TgOrder, Product, TgUser } = require("../db/models");
 
 class NotificationService {
+  // Получение экземпляра бота для уведомлений
+  static getBot() {
+    try {
+      // Пытаемся получить бота из глобального контекста
+      if (global.telegramBot) {
+        return global.telegramBot;
+      }
+
+      // Fallback: пытаемся импортировать из telegram.bot.js
+      const bot = require("../../telegram.bot");
+      return bot;
+    } catch (error) {
+      console.error("Error getting bot instance:", error);
+      return null;
+    }
+  }
   /**
    * Отправка уведомления админу о новом заказе
    */
@@ -30,7 +46,8 @@ class NotificationService {
       // Функция для экранирования специальных символов Markdown
       const escapeMarkdown = (text) => {
         if (!text) return text;
-        return String(text).replace(/[_*[\]()~`>#+=|{}.!-]/g, "\\$&");
+        // Для обычного Markdown экранируем только основные символы
+        return String(text).replace(/[_*`]/g, "\\$&");
       };
 
       // Формируем сообщение для админа
@@ -97,7 +114,12 @@ class NotificationService {
   /**
    * Отправка сводного уведомления админу о новых заказах (группированных)
    */
-  static async notifyAdminBulkOrder(bot, orderIds, adminTelegramId) {
+  static async notifyAdminBulkOrder(
+    bot,
+    orderIds,
+    adminTelegramId,
+    webOrderInfo = null
+  ) {
     try {
       console.log(
         `🔔 🆕 NEW BULK FUNCTION - Attempting to notify admin ${adminTelegramId} about bulk orders:`,
@@ -112,6 +134,20 @@ class NotificationService {
           { model: TgUser, as: "tgUser" },
         ],
       });
+
+      // Если это веб-заказ, создаем виртуального пользователя
+      if (webOrderInfo && orders.length > 0) {
+        orders.forEach((order) => {
+          if (!order.tgUser) {
+            order.tgUser = {
+              first_name: webOrderInfo.user_name || "Веб-пользователь",
+              last_name: "",
+              phone: webOrderInfo.user_phone || "Не указан",
+              tg_username: null,
+            };
+          }
+        });
+      }
 
       if (!orders || orders.length === 0) {
         console.error("No orders found for bulk notification:", orderIds);
@@ -136,7 +172,8 @@ class NotificationService {
       // Функция для экранирования специальных символов Markdown
       const escapeMarkdown = (text) => {
         if (!text) return text;
-        return String(text).replace(/[_*[\]()~`>#+=|{}.!-]/g, "\\$&");
+        // Для обычного Markdown экранируем только основные символы
+        return String(text).replace(/[_*`]/g, "\\$&");
       };
 
       console.log(
@@ -156,8 +193,35 @@ class NotificationService {
           `📤 Sending SINGLE bulk message to admin for user ${userId} with ${userOrdersList.length} orders`
         );
 
-        let orderMessage = `🆕 *Новый заказ поставщику!*\n\n`;
-        orderMessage += `📋 *Детали заказа:*\n`;
+        // Группируем товары по названию для компактности
+        const groupedProducts = {};
+        userOrdersList.forEach((order) => {
+          const key = `${order.product.name}${
+            order.variant
+              ? ` (${order.variant === "ж" ? "жареный" : "печеный"})`
+              : ""
+          }`;
+          if (!groupedProducts[key]) {
+            groupedProducts[key] = {
+              name: order.product.name,
+              variant: order.variant,
+              price: order.product.price,
+              totalQuantity: 0,
+              totalCost: 0,
+              orderIds: [],
+              comments: [],
+            };
+          }
+          groupedProducts[key].totalQuantity += order.quantity;
+          groupedProducts[key].totalCost +=
+            order.product.price * order.quantity;
+          groupedProducts[key].orderIds.push(order.id);
+          if (order.user_comment) {
+            groupedProducts[key].comments.push(order.user_comment);
+          }
+        });
+
+        let orderMessage = `🆕 *Новый заказ поставщику*\n\n`;
         orderMessage += `👤 Покупатель: ${escapeMarkdown(
           user.first_name || "Не указано"
         )} ${escapeMarkdown(user.last_name || "")}\n`;
@@ -170,61 +234,144 @@ class NotificationService {
             : "Не указан"
         }\n\n`;
 
-        orderMessage += `🛒 *Товары (${userOrdersList.length} позиций):*\n`;
+        orderMessage += `🛒 *Товары (${
+          Object.keys(groupedProducts).length
+        } видов):*\n`;
 
-        userOrdersList.forEach((order, index) => {
-          orderMessage += `${index + 1}. ${escapeMarkdown(
-            order.product.name
-          )}\n`;
-          orderMessage += `   • Количество: ${order.quantity} шт.\n`;
-          orderMessage += `   • Цена за единицу: ${order.product.price}₽\n`;
-          orderMessage += `   • Стоимость: ${
-            order.product.price * order.quantity
-          }₽\n`;
-          if (order.user_comment) {
+        Object.values(groupedProducts).forEach((product, index) => {
+          orderMessage += `${index + 1}. ${escapeMarkdown(product.name)}`;
+          if (product.variant) {
+            orderMessage += ` (${
+              product.variant === "ж" ? "жареный" : "печеный"
+            })`;
+          }
+          orderMessage += `\n   • Количество: ${product.totalQuantity} шт.\n`;
+          orderMessage += `   • Цена: ${product.price}₽ × ${product.totalQuantity} = ${product.totalCost}₽\n`;
+          if (product.comments.length > 0) {
             orderMessage += `   • Комментарий: ${escapeMarkdown(
-              order.user_comment
+              product.comments[0]
             )}\n`;
           }
-          orderMessage += `   • ID заказа: ${order.id}\n\n`;
+          orderMessage += `\n`;
         });
 
-        orderMessage += `📅 Дата заказа: ${userOrdersList[0].createdAt.toLocaleString(
+        // Создаем клавиатуру с кнопками для всех заказов
+        // Используем только первый и последний ID заказа для экономии места
+        const firstOrderId = userOrdersList[0].id;
+        const lastOrderId = userOrdersList[userOrdersList.length - 1].id;
+        const orderRange =
+          userOrdersList.length > 1
+            ? `${firstOrderId}-${lastOrderId}`
+            : firstOrderId;
+
+        orderMessage += `📅 Дата: ${userOrdersList[0].createdAt.toLocaleString(
           "ru-RU"
         )}\n`;
-        orderMessage += `💰 *Итого к оплате: ${totalAmount}₽*\n`;
+        orderMessage += `💰 *Итого: ${totalAmount}₽*\n`;
+        orderMessage += `📦 Заказов: ${userOrdersList.length} шт. (ID: ${firstOrderId}-${lastOrderId})\n`;
 
-        // Создаем клавиатуру с кнопками для всех заказов
         const keyboard = {
           inline_keyboard: [
             [
               {
                 text: "✅ Подтвердить все",
-                callback_data: `admin_confirm_bulk_${userOrdersList
-                  .map((o) => o.id)
-                  .join(",")}`,
+                callback_data: `admin_confirm_bulk_${orderRange}`,
               },
               {
                 text: "❌ Отклонить все",
-                callback_data: `admin_reject_bulk_${userOrdersList
-                  .map((o) => o.id)
-                  .join(",")}`,
+                callback_data: `admin_reject_bulk_${orderRange}`,
               },
             ],
             [
               {
                 text: "📞 Связаться с покупателем",
-                callback_data: `admin_contact_${userOrdersList[0].id}`,
+                callback_data: `admin_contact_${firstOrderId}`,
               },
             ],
           ],
         };
 
-        // Отправляем сообщение админу
-        await bot.telegram.sendMessage(adminTelegramId, orderMessage, {
-          parse_mode: "Markdown",
-          reply_markup: keyboard,
-        });
+        // Получаем бота если не передан
+        const botInstance = bot || this.getBot();
+        if (!botInstance || !botInstance.telegram) {
+          console.error("Bot instance not available for sending notification");
+          return;
+        }
+
+        // Проверяем длину сообщения (Telegram лимит ~4096 символов)
+        const maxMessageLength = 3500; // Оставляем запас для кнопок
+
+        // Отправляем сообщение админу с обработкой ошибок
+        try {
+          if (orderMessage.length > maxMessageLength) {
+            // Если сообщение слишком длинное, отправляем краткую версию
+            const shortMessage =
+              `🆕 *Новый заказ поставщику*\n\n` +
+              `👤 Покупатель: ${escapeMarkdown(
+                user.first_name || "Не указано"
+              )} ${escapeMarkdown(user.last_name || "")}\n` +
+              `📞 Телефон: ${escapeMarkdown(user.phone || "Не указан")}\n` +
+              `🛒 Товаров: ${Object.keys(groupedProducts).length} видов\n` +
+              `📦 Заказов: ${userOrdersList.length} шт.\n` +
+              `💰 Итого: ${totalAmount}₽\n` +
+              `📅 Дата: ${userOrdersList[0].createdAt.toLocaleString(
+                "ru-RU"
+              )}\n` +
+              `📦 ID заказов: ${firstOrderId}-${lastOrderId}\n\n` +
+              `*Детали заказа будут отправлены отдельным сообщением*`;
+
+            await botInstance.telegram.sendMessage(
+              adminTelegramId,
+              shortMessage,
+              {
+                parse_mode: "Markdown",
+                reply_markup: keyboard,
+              }
+            );
+
+            // Отправляем детали отдельным сообщением
+            const detailsMessage =
+              `📋 *Детали заказа ${firstOrderId}-${lastOrderId}:*\n\n` +
+              Object.values(groupedProducts)
+                .map(
+                  (product, index) =>
+                    `${index + 1}. ${escapeMarkdown(product.name)}${
+                      product.variant
+                        ? ` (${
+                            product.variant === "ж" ? "жареный" : "печеный"
+                          })`
+                        : ""
+                    }\n` +
+                    `   • ${product.totalQuantity} шт. × ${product.price}₽ = ${product.totalCost}₽`
+                )
+                .join("\n\n");
+
+            await botInstance.telegram.sendMessage(
+              adminTelegramId,
+              detailsMessage,
+              {
+                parse_mode: "Markdown",
+              }
+            );
+          } else {
+            // Обычное сообщение
+            await botInstance.telegram.sendMessage(
+              adminTelegramId,
+              orderMessage,
+              {
+                parse_mode: "Markdown",
+                reply_markup: keyboard,
+              }
+            );
+          }
+        } catch (sendError) {
+          console.error(
+            `❌ Failed to send message to admin ${adminTelegramId}:`,
+            sendError.message
+          );
+          // Не прерываем выполнение, просто логируем ошибку
+          return;
+        }
 
         console.log(
           `✅ SINGLE bulk notification sent to admin ${adminTelegramId} for user ${userId} orders:`,
@@ -246,6 +393,17 @@ class NotificationService {
     userTelegramId
   ) {
     try {
+      if (
+        !userTelegramId ||
+        typeof userTelegramId === "number" ||
+        userTelegramId.length < 8
+      ) {
+        console.log(
+          `⚠️ Skipping Telegram notification for user ${userTelegramId} (not a valid Telegram user)`
+        );
+        return;
+      }
+
       console.log(
         `📤 Sending bulk status notification to user ${userTelegramId} for orders:`,
         orderIds,

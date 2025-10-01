@@ -48,7 +48,11 @@ module.exports = (sequelize, DataTypes) => {
         };
       }
 
-      if (!password || typeof password !== "string" || password.trim().length === 0) {
+      if (
+        !password ||
+        typeof password !== "string" ||
+        password.trim().length === 0
+      ) {
         return {
           isValid: false,
           error: "Пароль не должен быть пустым",
@@ -107,6 +111,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       phone: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      email: {
         type: DataTypes.STRING,
         allowNull: true,
       },

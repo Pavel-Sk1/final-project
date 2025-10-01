@@ -109,7 +109,19 @@ class AdminActionHandlers {
    */
   async handleConfirmBulkOrders(ctx) {
     const orderIdsString = ctx.match[1];
-    const orderIds = orderIdsString.split(",").map((id) => parseInt(id.trim()));
+    let orderIds = [];
+
+    if (orderIdsString.includes("-")) {
+      const [start, end] = orderIdsString
+        .split("-")
+        .map((id) => parseInt(id.trim()));
+      for (let i = start; i <= end; i++) {
+        orderIds.push(i);
+      }
+    } else {
+      orderIds = orderIdsString.split(",").map((id) => parseInt(id.trim()));
+    }
+
     const adminId = ctx.from.id;
 
     try {
@@ -193,7 +205,20 @@ class AdminActionHandlers {
    */
   async handleRejectBulkOrders(ctx) {
     const orderIdsString = ctx.match[1];
-    const orderIds = orderIdsString.split(",").map((id) => parseInt(id.trim()));
+    let orderIds = [];
+
+    // Проверяем, это диапазон (141-163) или список (141,142,143)
+    if (orderIdsString.includes("-")) {
+      const [start, end] = orderIdsString
+        .split("-")
+        .map((id) => parseInt(id.trim()));
+      for (let i = start; i <= end; i++) {
+        orderIds.push(i);
+      }
+    } else {
+      orderIds = orderIdsString.split(",").map((id) => parseInt(id.trim()));
+    }
+
     const adminId = ctx.from.id;
 
     try {
