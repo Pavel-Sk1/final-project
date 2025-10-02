@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import PasswordChecklist from "react-password-checklist";
 import styles from "./AdminPartnerForm.module.css";
 import {
   createPartnerThunk,
@@ -7,6 +8,7 @@ import {
   type ICreatePartnerWithUser,
   deleteOnePartner,
   signUpThunk,
+  UserValidator,
   updateUserThunk,
 } from "@/entities";
 import {
@@ -47,6 +49,8 @@ export function AdminPartnerForm({
   onClose = null,
 }: AdminPartnerFormProps) {
   const dispatch = useAppDispatch();
+  const [showPasswordChecklist, setShowPasswordChecklist] = useState(false);
+  const [emailError, setEmailError] = useState<string>("");
   const {
     successModal,
     errorModal,
@@ -164,6 +168,10 @@ export function AdminPartnerForm({
       return;
     }
 
+    // Очищаем ошибку email при изменении поля
+    if (name === "contact_email" && emailError) {
+      setEmailError("");
+    }
 
       setPartnerInput((prev) => ({
         ...prev,
@@ -175,7 +183,16 @@ export function AdminPartnerForm({
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
-
+    
+    // Валидация email
+    if (partnerInput.contact_email && !UserValidator.validateEmail(partnerInput.contact_email)) {
+      setEmailError("Введите корректный email адрес");
+      return;
+    }
+    
+    // Очищаем ошибку если email валидный
+    setEmailError("");
+    
     try {
       if (partner) {
         const normalizedContactPhone = normalizePhoneDigits(partnerInput.contact_phone);
@@ -307,8 +324,33 @@ export function AdminPartnerForm({
             placeholder={partner ? "Введите новый пароль" : "Введите пароль"}
             value={partnerInput.password}
             onChange={onChangePartnerHandler}
+            onFocus={() => setShowPasswordChecklist(true)}
+            onBlur={() => setShowPasswordChecklist(false)}
             className={styles.formInput}
           />
+          {showPasswordChecklist && (
+            <PasswordChecklist
+              rules={["minLength","specialChar","number","capital","lowercase"]}
+              minLength={8}
+              value={partnerInput.password || ""}
+              messages={{
+                minLength: "Не менее 8 символов",
+                specialChar: "Содержит специальный символ (!@#$%^&*()-,.?\":{}|<>)",
+                number: "Содержит цифру (0-9)",
+                capital: "Содержит заглавную букву (A-Z)",
+                lowercase: "Содержит строчную букву (a-z)"
+              }}
+              style={{
+                fontSize: '13px',
+                marginTop: '8px',
+                listStyle: 'none',
+                padding: 0
+              }}
+              iconSize={12}
+              validColor="#28a745"
+              invalidColor="#dc3545"
+            />
+          )}
         </div>
         <div className={styles.formGroup}>
         <label htmlFor="phone">Телефон</label>
@@ -407,6 +449,17 @@ export function AdminPartnerForm({
             onChange={onChangePartnerHandler}
             className={styles.formInput}
           />
+           {emailError && (
+          <div style={{
+            color: '#dc3545',
+            fontSize: '13px',
+            marginTop: '4px',
+            display: 'flex',
+            alignItems: 'center'
+          }}>
+            {emailError}
+          </div>
+        )}
         </div>
         <div className={styles.formGroup}>
           <label htmlFor="contact_phone">Телефон</label>

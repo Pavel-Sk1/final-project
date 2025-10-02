@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PasswordChecklist from 'react-password-checklist';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router';
 import { signUpThunk, UserValidator, type ISignUpData } from '@/entities';
@@ -17,6 +18,7 @@ export function SignUpForm() {
   const [inputs, setInputs] = useState<ISignUpData>(INITIAL_INPUTS_DATA);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [showPasswordChecklist, setShowPasswordChecklist] = useState(false);
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputs((prev) => ({ ...prev, [event.target.name]: event.target.value }));
@@ -77,10 +79,30 @@ export function SignUpForm() {
           name='password'
           placeholder='Password'
           onChange={onChangeHandler}
+          onFocus={() => setShowPasswordChecklist(true)}
+          onBlur={() => setShowPasswordChecklist(false)}
           value={inputs.password}
           className={styles.formInput}
           required
         />
+        {showPasswordChecklist && (
+          <PasswordChecklist
+            rules={["minLength","specialChar","number","capital","lowercase"]}
+            minLength={8}
+            value={inputs.password}
+            messages={{
+              minLength: "Не менее 8 символов",
+              specialChar: "Содержит специальный символ",
+              number: "Содержит цифру",
+              capital: "Содержит заглавную букву",
+              lowercase: "Содержит строчную букву"
+            }}
+            style={{
+              fontSize: '13px',
+              marginTop: '8px'
+            }}
+          />
+        )}
       </div>
 
       {}
