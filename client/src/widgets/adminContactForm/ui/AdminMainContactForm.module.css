@@ -111,3 +111,59 @@
   }
 }
 
+/* Адаптация для 2K разрешения */
+@media (min-width: 1920px) {
+  .editForm {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 3rem;
+    gap: 2rem;
+    border-radius: 24px;
+  }
+
+  .formInput {
+    padding: 1.2rem 1.5rem;
+    font-size: 1.1rem;
+    border-radius: 12px;
+  }
+
+  .formActions {
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .saveButton,
+  .cancelButton {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 12px;
+  }
+}
+
+@media (min-width: 2560px) {
+  .editForm {
+    max-width: 1000px;
+    padding: 4rem;
+    gap: 2.5rem;
+    border-radius: 32px;
+  }
+
+  .formInput {
+    padding: 1.5rem 2rem;
+    font-size: 1.2rem;
+    border-radius: 16px;
+  }
+
+  .formActions {
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .saveButton,
+  .cancelButton {
+    padding: 1.2rem 2.5rem;
+    font-size: 1.2rem;
+    border-radius: 16px;
+  }
+}
+

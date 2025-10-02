@@ -43,6 +43,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+html {
+  overflow-x: hidden;
 }
 
 h1, h2, h3 {
@@ -50,14 +55,172 @@ h1, h2, h3 {
   color: var(--primary-dark);
   letter-spacing: 0.2px;
   scroll-margin-top: 84px;
+  margin-bottom: 0.5em;
 }
 
-h1 { font-size: clamp(28px, 2.6vw, 40px); line-height: 1.25; }
-h2 { font-size: clamp(22px, 2.1vw, 28px); line-height: 1.3; }
-h3 { font-size: clamp(18px, 1.8vw, 22px); line-height: 1.35; }
+h1 { 
+  font-size: clamp(24px, 4vw, 48px); 
+  line-height: 1.2; 
+  font-weight: 700;
+  margin-bottom: 0.75em;
+}
+
+h2 { 
+  font-size: clamp(20px, 3vw, 36px); 
+  line-height: 1.25; 
+  font-weight: 600;
+  margin-bottom: 0.6em;
+}
+
+h3 { 
+  font-size: clamp(18px, 2.5vw, 28px); 
+  line-height: 1.3; 
+  font-weight: 600;
+  margin-bottom: 0.5em;
+}
+
+h4 {
+  font-family: var(--font-heading);
+  color: var(--primary-dark);
+  font-size: clamp(16px, 2vw, 24px);
+  line-height: 1.35;
+  font-weight: 600;
+  margin-bottom: 0.4em;
+}
+
+h5 {
+  font-family: var(--font-heading);
+  color: var(--primary-dark);
+  font-size: clamp(14px, 1.8vw, 20px);
+  line-height: 1.4;
+  font-weight: 600;
+  margin-bottom: 0.3em;
+}
+
+h6 {
+  font-family: var(--font-heading);
+  color: var(--primary-dark);
+  font-size: clamp(12px, 1.5vw, 18px);
+  line-height: 1.45;
+  font-weight: 600;
+  margin-bottom: 0.3em;
+}
+
+/* Адаптивные стили для текстов */
+p {
+  font-size: clamp(14px, 1.6vw, 18px);
+  line-height: 1.6;
+  margin-bottom: 1em;
+  color: var(--text);
+}
+
+.text-small {
+  font-size: clamp(12px, 1.4vw, 16px);
+  line-height: 1.5;
+}
+
+.text-large {
+  font-size: clamp(16px, 2vw, 22px);
+  line-height: 1.5;
+}
+
+.text-xl {
+  font-size: clamp(18px, 2.5vw, 26px);
+  line-height: 1.4;
+}
+
+.text-2xl {
+  font-size: clamp(20px, 3vw, 32px);
+  line-height: 1.3;
+}
+
+.text-3xl {
+  font-size: clamp(24px, 4vw, 40px);
+  line-height: 1.2;
+}
+
+/* Дополнительные медиа-запросы для точного контроля */
+@media (max-width: 480px) {
+  h1 { font-size: clamp(20px, 6vw, 28px); }
+  h2 { font-size: clamp(18px, 5vw, 24px); }
+  h3 { font-size: clamp(16px, 4vw, 20px); }
+  h4 { font-size: clamp(14px, 3.5vw, 18px); }
+  h5 { font-size: clamp(13px, 3vw, 16px); }
+  h6 { font-size: clamp(12px, 2.5vw, 14px); }
+  
+  p { font-size: clamp(12px, 3vw, 16px); }
+  .text-small { font-size: clamp(10px, 2.5vw, 14px); }
+  .text-large { font-size: clamp(14px, 3.5vw, 18px); }
+  .text-xl { font-size: clamp(16px, 4vw, 22px); }
+  .text-2xl { font-size: clamp(18px, 5vw, 26px); }
+  .text-3xl { font-size: clamp(20px, 6vw, 32px); }
+}
+
+@media (max-width: 375px) {
+  h1 { font-size: clamp(18px, 7vw, 24px); }
+  h2 { font-size: clamp(16px, 6vw, 20px); }
+  h3 { font-size: clamp(14px, 5vw, 18px); }
+  h4 { font-size: clamp(13px, 4vw, 16px); }
+  h5 { font-size: clamp(12px, 3.5vw, 14px); }
+  h6 { font-size: clamp(11px, 3vw, 13px); }
+  
+  p { font-size: clamp(11px, 3.5vw, 14px); }
+  .text-small { font-size: clamp(9px, 3vw, 12px); }
+  .text-large { font-size: clamp(13px, 4vw, 16px); }
+  .text-xl { font-size: clamp(14px, 5vw, 20px); }
+  .text-2xl { font-size: clamp(16px, 6vw, 24px); }
+  .text-3xl { font-size: clamp(18px, 7vw, 28px); }
+}
+
+@media (max-width: 320px) {
+  h1 { font-size: clamp(16px, 8vw, 22px); }
+  h2 { font-size: clamp(14px, 7vw, 18px); }
+  h3 { font-size: clamp(13px, 6vw, 16px); }
+  h4 { font-size: clamp(12px, 5vw, 14px); }
+  h5 { font-size: clamp(11px, 4vw, 13px); }
+  h6 { font-size: clamp(10px, 3.5vw, 12px); }
+  
+  p { font-size: clamp(10px, 4vw, 13px); }
+  .text-small { font-size: clamp(8px, 3.5vw, 11px); }
+  .text-large { font-size: clamp(12px, 4.5vw, 15px); }
+  .text-xl { font-size: clamp(13px, 5.5vw, 18px); }
+  .text-2xl { font-size: clamp(14px, 6.5vw, 22px); }
+  .text-3xl { font-size: clamp(16px, 8vw, 26px); }
+}
+
+@media (min-width: 1920px) {
+  h1 { font-size: clamp(32px, 2.5vw, 56px); }
+  h2 { font-size: clamp(28px, 2vw, 44px); }
+  h3 { font-size: clamp(24px, 1.8vw, 36px); }
+  h4 { font-size: clamp(20px, 1.5vw, 28px); }
+  h5 { font-size: clamp(18px, 1.3vw, 24px); }
+  h6 { font-size: clamp(16px, 1.1vw, 20px); }
+  
+  p { font-size: clamp(16px, 1.2vw, 22px); }
+  .text-small { font-size: clamp(14px, 1vw, 18px); }
+  .text-large { font-size: clamp(18px, 1.4vw, 26px); }
+  .text-xl { font-size: clamp(20px, 1.6vw, 30px); }
+  .text-2xl { font-size: clamp(24px, 2vw, 40px); }
+  .text-3xl { font-size: clamp(28px, 2.5vw, 48px); }
+}
+
+@media (min-width: 2560px) {
+  h1 { font-size: clamp(40px, 2vw, 72px); }
+  h2 { font-size: clamp(36px, 1.8vw, 56px); }
+  h3 { font-size: clamp(32px, 1.6vw, 48px); }
+  h4 { font-size: clamp(28px, 1.4vw, 40px); }
+  h5 { font-size: clamp(24px, 1.2vw, 32px); }
+  h6 { font-size: clamp(20px, 1vw, 28px); }
+  
+  p { font-size: clamp(18px, 1vw, 28px); }
+  .text-small { font-size: clamp(16px, 0.8vw, 24px); }
+  .text-large { font-size: clamp(20px, 1.2vw, 32px); }
+  .text-xl { font-size: clamp(24px, 1.4vw, 40px); }
+  .text-2xl { font-size: clamp(28px, 1.8vw, 48px); }
+  .text-3xl { font-size: clamp(32px, 2vw, 64px); }
+}
 
 .app {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -103,6 +266,7 @@ h3 { font-size: clamp(18px, 1.8vw, 22px); line-height: 1.35; }
 }
 
 .btn-primary {
+min-height: 40px;
   max-height: 40px;
   font-size: 0.9rem;
   font-weight: 600;
@@ -130,5 +294,42 @@ h3 { font-size: clamp(18px, 1.8vw, 22px); line-height: 1.35; }
 
 .btn-primary--active {
   outline: 2px solid var(--accent);
+}
+
+/* Адаптация для 2K разрешения */
+@media (min-width: 1920px) {
+  body {
+    font-size: 20px;
+  }
+
+  h1 { font-size: clamp(32px, 3vw, 48px); }
+  h2 { font-size: clamp(26px, 2.5vw, 36px); }
+  h3 { font-size: clamp(22px, 2.2vw, 28px); }
+
+  .btn-primary {
+    font-size: 1.1rem;
+      max-height: 50px;
+      min-height: 50px;
+      padding: 8px 14px;
+      border-radius: 16px;
+  }
+}
+
+@media (min-width: 2560px) {
+  body {
+    font-size: 22px;
+  }
+
+  h1 { font-size: clamp(40px, 3.5vw, 56px); }
+  h2 { font-size: clamp(32px, 3vw, 44px); }
+  h3 { font-size: clamp(26px, 2.5vw, 32px); }
+
+  .btn-primary {
+    font-size: 1.1rem;
+      max-height: 60px;
+      min-height: 60px;
+      padding: 10px 18px;
+      border-radius: 20px;
+  }
 }
 

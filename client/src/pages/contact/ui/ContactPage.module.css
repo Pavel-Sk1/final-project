@@ -115,14 +115,151 @@
 }
 
 @media (max-width: 768px) {
-  .container { padding: 1rem; }
-  .content { padding: 1.5rem; }
+  .container { 
+    padding: 1rem; 
+  }
+  
+  .content { 
+    padding: 1.5rem; 
+  }
+  
+  .title {
+    font-size: 1.6rem;
+  }
+  
   .grid { 
     grid-template-columns: 1fr; 
     gap: 1rem;
   }
+  
   .card, .map { 
     height: 300px; 
+    min-width: auto;
+  }
+  
+  .cardTitle {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0.5rem;
+  }
+  
+  .content {
+    padding: 1rem;
+  }
+  
+  .title {
+    font-size: 1.4rem;
+  }
+  
+  .card, .map {
+    height: 250px;
+  }
+  
+  .cardTitle {
+    font-size: 1.1rem;
+  }
+  
+  .label {
+    min-width: 80px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (min-width: 1920px) {
+  .container {
+    padding: 3rem;
+  }
+  
+  .content {
+    max-width: 1600px;
+    padding: 3rem;
+    border-radius: 20px;
+  }
+  
+  .title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 3rem;
+  }
+  
+  .grid {
+    gap: 2rem;
+  }
+  
+  .card, .map {
+    height: 500px;
+    min-width: 600px;
+    padding: 2rem;
+    border-radius: 16px;
+  }
+  
+  .cardTitle {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .info {
+    gap: 1rem;
+  }
+  
+  .label {
+    min-width: 120px;
+    font-size: 1.1rem;
+  }
+}
+
+@media (min-width: 2560px) {
+  .container {
+    padding: 4rem;
+  }
+  
+  .content {
+    max-width: 2000px;
+    padding: 4rem;
+    border-radius: 24px;
+  }
+  
+  .title {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .subtitle {
+    font-size: 1.4rem;
+    margin-bottom: 4rem;
+  }
+  
+  .grid {
+    gap: 3rem;
+  }
+  
+  .card, .map {
+    height: 600px;
+    min-width: 700px;
+    padding: 3rem;
+    border-radius: 20px;
+  }
+  
+  .cardTitle {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+  }
+  
+  .info {
+    gap: 1.2rem;
+  }
+  
+  .label {
+    min-width: 140px;
+    font-size: 1.2rem;
   }
 
 .balloon {
@@ -154,7 +291,7 @@
 }
 
 .hintAddress {
-  font-size: 12px;
+  font-size: clamp(10px, 1.2vw, 14px);
   color: var(--text-light);
 }
 }

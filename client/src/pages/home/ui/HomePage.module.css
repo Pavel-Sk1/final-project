@@ -65,6 +65,7 @@
   padding: 0 1rem;
   position: relative;
   height: 132px;
+  margin: 0 auto;
 }
 
 .newsCard {
@@ -265,8 +266,8 @@
 
 .animatedNewsCard {
   position: absolute;
-  left: 16px;
-  right: 16px;
+  left: 0;
+  right: 0;
   top: 0;
 }
 
@@ -277,9 +278,302 @@
   top: 0;
 }
 
+@media (max-width: 1000px) {
+  .images_grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .images_grid > div {
+    height: 160px;
+  }
+}
+
 @media (max-width: 768px) {
+  .mainPage {
+    padding: 1rem;
+  }
+
+  .container {
+    width: 90vw;
+    padding: 0 1rem;
+  }
+
+  .aboutHeading {
+    width: 90vw;
+    padding: 0 1rem;
+  }
+
+  .aboutCard {
+    padding: 1.5rem;
+  }
+
   .banner {
     flex-direction: column;
     text-align: center;
+  }
+
+  .categories {
+    padding: 2rem 0;
+  }
+
+  .newsTicker {
+    height: 120px;
+    padding: 0 0.5rem;
+    max-width: 100%;
+  }
+
+  .newsCard {
+    grid-template-columns: 100px 1fr;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .newsImage,
+  .newsImagePlaceholder {
+    width: 100px;
+    height: 70px;
+  }
+
+  .newsTitle {
+    font-size: 1rem;
+  }
+
+  .images_slider {
+    height: 160px;
+  }
+
+  .images_grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .images_grid > div {
+    height: 140px;
+  }
+
+  .slider_btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.4rem;
+  }
+
+}
+
+@media (max-width: 480px) {
+  .mainPage {
+    padding: 0.5rem;
+  }
+
+  .container {
+    width: 95vw;
+    padding: 0 0.5rem;
+  }
+
+  .aboutHeading {
+    width: 95vw;
+    padding: 0 0.5rem;
+    font-size: 1.8rem;
+  }
+
+  .aboutCard {
+    padding: 1rem;
+  }
+
+  .aboutTitle {
+    font-size: 1.3rem;
+  }
+
+  .categories {
+    padding: 1.5rem 0;
+  }
+
+  .newsTicker {
+    height: 100px;
+    padding: 0 0.25rem;
+    max-width: 100%;
+  }
+
+  .newsCard {
+    grid-template-columns: 80px 1fr;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .newsImage,
+  .newsImagePlaceholder {
+    width: 80px;
+    height: 60px;
+  }
+
+  .newsTitle {
+    font-size: 0.9rem;
+  }
+
+  .newsDescription {
+    font-size: 0.8rem;
+  }
+
+  .images_slider {
+    height: 140px;
+  }
+
+  .images_grid {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  .images_grid > div {
+    height: 120px;
+  }
+
+  .slider_btn {
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
+  }
+
+}
+
+/* Адаптация для 2K разрешения */
+@media (min-width: 1920px) {
+  .mainPage {
+    padding: 3rem 2rem;
+  }
+
+  .container {
+    width: 90vw;
+    max-width: 1600px;
+    padding: 0 3rem;
+  }
+
+  .aboutHeading {
+    width: 90vw;
+    max-width: 1600px;
+    padding: 0 3rem;
+  }
+
+  .aboutCard {
+    padding: 3rem;
+    border-radius: 24px;
+  }
+
+  .categories {
+    padding: 5rem 0;
+  }
+
+  .about {
+    padding: 3rem 0 0;
+  }
+
+  .newsTicker {
+    max-width: 1200px;
+    height: 160px;
+  }
+
+  .newsCard {
+    grid-template-columns: 150px 1fr;
+    gap: 24px;
+    padding: 24px;
+    border-radius: 20px;
+  }
+
+  .newsImage,
+  .newsImagePlaceholder {
+    width: 150px;
+    height: 100px;
+  }
+
+  .newsTitle {
+    font-size: 1.3rem;
+  }
+
+  .images_slider {
+    height: 250px;
+  }
+
+  .images_grid {
+    gap: 2.5rem;
+  }
+
+  .images_grid > div {
+    height: 220px;
+  }
+
+  .slider_btn {
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+  }
+}
+
+@media (min-width: 2560px) {
+  .mainPage {
+    padding: 4rem 3rem;
+  }
+
+  .container {
+    width: 95vw;
+    max-width: 2000px;
+    padding: 0 4rem;
+  }
+
+  .aboutHeading {
+    width: 95vw;
+    max-width: 2000px;
+    padding: 0 4rem;
+  }
+
+  .aboutCard {
+    padding: 4rem;
+    border-radius: 32px;
+  }
+
+  .categories {
+    padding: 6rem 0;
+  }
+
+  .about {
+    padding: 4rem 0 0;
+  }
+
+  .newsTicker {
+    max-width: 1500px;
+    height: 180px;
+  }
+
+  .newsCard {
+    grid-template-columns: 180px 1fr;
+    gap: 32px;
+    padding: 32px;
+    border-radius: 24px;
+  }
+
+  .newsImage,
+  .newsImagePlaceholder {
+    width: 180px;
+    height: 120px;
+  }
+
+  .newsTitle {
+    font-size: 1.5rem;
+  }
+
+  .images_slider {
+    height: 300px;
+  }
+
+  .images_grid {
+    gap: 3rem;
+  }
+
+  .images_grid > div {
+    height: 260px;
+  }
+
+  .slider_btn {
+    width: 70px;
+    height: 70px;
+    font-size: 2.2rem;
   }
 }

@@ -271,6 +271,10 @@
     font-size: 1.6rem;
   }
   
+  .subtitlecontacts {
+    font-size: 1.3rem;
+  }
+  
   .locationButton {
     padding: 0.8rem 1rem;
     font-size: 1rem;
@@ -286,6 +290,19 @@
     gap: 0.5rem;
   }
   
+  .position {
+    font-size: 1rem;
+  }
+  
+  .salary {
+    font-size: 0.9rem;
+  }
+  
+  .contacts {
+    font-size: 0.95rem;
+    padding: 1.2rem;
+  }
+  
   .modal {
     padding: 1.5rem;
     margin: 1rem;
@@ -294,5 +311,229 @@
   .modalTitle {
     font-size: 1.5rem;
   }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0.5rem;
+  }
   
+  .content {
+    padding: 1rem;
+  }
+  
+  .title {
+    font-size: 1.4rem;
+  }
+  
+  .subtitlecontacts {
+    font-size: 1.2rem;
+  }
+  
+  .locationButton {
+    padding: 0.7rem 0.8rem;
+    font-size: 0.9rem;
+  }
+  
+  .locationName {
+    font-size: 1.1rem;
+  }
+  
+  .vacancyItem {
+    padding: 0.7rem 0.8rem;
+  }
+  
+  .position {
+    font-size: 0.95rem;
+  }
+  
+  .salary {
+    font-size: 0.85rem;
+  }
+  
+  .contacts {
+    font-size: 0.9rem;
+    padding: 1rem;
+  }
+  
+  .modal {
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+  
+  .modalTitle {
+    font-size: 1.3rem;
+  }
+  
+  .closeButton {
+    font-size: 1.5rem;
+    width: 35px;
+    height: 35px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .container {
+    padding: 3rem;
+  }
+  
+  .content {
+    max-width: 1600px;
+    padding: 3rem;
+    border-radius: 20px;
+  }
+  
+  .title {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .subtitlecontacts {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    margin-top: 2rem;
+  }
+  
+  .locationGroup {
+    margin-bottom: 1.5rem;
+    border-radius: 12px;
+  }
+  
+  .locationButton {
+    padding: 1.2rem 2rem;
+    font-size: 1.2rem;
+  }
+  
+  .locationName {
+    font-size: 1.4rem;
+  }
+  
+  .vacancyItem {
+    padding: 1.2rem 2rem;
+  }
+  
+  .position {
+    font-size: 1.2rem;
+  }
+  
+  .salary {
+    font-size: 1.1rem;
+  }
+  
+  .contacts {
+    font-size: 1.1rem;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 3rem;
+  }
+  
+  .modal {
+    padding: 3rem;
+    max-width: 800px;
+    border-radius: 20px;
+  }
+  
+  .modalTitle {
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .closeButton {
+    font-size: 2.5rem;
+    width: 50px;
+    height: 50px;
+    top: 1.5rem;
+    right: 1.5rem;
+  }
+  
+  .modalContent {
+    gap: 1.5rem;
+  }
+  
+  .modalField strong {
+    font-size: 1.2rem;
+  }
+}
+
+@media (min-width: 2560px) {
+  .container {
+    padding: 4rem;
+  }
+  
+  .content {
+    max-width: 2000px;
+    padding: 4rem;
+    border-radius: 24px;
+  }
+  
+  .title {
+    font-size: 3rem;
+    margin-bottom: 2.5rem;
+  }
+  
+  .subtitlecontacts {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    margin-top: 2.5rem;
+  }
+  
+  .locationGroup {
+    margin-bottom: 2rem;
+    border-radius: 16px;
+  }
+  
+  .locationButton {
+    padding: 1.5rem 2.5rem;
+    font-size: 1.3rem;
+  }
+  
+  .locationName {
+    font-size: 1.5rem;
+  }
+  
+  .vacancyItem {
+    padding: 1.5rem 2.5rem;
+  }
+  
+  .position {
+    font-size: 1.3rem;
+  }
+  
+  .salary {
+    font-size: 1.2rem;
+  }
+  
+  .contacts {
+    font-size: 1.2rem;
+    padding: 2.5rem;
+    border-radius: 16px;
+    margin-bottom: 4rem;
+  }
+  
+  .modal {
+    padding: 4rem;
+    max-width: 1000px;
+    border-radius: 24px;
+  }
+  
+  .modalTitle {
+    font-size: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+  
+  .closeButton {
+    font-size: 3rem;
+    width: 60px;
+    height: 60px;
+    top: 2rem;
+    right: 2rem;
+  }
+  
+  .modalContent {
+    gap: 2rem;
+  }
+  
+  .modalField strong {
+    font-size: 1.3rem;
+  }
 }
