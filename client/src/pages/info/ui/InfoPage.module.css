@@ -158,12 +158,177 @@
     font-size: 1.6rem;
   }
   
+  .subtitle {
+    font-size: 1.3rem;
+  }
+  
+  .subtitlecontacts {
+    font-size: 1.3rem;
+  }
+  
   .text {
+    font-size: 0.95rem;
+    padding: 1.2rem;
+  }
+  
+  .contacts {
     font-size: 0.95rem;
     padding: 1.2rem;
   }
   
   .th, .td {
     padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+  
+  .buttonsContainer {
+    justify-content: center;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0.5rem;
+  }
+  
+  .content {
+    padding: 1rem;
+  }
+  
+  .title {
+    font-size: 1.4rem;
+  }
+  
+  .subtitle {
+    font-size: 1.2rem;
+  }
+  
+  .subtitlecontacts {
+    font-size: 1.2rem;
+  }
+  
+  .text {
+    font-size: 0.9rem;
+    padding: 1rem;
+  }
+  
+  .contacts {
+    font-size: 0.9rem;
+    padding: 1rem;
+  }
+  
+  .th, .td {
+    padding: 8px 10px;
+    font-size: 0.85rem;
+  }
+  
+  .buttonsContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (min-width: 1920px) {
+  .container {
+    padding: 3rem;
+  }
+  
+  .content {
+    max-width: 1600px;
+    padding: 3rem;
+    border-radius: 20px;
+  }
+  
+  .title {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .subtitle {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+  }
+  
+  .subtitlecontacts {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    margin-top: 2rem;
+  }
+  
+  .text {
+    font-size: 1.1rem;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 3rem;
+  }
+  
+  .contacts {
+    font-size: 1.1rem;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 3rem;
+  }
+  
+  .th, .td {
+    padding: 16px 20px;
+    font-size: 1.1rem;
+  }
+  
+  .buttonsContainer {
+    margin-top: 3rem;
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 2560px) {
+  .container {
+    padding: 4rem;
+  }
+  
+  .content {
+    max-width: 2000px;
+    padding: 4rem;
+    border-radius: 24px;
+  }
+  
+  .title {
+    font-size: 3rem;
+    margin-bottom: 2.5rem;
+  }
+  
+  .subtitle {
+    font-size: 2rem;
+    margin-bottom: 2.5rem;
+  }
+  
+  .subtitlecontacts {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    margin-top: 2.5rem;
+  }
+  
+  .text {
+    font-size: 1.2rem;
+    padding: 2.5rem;
+    border-radius: 16px;
+    margin-bottom: 4rem;
+  }
+  
+  .contacts {
+    font-size: 1.2rem;
+    padding: 2.5rem;
+    border-radius: 16px;
+    margin-bottom: 4rem;
+  }
+  
+  .th, .td {
+    padding: 20px 24px;
+    font-size: 1.2rem;
+  }
+  
+  .buttonsContainer {
+    margin-top: 4rem;
+    gap: 2rem;
   }
 }

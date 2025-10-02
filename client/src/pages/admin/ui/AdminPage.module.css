@@ -242,11 +242,104 @@ letter-spacing: 0.3px;
   border-radius: 4px;
   border: 1px solid #d1d5db;
   background-color: white;
-  font-size: 14px;
+  font-size: clamp(12px, 1.4vw, 16px);
   min-width: 150px;
 }
 
 .dateInfo {
-  font-size: 14px;
+  font-size: clamp(12px, 1.4vw, 16px);
   color: #6b7280;
+}
+
+/* Адаптация для 2K разрешения */
+@media (min-width: 1920px) {
+  .adminPage {
+    padding: 3rem 2rem;
+  }
+
+  .container {
+    max-width: 1600px;
+  }
+
+  .pageTitle {
+    font-size: 3rem;
+    margin-bottom: 4rem;
+  }
+
+  .section {
+    padding: 3rem;
+    margin-bottom: 3rem;
+    border-radius: 24px;
+  }
+
+  .sectionHeader {
+    margin-bottom: 3rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.8rem;
+  }
+
+  .toggleButton {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    border-radius: 12px;
+  }
+
+  .adminNav {
+    gap: 1.5rem;
+    padding: 2rem;
+  }
+
+  .adminNav button {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 2560px) {
+  .adminPage {
+    padding: 4rem 3rem;
+  }
+
+  .container {
+    max-width: 2000px;
+  }
+
+  .pageTitle {
+    font-size: 3.5rem;
+    margin-bottom: 5rem;
+  }
+
+  .section {
+    padding: 4rem;
+    margin-bottom: 4rem;
+    border-radius: 32px;
+  }
+
+  .sectionHeader {
+    margin-bottom: 4rem;
+    padding-bottom: 2rem;
+  }
+
+  .sectionTitle {
+    font-size: 2rem;
+  }
+
+  .toggleButton {
+    padding: 1.2rem 2.5rem;
+    font-size: 1.1rem;
+    border-radius: 16px;
+  }
+
+  .adminNav {
+    gap: 2rem;
+    padding: 2.5rem;
+  }
+
+  .adminNav button {
+    padding: 1.2rem 2.5rem;
+    font-size: 1.1rem;
+  }
 }

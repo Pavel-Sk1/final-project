@@ -141,10 +141,104 @@ letter-spacing: 0.3px;
   .userNav {
     flex-direction: column;
     align-items: center;
+    padding: 1rem;
+    margin-bottom: 2rem;
   }
 
   .userNav button {
     width: 100%;
     max-width: 300px;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .userPage {
+    padding: 0.5rem;
+  }
+
+  .pageTitle {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .userNav {
+    padding: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .userNav button {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.85rem;
+    max-width: 250px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .userPage {
+    padding: 3rem 2rem;
+  }
+
+  .container {
+    max-width: 1600px;
+  }
+
+  .pageTitle {
+    font-size: 3rem;
+    margin-bottom: 4rem;
+  }
+
+  .userNav {
+    gap: 1.5rem;
+    padding: 2rem;
+    margin-bottom: 4rem;
+    border-radius: 20px;
+  }
+
+  .userNav button {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    border-radius: 12px;
+  }
+
+  .loading, .error {
+    font-size: 1.4rem;
+    padding: 3rem;
+    border-radius: 20px;
+  }
+}
+
+@media (min-width: 2560px) {
+  .userPage {
+    padding: 4rem 3rem;
+  }
+
+  .container {
+    max-width: 2000px;
+  }
+
+  .pageTitle {
+    font-size: 3.5rem;
+    margin-bottom: 5rem;
+  }
+
+  .userNav {
+    gap: 2rem;
+    padding: 2.5rem;
+    margin-bottom: 5rem;
+    border-radius: 24px;
+  }
+
+  .userNav button {
+    padding: 1.2rem 2.5rem;
+    font-size: 1.1rem;
+    border-radius: 16px;
+  }
+
+  .loading, .error {
+    font-size: 1.6rem;
+    padding: 4rem;
+    border-radius: 24px;
   }
 }
