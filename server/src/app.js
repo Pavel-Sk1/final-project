@@ -12,6 +12,7 @@ serverConfig(app); //! конфигурация
 
 app.use("/api", apiRoutes);
 
+
 // Запуск Telegram бота
 try {
   const { Telegraf } = require("telegraf");
@@ -48,7 +49,9 @@ try {
   console.error("Ошибка запуска Telegram бота:", error);
   console.log("Сервер будет работать без бота");
 }
-
+app.get(/.*/, (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "dist", "index.html"));
+});
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });

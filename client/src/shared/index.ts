@@ -4,4 +4,5 @@ export { CLIENT_ROUTES } from "./enums/client-routes";
 export * from "./hooks";
 export * from "./hocs";
 export { EditModal, ConfirmationModal, SuccessModal, ErrorModal } from "./ui";
-export { formatPhoneInputMask, normalizePhoneDigits } from "./lib/phone";
+export { formatPhoneInputMask, normalizePhoneDigits, formatPhonePretty } from './lib/phone'
+
