@@ -16,6 +16,7 @@ const serverConfig = (app) => {
   app.use(removeXPoweredBy);
   app.use(morgan("dev"));
   app.use("/files", express.static(path.resolve(__dirname, "..", "public")));
+  app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
   app.use(cors(corsOptions));
   app.use(cookieParser());
   app.use(express.static(path.join(__dirname, "..", "public", "dist")));

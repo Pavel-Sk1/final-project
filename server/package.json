@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-       "dev": "nodemon src/app.js",
-      "db:setup": "sequelize db:migrate && sequelize db:seed:all",
-      "db:setup:prod": "npx sequelize db:migrate",
-      "start": "node src/app.js"
+    "dev": "nodemon src/app.js",
+    "db:setup": "sequelize db:migrate && sequelize db:seed:all",
+    "db:setup:prod": "npx sequelize db:migrate",
+    "start": "node src/app.js"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +25,7 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.1",
+    "multer": "^2.0.2",
     "nodemon": "^3.1.10",
     "pg": "^8.16.3",
     "pg-hstore": "^2.3.4",

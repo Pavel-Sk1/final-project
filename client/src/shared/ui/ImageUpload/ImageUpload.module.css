@@ -1,0 +1,118 @@
+.imageUpload {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.inputGroup {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.urlInput {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-family: var(--font-base);
+  background: var(--white);
+  color: var(--text);
+  transition: var(--transition);
+}
+
+.urlInput:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(167, 99, 51, 0.1);
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 8px;
+}
+
+.uploadButton {
+  min-width: 100px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-base);
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.uploadButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 12px rgba(167, 99, 51, 0.3);
+}
+
+.uploadButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.clearButton {
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #dc3545, #c82333);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font-base);
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.clearButton:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.preview {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 244, 236, 0.3);
+}
+
+.previewImage {
+  max-width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 4px 12px rgba(167, 99, 51, 0.1);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .inputGroup {
+    flex-direction: column;
+  }
+
+  .buttonGroup {
+    width: 100%;
+  }
+
+  .uploadButton,
+  .clearButton {
+    flex: 1;
+  }
+}

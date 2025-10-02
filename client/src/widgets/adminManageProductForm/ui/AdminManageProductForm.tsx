@@ -6,6 +6,7 @@ import {
   useModalNotifications,
   SuccessModal,
   ErrorModal,
+  ImageUpload,
 } from "@/shared";
 import { getAllCategoriesThunk } from "@/entities";
 import type { ICreateProduct, IProduct } from "@/entities/products";
@@ -205,15 +206,16 @@ export function AdminManageProductForm({
         </div>
 
         <div className={styles.formGroup}>
-          <label htmlFor="img">URL изображения</label>
-          <input
-            id="img"
-            type="text"
-            name="img"
-            placeholder="Введите URL изображения"
-            value={productInput.img}
-            onChange={onChangeProductHandler}
-            className={styles.formInput}
+          <label htmlFor="img">Изображение продукта</label>
+          <ImageUpload
+            currentImageUrl={productInput.img}
+            onImageChange={(url) =>
+              setProductInput((prev) => ({ ...prev, img: url }))
+            }
+            onImageClear={() =>
+              setProductInput((prev) => ({ ...prev, img: "" }))
+            }
+            placeholder="Введите URL изображения или загрузите файл"
           />
         </div>
 

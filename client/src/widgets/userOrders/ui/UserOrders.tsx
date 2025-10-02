@@ -1,6 +1,7 @@
 import styles from "./UserOrders.module.css";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks";
+import { getFullImageUrl } from "@/shared";
 import {
   getUserOrdersThunk,
   createOrderThunk,
@@ -56,7 +57,6 @@ export function UserOrders() {
     const items: IOrderItem[] = [];
 
     Object.entries(orderItems).forEach(([productId, itemData]) => {
-      
       if (itemData.fried > 0) {
         items.push({
           product_id: parseInt(productId),
@@ -64,7 +64,7 @@ export function UserOrders() {
           variant: "ж",
         });
       }
-      
+
       if (itemData.baked > 0) {
         items.push({
           product_id: parseInt(productId),
@@ -72,7 +72,7 @@ export function UserOrders() {
           variant: "п",
         });
       }
-      
+
       if (itemData.regular > 0) {
         items.push({
           product_id: parseInt(productId),
@@ -195,7 +195,7 @@ export function UserOrders() {
                         <div className={styles.productInfo}>
                           {product.img && (
                             <img
-                              src={product.img}
+                              src={getFullImageUrl(product.img)}
                               alt={product.name}
                               className={styles.productImage}
                             />
@@ -443,7 +443,6 @@ export function UserOrders() {
                             <span>Цена</span>
                           </div>
                           {order.items.map((item, index) => {
-                            
                             const product = item.product;
                             return (
                               <div key={index} className={styles.orderItem}>

@@ -10,6 +10,7 @@ const vacancyRoutes = require("./vacancy.routes");
 const mainContactRoutes = require("./mainContact.routes");
 const partnerRoutes = require("./partner.routes");
 const ordersRoutes = require("./orders.routes");
+const uploadRoutes = require("./upload.routes");
 
 router.use("/auth", authRoutes);
 router.use("/admin", adminRouter);
@@ -21,6 +22,7 @@ router.use("/vacancy", vacancyRoutes);
 router.use("/contact", mainContactRoutes);
 router.use("/partners", partnerRoutes);
 router.use("/orders", ordersRoutes);
+router.use("/upload", uploadRoutes);
 
 router.use((req, res) => {
   res

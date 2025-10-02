@@ -12,6 +12,7 @@ import {
   useModalNotifications,
   SuccessModal,
   ErrorModal,
+  ImageUpload,
 } from "@/shared";
 
 const initialNewsInput: ICreateAdminNews = {
@@ -150,15 +151,14 @@ export function AdminNewsForm({
           />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="img">URL изображения</label>
-          <input
-            id="img"
-            type="text"
-            name="img"
-            placeholder="URL изображения"
-            value={newsInput.img}
-            onChange={onChangeNewsHandler}
-            className={styles.formInput}
+          <label htmlFor="img">Изображение новости</label>
+          <ImageUpload
+            currentImageUrl={newsInput.img}
+            onImageChange={(url) =>
+              setNewsInput((prev) => ({ ...prev, img: url }))
+            }
+            onImageClear={() => setNewsInput((prev) => ({ ...prev, img: "" }))}
+            placeholder="Введите URL изображения или загрузите файл"
           />
         </div>
         <div className={styles.formGroup}>

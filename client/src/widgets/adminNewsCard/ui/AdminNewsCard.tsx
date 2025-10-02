@@ -1,6 +1,11 @@
 import { useMemo, useState } from "react";
 import styles from "./AdminNewsCard.module.css";
-import { useAppDispatch, EditModal, ConfirmationModal } from "@/shared";
+import {
+  useAppDispatch,
+  EditModal,
+  ConfirmationModal,
+  getFullImageUrl,
+} from "@/shared";
 import { deleteNewsThunk, editOneNews, type IAdminNews } from "@/entities";
 import { AdminNewsForm } from "@/widgets/adminNewsForm";
 
@@ -23,10 +28,10 @@ export function AdminNewsCard({ news }: AdminNewsCardProps) {
   }, [news, setIsOpen]);
   const handleDeleteClick = () => {
     setIsDeleteModalOpen(true);
-  }
+  };
   const handleDeleteCancel = () => {
     setIsDeleteModalOpen(false);
-  }
+  };
   const deleteNewsHandler = () => {
     try {
       dispatch(deleteNewsThunk(news.id));
@@ -38,12 +43,16 @@ export function AdminNewsCard({ news }: AdminNewsCardProps) {
   return (
     <div key={news.id} className={styles.newsItem}>
       <div className={styles.itemStatus}>
-        <span className={news.is_active ? styles.statusActive : styles.statusInactive}>
-          {news.is_active ? 'Активна' : 'Неактивна'}
+        <span
+          className={
+            news.is_active ? styles.statusActive : styles.statusInactive
+          }
+        >
+          {news.is_active ? "Активна" : "Неактивна"}
         </span>
       </div>
       <div className={styles.itemImage}>
-        <img src={news.img} alt={news.title} />
+        <img src={getFullImageUrl(news.img)} alt={news.title} />
       </div>
       <div className={styles.itemContent}>
         <h3 className={styles.itemTitle}>{news.title}</h3>

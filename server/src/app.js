@@ -11,6 +11,8 @@ const app = express();
 serverConfig(app); //! конфигурация
 
 app.use("/api", apiRoutes);
+// Статическая раздача загруженных файлов
+// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 // Запуск Telegram бота
