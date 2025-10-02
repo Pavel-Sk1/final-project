@@ -9,7 +9,6 @@
 :root {
   --font-base: 'Playpen Sans', 'Segoe UI', Roboto, Arial, sans-serif;
   --font-heading: 'Pacifico', Georgia, 'Times New Roman', serif;
-  --bg: #f6eee7;
   --bg-contrast: #f3e2d6;
   --primary: #a76333;
   --primary-dark: #8a4e24;
@@ -35,6 +34,11 @@ body {
   font-size: 18px;
   line-height: 1.6;
   color: var(--text);
+  background-image: url('/background2.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   background-color: var(--bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -56,10 +60,46 @@ h3 { font-size: clamp(18px, 1.8vw, 22px); line-height: 1.35; }
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+.app::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(167, 99, 51, 0.3) 0%,
+    rgba(246, 238, 231, 0.4) 30%,
+    rgba(216, 149, 95, 0.25) 70%,
+    rgba(138, 78, 36, 0.35) 100%
+  );
+  z-index: -1;
+  pointer-events: none;
+}
+
+.app::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 25% 25%, rgba(167, 99, 51, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(216, 149, 95, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(138, 78, 36, 0.05) 0%, transparent 70%);
+  z-index: -1;
+  pointer-events: none;
 }
 
 .main {
   flex: 1;
+  position: relative;
+  backdrop-filter: blur(0.5px);
 }
 
 .btn-primary {
@@ -74,7 +114,7 @@ h3 { font-size: clamp(18px, 1.8vw, 22px); line-height: 1.35; }
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: var(--white);
   border: 1px solid transparent;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow), 0 0 20px rgba(167, 99, 51, 0.3);
   transition: var(--transition);
   cursor: pointer;
 }

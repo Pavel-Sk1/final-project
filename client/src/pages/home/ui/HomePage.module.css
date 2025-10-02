@@ -29,6 +29,12 @@
   max-width: 1280px;
   margin: 0 auto 1rem auto;
   padding: 0 24px;
+  text-shadow: 
+    2px 2px 4px rgba(0, 0, 0, 0.7),
+    0 0 8px rgba(0, 0, 0, 0.4);
+  color: #874c23;
+  font-weight: 600;
+  letter-spacing: 0.3px;
 }
 .aboutCard {
   background: linear-gradient(180deg, #ffffff, #fff9f5);
