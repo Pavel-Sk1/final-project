@@ -3,6 +3,16 @@ export { type ServerResponseType } from "./types/server-response-type";
 export { CLIENT_ROUTES } from "./enums/client-routes";
 export * from "./hooks";
 export * from "./hocs";
-export { EditModal, ConfirmationModal, SuccessModal, ErrorModal } from "./ui";
-export { formatPhoneInputMask, normalizePhoneDigits, formatPhonePretty } from './lib/phone'
-
+export {
+  EditModal,
+  ConfirmationModal,
+  SuccessModal,
+  ErrorModal,
+  ImageUpload,
+} from "./ui";
+export {
+  formatPhoneInputMask,
+  normalizePhoneDigits,
+  formatPhonePretty,
+} from "./lib/phone";
+export { getFullImageUrl, transformImageUrls } from "./lib/imageUtils";

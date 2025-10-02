@@ -1,16 +1,21 @@
 import { useMemo, useState } from "react";
 import styles from "./AdminManageProductCard.module.css";
-import { useAppDispatch, EditModal, ConfirmationModal } from "@/shared";
+import {
+  useAppDispatch,
+  EditModal,
+  ConfirmationModal,
+  getFullImageUrl,
+} from "@/shared";
 import type { IProduct } from "@/entities/products";
 import { deleteProductThunk, editOneProduct } from "@/entities";
 import { AdminManageProductForm } from "@/widgets";
 
 type AdminManageProductCardProps = {
-  product: IProduct;  
+  product: IProduct;
 };
 
 export function AdminManageProductCard({
-  product,  
+  product,
 }: AdminManageProductCardProps) {
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
@@ -23,14 +28,14 @@ export function AdminManageProductCard({
         onClose={() => setIsOpen(false)}
         setProCreateProduct={null}
       />
-    )
-  }, [product, setIsOpen])
+    );
+  }, [product, setIsOpen]);
   const handleDeleteClick = () => {
     setIsDeleteModalOpen(true);
-  }
+  };
   const handleDeleteCancel = () => {
     setIsDeleteModalOpen(false);
-};
+  };
   const deleteProductHandler = () => {
     try {
       dispatch(deleteProductThunk(product.id));
@@ -43,12 +48,16 @@ export function AdminManageProductCard({
   return (
     <div className={styles.productItem}>
       <div className={styles.itemStatus}>
-        <span className={product.is_active ? styles.statusActive : styles.statusInactive}>
-          {product.is_active ? 'Активен' : 'Неактивен'}
+        <span
+          className={
+            product.is_active ? styles.statusActive : styles.statusInactive
+          }
+        >
+          {product.is_active ? "Активен" : "Неактивен"}
         </span>
       </div>
       <div className={styles.itemImage}>
-        <img src={product.img} alt={product.name} />
+        <img src={getFullImageUrl(product.img)} alt={product.name} />
       </div>
       <div className={styles.itemContent}>
         <h3 className={styles.itemTitle}>{product.name}</h3>
@@ -77,7 +86,7 @@ export function AdminManageProductCard({
       <div className={styles.itemActions}>
         <button
           className={styles.editButton}
-          onClick={() => {            
+          onClick={() => {
             dispatch(editOneProduct(product));
             setIsOpen(true);
           }}

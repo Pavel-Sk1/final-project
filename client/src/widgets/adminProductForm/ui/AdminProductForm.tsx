@@ -11,6 +11,7 @@ import {
   useModalNotifications,
   SuccessModal,
   ErrorModal,
+  ImageUpload,
 } from "@/shared";
 
 type AdminProductFormProps = {
@@ -42,14 +43,14 @@ export function AdminProductForm({
     }
   }, [product]);
 
-  const onChangeProductHandler = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setProductInput((prev) => ({
-      ...prev,
-      [event.target.name]: event.target.value,
-    }));
-  };
+  // const onChangeProductHandler = (
+  //   event: React.ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   setProductInput((prev) => ({
+  //     ...prev,
+  //     [event.target.name]: event.target.value,
+  //   }));
+  // };
 
   const onSubmitProductHandler = async (
     event: React.FormEvent<HTMLFormElement>
@@ -87,15 +88,16 @@ export function AdminProductForm({
     <>
       <form className={styles.editForm} onSubmit={onSubmitProductHandler}>
         <div className={styles.formGroup}>
-          <label htmlFor="img">URL изображения</label>
-          <input
-            id="img"
-            type="text"
-            name="img"
-            placeholder="URL изображения"
-            value={productInput.img}
-            onChange={onChangeProductHandler}
-            className={styles.formInput}
+          <label htmlFor="img">Изображение продукта</label>
+          <ImageUpload
+            currentImageUrl={productInput.img}
+            onImageChange={(url) =>
+              setProductInput((prev) => ({ ...prev, img: url }))
+            }
+            onImageClear={() =>
+              setProductInput((prev) => ({ ...prev, img: "" }))
+            }
+            placeholder="Введите URL изображения или загрузите файл"
           />
         </div>
         <div className={styles.formActions}>

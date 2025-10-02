@@ -1,6 +1,11 @@
 import { useState, useEffect, useMemo } from "react";
 import styles from "./HomePage.module.css";
-import { useAppDispatch, useAppSelector, usePageTitle } from "@/shared";
+import {
+  useAppDispatch,
+  useAppSelector,
+  usePageTitle,
+  getFullImageUrl,
+} from "@/shared";
 import { useTransition, animated } from "@react-spring/web";
 import { getAllNewsThunk, getAllProductImagesThunk } from "@/entities";
 
@@ -16,7 +21,10 @@ export function HomePage() {
 
   const imagesPerSlide = 4;
   const images = useMemo(
-    () => productImages.map((p) => p.img).filter(Boolean) as string[],
+    () =>
+      productImages
+        .map((p) => getFullImageUrl(p.img))
+        .filter(Boolean) as string[],
     [productImages]
   );
   const totalImages = images.length;
@@ -113,7 +121,7 @@ export function HomePage() {
                 {item?.img ? (
                   <img
                     className={styles.newsImage}
-                    src={item.img as string}
+                    src={getFullImageUrl(item.img)}
                     alt={item.title}
                   />
                 ) : (
