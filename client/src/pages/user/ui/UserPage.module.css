@@ -19,8 +19,12 @@
   font-weight: 700;
   text-align: center;
   margin-bottom: 3rem;
-  color: var(--primary-dark);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color:#834417;
+  text-shadow: 
+  2px 2px 4px rgba(0, 0, 0, 0.7),
+  0 0 8px rgba(0, 0, 0, 0.4);
+font-weight: 600;
+letter-spacing: 0.3px;
 }
 
 .loading, .error {
