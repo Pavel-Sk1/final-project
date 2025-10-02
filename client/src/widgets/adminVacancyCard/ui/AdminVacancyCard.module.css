@@ -116,7 +116,7 @@
 
 .deleteButton {
   padding: 0.6rem 1.2rem;
-  background: linear-gradient(135deg, var(--error), var(--primary));
+  background: linear-gradient(135deg, var(--error), #c82333);
   color: var(--white);
   border: none;
   border-radius: var(--radius-sm);
