@@ -7,8 +7,17 @@ import {
   type ICreatePartnerWithUser,
   deleteOnePartner,
   signUpThunk,
+  updateUserThunk,
 } from "@/entities";
-import { useAppDispatch,formatPhoneInputMask, normalizePhoneDigits  } from "@/shared";
+import {
+  useAppDispatch,
+  formatPhoneInputMask, 
+  normalizePhoneDigits,
+  useModalNotifications,
+  SuccessModal,
+  ErrorModal,
+} from "@/shared";
+
 
 const initialPartnerInput: ICreatePartnerWithUser = {
   login: "",
@@ -38,6 +47,14 @@ export function AdminPartnerForm({
   onClose = null,
 }: AdminPartnerFormProps) {
   const dispatch = useAppDispatch();
+  const {
+    successModal,
+    errorModal,
+    showSuccess,
+    showError,
+    closeSuccess,
+    closeError,
+  } = useModalNotifications();
   // const { userToCreate } = useAppSelector((state) => state.user);
 
   const isDeletingText = (oldValue: string, newValue: string): boolean => {
@@ -65,6 +82,7 @@ export function AdminPartnerForm({
     partner
       ? {
           login: partner.user.login,
+          password: "",
           phone: partner.user.phone,
           role_id: partner.user.role_id,
           company_name: partner.company_name,
@@ -83,6 +101,10 @@ export function AdminPartnerForm({
   useEffect(() => {
     if (partner) {
       setPartnerInput({
+        login: partner.user.login,
+        password: "",
+        phone: partner.user.phone,
+        role_id: partner.user.role_id,
         company_name: partner.company_name,
         inn: partner.inn,
         ogrn: partner.ogrn,
@@ -92,9 +114,6 @@ export function AdminPartnerForm({
         contact_phone: partner.contact_phone,
         comment: partner.comment,
         status: partner.status,
-        login: partner.user.login,
-        phone: partner.user.phone,
-        role_id: partner.user.role_id,
       });
     }
   }, [partner]);
@@ -156,6 +175,7 @@ export function AdminPartnerForm({
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
+
     try {
       if (partner) {
         const normalizedContactPhone = normalizePhoneDigits(partnerInput.contact_phone);
@@ -169,10 +189,38 @@ export function AdminPartnerForm({
           contact_phone: normalizedContactPhone,
           comment: partnerInput.comment,
           status: partnerInput.status,
+          user_id: partner.user.id,
         };
-        dispatch(
-          updatePartnerThunk({ id: partner.id, partner: partnerToUpdate })
+        const userToUpdate = {
+          login: partnerInput.login,
+          password: partnerInput.password || "",
+          phone: partnerInput.phone,
+          role_id: partnerInput.role_id,
+        };
+        const updateUserResult = await dispatch(
+          updateUserThunk({ id: partner.user.id, userData: userToUpdate })
         );
+        if (
+          updateUserThunk.fulfilled.match(updateUserResult) &&
+          updateUserResult.payload.data.user
+        ) {
+          const updatePartnerResult = await dispatch(
+            updatePartnerThunk({ id: partner.id, partner: partnerToUpdate })
+          );
+          if (updatePartnerThunk.fulfilled.match(updatePartnerResult)) {
+            showSuccess("Партнер обновлен", "Партнер был успешно обновлен!");
+          } else {
+            showError(
+              "Ошибка обновления",
+              "Не удалось обновить партнера. Попробуйте снова."
+            );
+          }
+        } else {
+          showError(
+            "Ошибка обновления пользователя",
+            "Не удалось обновить данные пользователя. Попробуйте снова."
+          );
+        }
       } else {
         const normalizedPhone = normalizePhoneDigits(partnerInput.phone);
         const signUpResult = await dispatch(
@@ -183,9 +231,12 @@ export function AdminPartnerForm({
             role_id: partnerInput.role_id,
           })
         );
-        
+
         // Проверяем, что регистрация прошла успешно
-        if (signUpThunk.fulfilled.match(signUpResult) && signUpResult.payload.data.user) {
+        if (
+          signUpThunk.fulfilled.match(signUpResult) &&
+          signUpResult.payload.data.user
+        ) {
           const createdUser = signUpResult.payload.data.user;
           const normalizedContactPhone = normalizePhoneDigits(partnerInput.contact_phone);
           const partnerToCreate = {
@@ -200,48 +251,66 @@ export function AdminPartnerForm({
             status: partnerInput.status,
             user_id: createdUser.id,
           };
-          await dispatch(createPartnerThunk(partnerToCreate));
+          const createPartnerResult = await dispatch(
+            createPartnerThunk(partnerToCreate)
+          );
+          if (createPartnerThunk.fulfilled.match(createPartnerResult)) {
+            showSuccess("Партнер создан", "Партнер был успешно создан!");
+          } else {
+            showError(
+              "Ошибка создания",
+              "Не удалось создать партнера. Попробуйте снова."
+            );
+          }
+        } else {
+          showError(
+            "Ошибка регистрации",
+            "Не удалось зарегистрировать пользователя. Попробуйте снова."
+          );
         }
       }
     } catch (error) {
       console.error(error);
-    } finally {
-      setPartnerInput(initialPartnerInput);
-      setCreatePartner?.(false);
-      onClose?.();
-      dispatch(deleteOnePartner());
+      showError("Ошибка", "Произошла неожиданная ошибка. Попробуйте снова.");
     }
   };
 
+  // Функция для закрытия формы после успешной операции
+  const handleCloseForm = () => {
+    setPartnerInput(initialPartnerInput);
+    setCreatePartner?.(false);
+    onClose?.();
+    dispatch(deleteOnePartner());
+  };
+
   return (
-    <form className={styles.editForm} onSubmit={onSubmitPartnerHandler}>
-      <div className={styles.formGroup}>
-        <label htmlFor="login">Логин</label>
-        <input
-          id="login"
-          type="text"
-          name="login"
-          placeholder="Введите логин"
-          value={partnerInput.login}
-          onChange={onChangePartnerHandler}
-          className={styles.formInput}
-        />
-      </div>
-      {!partner && (
+    <>
+      <form className={styles.editForm} onSubmit={onSubmitPartnerHandler}>
+        <div className={styles.formGroup}>
+          <label htmlFor="login">Логин</label>
+          <input
+            id="login"
+            type="text"
+            name="login"
+            placeholder="Введите логин"
+            value={partnerInput.login}
+            onChange={onChangePartnerHandler}
+            className={styles.formInput}
+          />
+        </div>
         <div className={styles.formGroup}>
           <label htmlFor="password">Пароль</label>
           <input
             id="password"
             type="password"
             name="password"
-            placeholder="Введите пароль"
+            placeholder={partner ? "Введите новый пароль" : "Введите пароль"}
             value={partnerInput.password}
             onChange={onChangePartnerHandler}
             className={styles.formInput}
           />
         </div>
-      )}
-      <div className={styles.formGroup}>
+        <div className={styles.formGroup}>
         <label htmlFor="phone">Телефон</label>
         <input
           id="phone"
@@ -252,57 +321,57 @@ export function AdminPartnerForm({
           onChange={onChangePartnerHandler}
           className={styles.formInput}
         />
-      </div>
-      <div className={styles.formGroup}>
-        <label htmlFor="role_id">Роль</label>
-        <select
-          id="role_id"
-          name="role_id"
-          value={partnerInput.role_id}
-          onChange={onChangePartnerHandler}
-          className={styles.formInput}
-        >
-          <option value="">Выберите роль</option>
-          <option value={1}>Администратор</option>
-          <option value={2}>Пользователь</option>
-        </select>
-      </div>
-      <div className={styles.formGroup}>
-        <label htmlFor="company_name">Название компании</label>
-        <input
-          id="company_name"
-          type="text"
-          name="company_name"
-          placeholder="Введите название компании"
-          value={partnerInput.company_name}
-          onChange={onChangePartnerHandler}
-          className={styles.formInput}
-        />
-      </div>
-      <div className={styles.formGroup}>
-        <label htmlFor="inn">ИНН</label>
-        <input
-          id="inn"
-          type="text"
-          name="inn"
-          placeholder="Введите ИНН"
-          value={partnerInput.inn}
-          onChange={onChangePartnerHandler}
-          className={styles.formInput}
-        />
-      </div>
-      <div className={styles.formGroup}>
-        <label htmlFor="ogrn">ОГРН</label>
-        <input
-          id="ogrn"
-          type="text"
-          name="ogrn"
-          placeholder="Введите ОГРН"
-          value={partnerInput.ogrn}
-          onChange={onChangePartnerHandler}
-          className={styles.formInput}
-        />
-      </div>
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="role_id">Роль</label>
+          <select
+            id="role_id"
+            name="role_id"
+            value={partnerInput.role_id}
+            onChange={onChangePartnerHandler}
+            className={styles.formInput}
+          >
+            <option value="">Выберите роль</option>
+            <option value={1}>Администратор</option>
+            <option value={2}>Пользователь</option>
+          </select>
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="company_name">Название компании</label>
+          <input
+            id="company_name"
+            type="text"
+            name="company_name"
+            placeholder="Введите название компании"
+            value={partnerInput.company_name}
+            onChange={onChangePartnerHandler}
+            className={styles.formInput}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="inn">ИНН</label>
+          <input
+            id="inn"
+            type="text"
+            name="inn"
+            placeholder="Введите ИНН"
+            value={partnerInput.inn}
+            onChange={onChangePartnerHandler}
+            className={styles.formInput}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="ogrn">ОГРН</label>
+          <input
+            id="ogrn"
+            type="text"
+            name="ogrn"
+            placeholder="Введите ОГРН"
+            value={partnerInput.ogrn}
+            onChange={onChangePartnerHandler}
+            className={styles.formInput}
+          />
+        </div>        
       <div className={styles.formGroup}>
         <label htmlFor="address">Адрес</label>
         <input
@@ -315,85 +384,101 @@ export function AdminPartnerForm({
           className={styles.formInput}
         />
       </div>
-      <div className={styles.formGroup}>
-        <label htmlFor="contact_person">Контактное лицо</label>
-        <input
-          id="contact_person"
-          type="text"
-          name="contact_person"
-          placeholder="Введите контактное лицо"
-          value={partnerInput.contact_person}
-          onChange={onChangePartnerHandler}
-          className={styles.formInput}
-        />
-      </div>
-      <div className={styles.formGroup}>
-        <label htmlFor="contact_email">Email</label>
-        <input
-          id="contact_email"
-          type="email"
-          name="contact_email"
-          placeholder="Введите email"
-          value={partnerInput.contact_email}
-          onChange={onChangePartnerHandler}
-          className={styles.formInput}
-        />
-      </div>
-      <div className={styles.formGroup}>
-        <label htmlFor="contact_phone">Телефон</label>
-        <input
-          id="contact_phone"
-          type="tel"
-          name="contact_phone"
-          placeholder="Введите телефон"
-          value={partnerInput.contact_phone}
-          onChange={onChangePartnerHandler}
-          className={styles.formInput}
-        />
-      </div>
-      <div className={styles.formGroup}>
-        <label htmlFor="comment">Комментарий</label>
-        <textarea
-          id="comment"
-          name="comment"
-          placeholder="Введите комментарий"
-          value={partnerInput.comment}
-          onChange={onChangePartnerHandler}
-          className={styles.formTextarea}
-        />
-      </div>
-      <div className={styles.formGroup}>
-        <label htmlFor="status">Статус</label>
-        <select
-          id="status"
-          name="status"
-          value={partnerInput.status}
-          onChange={onChangePartnerHandler}
-          className={styles.formInput}
-        >
-          <option value="">Выберите статус</option>
-          <option value="active">Активный</option>
-          <option value="inactive">Неактивный</option>
-          <option value="pending">Ожидает</option>
-          <option value="suspended">Приостановлен</option>
-        </select>
-      </div>
-      <div className={styles.formActions}>
-        <button type="submit" className={styles.saveButton}>
-          Сохранить
-        </button>
-        <button
-          type="button"
-          className={styles.cancelButton}
-          onClick={() => {
-            setCreatePartner?.(false);
-            onClose?.();
-            dispatch(deleteOnePartner());
-          }}
-        >
-          Отмена
-        </button>
-      </div>
-    </form>
+         <div className={styles.formGroup}>
+          <label htmlFor="contact_person">Контактное лицо</label>
+          <input
+            id="contact_person"
+            type="text"
+            name="contact_person"
+            placeholder="Введите контактное лицо"
+            value={partnerInput.contact_person}
+            onChange={onChangePartnerHandler}
+            className={styles.formInput}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="contact_email">Email</label>
+          <input
+            id="contact_email"
+            type="email"
+            name="contact_email"
+            placeholder="Введите email"
+            value={partnerInput.contact_email}
+            onChange={onChangePartnerHandler}
+            className={styles.formInput}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="contact_phone">Телефон</label>
+          <input
+            id="contact_phone"
+            type="tel"
+            name="contact_phone"
+            placeholder="Введите телефон"
+            value={partnerInput.contact_phone}
+            onChange={onChangePartnerHandler}
+            className={styles.formInput}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="comment">Комментарий</label>
+          <textarea
+            id="comment"
+            name="comment"
+            placeholder="Введите комментарий"
+            value={partnerInput.comment}
+            onChange={onChangePartnerHandler}
+            className={styles.formTextarea}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="status">Статус</label>
+          <select
+            id="status"
+            name="status"
+            value={partnerInput.status}
+            onChange={onChangePartnerHandler}
+            className={styles.formInput}
+          >
+            <option value="">Выберите статус</option>
+            <option value="active">Активный</option>
+            <option value="inactive">Неактивный</option>
+            <option value="pending">Ожидает</option>
+            <option value="suspended">Приостановлен</option>
+          </select>
+        </div>
+                <div className={styles.formActions}>
+          <button type="submit" className={styles.saveButton}>
+            Сохранить
+          </button>
+          <button
+            type="button"
+            className={styles.cancelButton}
+            onClick={handleCloseForm}
+          >
+            Отмена
+          </button>
+        </div>
+      </form>
+
+      <SuccessModal
+        isOpen={successModal.isOpen}
+        onClose={() => {
+          closeSuccess();
+          handleCloseForm();
+        }}
+        title={successModal.title}
+        message={successModal.message}
+        buttonText={successModal.buttonText}
+      />
+
+      <ErrorModal
+        isOpen={errorModal.isOpen}
+        onClose={closeError}
+        title={errorModal.title}
+        message={errorModal.message}
+        buttonText={errorModal.buttonText}
+      />
+    </>
   );
 }

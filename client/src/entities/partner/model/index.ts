@@ -10,6 +10,7 @@ export interface ICreatePartner {
   contact_phone: string;
   comment: string;
   status: string;
+  user_id: number;
 }
 
 export interface ICreatePartnerWithUser {

@@ -1,11 +1,13 @@
 import styles from "./UserPage.module.css";
 import { useState } from "react";
-import { useAppSelector } from "@/shared/hooks";
+import { useAppSelector, usePageTitle } from "@/shared";
 import { UserProfile, UserOrders } from "@/widgets";
 
 export function UserPage() {
   const [tab, setTab] = useState("profile");
   const { user, loading, error } = useAppSelector((state) => state.user);
+
+  usePageTitle("Личный кабинет");
 
   if (loading) {
     return (

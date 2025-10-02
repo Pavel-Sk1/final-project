@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import styles from "./AdminNewsCard.module.css";
-import { useAppDispatch, EditModal } from "@/shared";
+import { useAppDispatch, EditModal, ConfirmationModal } from "@/shared";
 import { deleteNewsThunk, editOneNews, type IAdminNews } from "@/entities";
 import { AdminNewsForm } from "@/widgets/adminNewsForm";
 
@@ -11,6 +11,7 @@ type AdminNewsCardProps = {
 export function AdminNewsCard({ news }: AdminNewsCardProps) {
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const memoizedNewsForm = useMemo(() => {
     return (
       <AdminNewsForm
@@ -20,6 +21,12 @@ export function AdminNewsCard({ news }: AdminNewsCardProps) {
       />
     );
   }, [news, setIsOpen]);
+  const handleDeleteClick = () => {
+    setIsDeleteModalOpen(true);
+  }
+  const handleDeleteCancel = () => {
+    setIsDeleteModalOpen(false);
+  }
   const deleteNewsHandler = () => {
     try {
       dispatch(deleteNewsThunk(news.id));
@@ -52,10 +59,17 @@ export function AdminNewsCard({ news }: AdminNewsCardProps) {
         >
           Редактировать
         </button>
-        <button className={styles.deleteButton} onClick={deleteNewsHandler}>
+        <button className={styles.deleteButton} onClick={handleDeleteClick}>
           Удалить
         </button>
       </div>
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={handleDeleteCancel}
+        onConfirm={deleteNewsHandler}
+        title="Удалить новость"
+        message="Вы уверены, что хотите удалить эту новость?"
+      />
       <EditModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}

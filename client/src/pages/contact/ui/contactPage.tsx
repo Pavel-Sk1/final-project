@@ -1,5 +1,5 @@
 import { getAllContactsThunk, type MainContact } from '@/entities'
-import { useAppDispatch, useAppSelector } from '@/shared'
+import { useAppDispatch, useAppSelector, usePageTitle } from '@/shared'
 import { useEffect, useState } from 'react'
 import styles from './ContactPage.module.css'
 import { YMaps, Map, ObjectManager } from '@pbe/react-yandex-maps'
@@ -10,6 +10,8 @@ export function ContactPage() {
   const dispatch = useAppDispatch()
   const { loading, error, contacts } = useAppSelector((state) => state.contact)
   const [coordinates, setCoordinates] = useState<[number, number] | null>(null);
+
+  usePageTitle("Контакты");
 
   useEffect(() => {
     if (!contacts || contacts.length === 0) return;

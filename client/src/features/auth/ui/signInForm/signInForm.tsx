@@ -63,7 +63,7 @@ export function SignInForm() {
         <input
           type='text'
           name='login'
-          placeholder='login'
+          placeholder='Логин'
           onChange={onChangeHandler}
           value={inputs.login}
           className={styles.formInput}
@@ -76,7 +76,7 @@ export function SignInForm() {
         <input
           type='password'
           name='password'
-          placeholder='Password'
+          placeholder='Пароль'
           onChange={onChangeHandler}
           value={inputs.password}
           className={styles.formInput}

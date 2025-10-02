@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import styles from "./AdminManageProductCard.module.css";
-import { useAppDispatch, EditModal } from "@/shared";
+import { useAppDispatch, EditModal, ConfirmationModal } from "@/shared";
 import type { IProduct } from "@/entities/products";
 import { deleteProductThunk, editOneProduct } from "@/entities";
 import { AdminManageProductForm } from "@/widgets";
@@ -14,6 +14,7 @@ export function AdminManageProductCard({
 }: AdminManageProductCardProps) {
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const memoizedProductForm = useMemo(() => {
     return (
@@ -24,11 +25,19 @@ export function AdminManageProductCard({
       />
     )
   }, [product, setIsOpen])
+  const handleDeleteClick = () => {
+    setIsDeleteModalOpen(true);
+  }
+  const handleDeleteCancel = () => {
+    setIsDeleteModalOpen(false);
+};
   const deleteProductHandler = () => {
     try {
       dispatch(deleteProductThunk(product.id));
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsDeleteModalOpen(false);
     }
   };
   return (
@@ -75,10 +84,17 @@ export function AdminManageProductCard({
         >
           Редактировать
         </button>
-        <button className={styles.deleteButton} onClick={deleteProductHandler}>
+        <button className={styles.deleteButton} onClick={handleDeleteClick}>
           Удалить
         </button>
       </div>
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={handleDeleteCancel}
+        onConfirm={deleteProductHandler}
+        title="Удалить продукт"
+        message="Вы уверены, что хотите удалить этот продукт?"
+      />
       <EditModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}

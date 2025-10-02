@@ -1,0 +1,228 @@
+/* Backdrop - затемненный фон */
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(167, 99, 51, 0.2);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.2s ease-out;
+  will-change: opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Модальное окно */
+.modal {
+  background: linear-gradient(135deg, #fff4ec 0%, #ffffff 100%);
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow), 0 20px 40px rgba(167, 99, 51, 0.15);
+  max-width: 400px;
+  width: 90%;
+  max-height: 90vh;
+  overflow: hidden;
+  animation: slideIn 0.3s ease-out;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Заголовок модального окна */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 24px 16px;
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(216, 149, 95, 0.1) 0%,
+    rgba(255, 244, 236, 0.5) 100%
+  );
+  border-bottom: 1px solid var(--border);
+}
+
+.iconContainer {
+  margin-bottom: 16px;
+}
+
+.successIcon {
+  width: 48px;
+  height: 48px;
+  animation: successPulse 0.6s ease-out;
+}
+
+.successCircle {
+  fill: var(--accent);
+  stroke: var(--primary);
+  stroke-width: 2;
+}
+
+.successCheck {
+  stroke: var(--white);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 8;
+  stroke-dashoffset: 8;
+  animation: drawCheck 0.4s ease-out 0.2s forwards;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--primary-dark);
+  text-align: center;
+}
+
+.closeButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--text-light);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+  line-height: 1;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton:hover {
+  background-color: rgba(167, 99, 51, 0.1);
+  color: var(--primary-dark);
+}
+
+/* Контент модального окна */
+.content {
+  padding: 20px 24px;
+  text-align: center;
+}
+
+.message {
+  margin: 0;
+  font-size: 16px;
+  color: var(--text);
+  line-height: 1.6;
+  font-family: var(--font-base);
+}
+
+/* Футер с кнопками */
+.footer {
+  display: flex;
+  justify-content: center;
+  padding: 16px 24px 24px;
+  border-top: 1px solid var(--border);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 244, 236, 0.3) 0%,
+    rgba(216, 149, 95, 0.05) 100%
+  );
+}
+
+.successButton {
+  min-width: 120px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: var(--font-base);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: var(--white);
+  border: 2px solid transparent;
+  box-shadow: 0 4px 12px rgba(167, 99, 51, 0.3);
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.successButton:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 6px 16px rgba(167, 99, 51, 0.4);
+}
+
+.successButton:active {
+  transform: translateY(0);
+}
+
+/* Анимации */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95) translateZ(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1) translateZ(0);
+  }
+}
+
+@keyframes successPulse {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes drawCheck {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Адаптивность */
+@media (max-width: 480px) {
+  .modal {
+    width: 95%;
+    margin: 20px;
+  }
+
+  .header,
+  .content,
+  .footer {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .successButton {
+    width: 100%;
+  }
+}

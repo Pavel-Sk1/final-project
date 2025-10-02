@@ -29,6 +29,8 @@ export {
   signInThunk,
   signUpThunk,
   refreshTokensThunk,
+  updateUserThunk,
+  deleteUserThunk,
   userReducer,
 } from "./user";
 
