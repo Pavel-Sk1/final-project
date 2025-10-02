@@ -5,7 +5,7 @@ import {
   type IAdminVacancy,  
 } from "@/entities";
 import styles from "./AdminVacancyCard.module.css";
-import { useAppDispatch, EditModal } from "@/shared";
+import { useAppDispatch, EditModal, ConfirmationModal } from "@/shared";
 import { AdminVacancyForm } from "@/widgets/adminVacancyForm";
 
 type AdminVacancyCardProps = {
@@ -17,6 +17,7 @@ export function AdminVacancyCard({
 }: AdminVacancyCardProps) {
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const memoizedVacancyForm = useMemo(() => {
     return (
       <AdminVacancyForm
@@ -26,6 +27,12 @@ export function AdminVacancyCard({
       />
     )
   }, [vacancy, setIsOpen])
+  const handleDeleteClick = () => {
+    setIsDeleteModalOpen(true);
+  }
+  const handleDeleteCancel = () => {
+    setIsDeleteModalOpen(false);
+  }
   const deleteVacancyHandler = () => {
     try {
       dispatch(deleteVacancyThunk(vacancy.id));
@@ -57,10 +64,17 @@ export function AdminVacancyCard({
         >
           Редактировать
         </button>
-        <button className={styles.deleteButton} onClick={deleteVacancyHandler}>
+        <button className={styles.deleteButton} onClick={handleDeleteClick}>
           Удалить
         </button>
       </div>
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={handleDeleteCancel}
+        onConfirm={deleteVacancyHandler}
+        title="Удалить вакансию"
+        message="Вы уверены, что хотите удалить эту вакансию?"
+      />
       <EditModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}

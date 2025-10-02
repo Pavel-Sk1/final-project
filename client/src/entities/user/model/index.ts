@@ -48,4 +48,6 @@ export enum USER_API_ROUTES {
   SIGN_UP = '/auth/signUp',
   SIGN_IN = '/auth/signIn',
   SIGN_OUT = '/auth/signOut',
+  UPDATE_USER = '/auth/updateUser',
+  DELETE_USER = '/auth/deleteUser',
 }

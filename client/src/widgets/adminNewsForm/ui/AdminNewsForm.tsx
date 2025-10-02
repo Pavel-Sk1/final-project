@@ -7,7 +7,12 @@ import {
   type ICreateAdminNews,
   deleteOneNews,
 } from "@/entities";
-import { useAppDispatch } from "@/shared";
+import {
+  useAppDispatch,
+  useModalNotifications,
+  SuccessModal,
+  ErrorModal,
+} from "@/shared";
 
 const initialNewsInput: ICreateAdminNews = {
   title: "",
@@ -28,6 +33,14 @@ export function AdminNewsForm({
   onClose = null,
 }: AdminNewsFormProps) {
   const dispatch = useAppDispatch();
+  const {
+    successModal,
+    errorModal,
+    showSuccess,
+    showError,
+    closeSuccess,
+    closeError,
+  } = useModalNotifications();
   const [newsInput, setNewsInput] = useState<ICreateAdminNews | IAdminNews>(
     news
       ? {
@@ -66,90 +79,132 @@ export function AdminNewsForm({
     }));
   };
 
-  const onSubmitNewsHandler = (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmitNewsHandler = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
 
     try {
       if (news) {
-        dispatch(updateNewsThunk({ id: news.id, news: newsInput }));
+        const result = await dispatch(
+          updateNewsThunk({ id: news.id, news: newsInput })
+        );
+        if (updateNewsThunk.fulfilled.match(result)) {
+          showSuccess("Новость обновлена", "Новость была успешно обновлена!");
+        } else {
+          showError(
+            "Ошибка обновления",
+            "Не удалось обновить новость. Попробуйте снова."
+          );
+        }
       } else {
-        dispatch(createNewsThunk(newsInput));
+        const result = await dispatch(createNewsThunk(newsInput));
+        if (createNewsThunk.fulfilled.match(result)) {
+          showSuccess("Новость создана", "Новость была успешно создана!");
+        } else {
+          showError(
+            "Ошибка создания",
+            "Не удалось создать новость. Попробуйте снова."
+          );
+        }
       }
     } catch (error) {
       console.error(error);
-    } finally {
-      setNewsInput(initialNewsInput);
-      setCreateNews?.(false);
-      onClose?.();
-      dispatch(deleteOneNews());
+      showError("Ошибка", "Произошла неожиданная ошибка. Попробуйте снова.");
     }
   };
+
+  // Функция для закрытия формы после успешной операции
+  const handleCloseForm = () => {
+    setNewsInput(initialNewsInput);
+    setCreateNews?.(false);
+    onClose?.();
+    dispatch(deleteOneNews());
+  };
+
   return (
-    <form className={styles.editForm} onSubmit={onSubmitNewsHandler}>
-      <div className={styles.formGroup}>
-        <label htmlFor="title">Название</label>
-        <input
-          id="title"
-          type="text"
-          name="title"
-          placeholder="Название"
-          value={newsInput.title}
-          onChange={onChangeNewsHandler}
-          className={styles.formInput}
-        />
-      </div>
-      <div className={styles.formGroup}>
-        <label htmlFor="description">Описание</label>
-        <input
-          id="description"
-          type="text"
-          name="description"
-          placeholder="Описание"
-          value={newsInput.description}
-          onChange={onChangeNewsHandler}
-          className={styles.formInput}
-        />
-      </div>
-      <div className={styles.formGroup}>
-        <label htmlFor="img">URL изображения</label>
-        <input
-          id="img"
-          type="text"
-          name="img"
-          placeholder="URL изображения"
-          value={newsInput.img}
-          onChange={onChangeNewsHandler}
-          className={styles.formInput}
-        />
-      </div>
-      <div className={styles.formGroup}>
-        <div className={styles.checkboxGroup}>
+    <>
+      <form className={styles.editForm} onSubmit={onSubmitNewsHandler}>
+        <div className={styles.formGroup}>
+          <label htmlFor="title">Название</label>
           <input
-            type="checkbox"
-            name="is_active"
-            id="is_active"
-            checked={newsInput.is_active}
-            onChange={onChangeNewsIsActiveHandler}
+            id="title"
+            type="text"
+            name="title"
+            placeholder="Название"
+            value={newsInput.title}
+            onChange={onChangeNewsHandler}
+            className={styles.formInput}
           />
-          <label htmlFor="is_active">Активность новости</label>
         </div>
-      </div>
-      <div className={styles.formActions}>
-        <button type="submit" className={styles.saveButton}>
-          Сохранить
-        </button>
-        <button
-          type="button"
-          className={styles.cancelButton}
-          onClick={() => {
-            setCreateNews?.(false);
-            onClose?.();
-            dispatch(deleteOneNews());
-          }}
-        >
-          Отмена
-        </button>
-      </div>
-    </form>
+        <div className={styles.formGroup}>
+          <label htmlFor="description">Описание</label>
+          <input
+            id="description"
+            type="text"
+            name="description"
+            placeholder="Описание"
+            value={newsInput.description}
+            onChange={onChangeNewsHandler}
+            className={styles.formInput}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="img">URL изображения</label>
+          <input
+            id="img"
+            type="text"
+            name="img"
+            placeholder="URL изображения"
+            value={newsInput.img}
+            onChange={onChangeNewsHandler}
+            className={styles.formInput}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <div className={styles.checkboxGroup}>
+            <input
+              type="checkbox"
+              name="is_active"
+              id="is_active"
+              checked={newsInput.is_active}
+              onChange={onChangeNewsIsActiveHandler}
+            />
+            <label htmlFor="is_active">Активность новости</label>
+          </div>
+        </div>
+        <div className={styles.formActions}>
+          <button type="submit" className={styles.saveButton}>
+            Сохранить
+          </button>
+          <button
+            type="button"
+            className={styles.cancelButton}
+            onClick={handleCloseForm}
+          >
+            Отмена
+          </button>
+        </div>
+      </form>
+
+      <SuccessModal
+        isOpen={successModal.isOpen}
+        onClose={() => {
+          closeSuccess();
+          handleCloseForm();
+        }}
+        title={successModal.title}
+        message={successModal.message}
+        buttonText={successModal.buttonText}
+      />
+
+      <ErrorModal
+        isOpen={errorModal.isOpen}
+        onClose={closeError}
+        title={errorModal.title}
+        message={errorModal.message}
+        buttonText={errorModal.buttonText}
+      />
+    </>
   );
 }

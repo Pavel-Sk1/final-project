@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import styles from "./HomePage.module.css";
-import { useAppDispatch, useAppSelector } from "@/shared";
+import { useAppDispatch, useAppSelector, usePageTitle } from "@/shared";
 import { useTransition, animated } from "@react-spring/web";
 import { getAllNewsThunk, getAllProductImagesThunk } from "@/entities";
 
@@ -11,6 +11,8 @@ export function HomePage() {
   const news = useAppSelector((s) => s.news.list);
   const productImages = useAppSelector((s) => s.products.images);
   const [newsIndex, setNewsIndex] = useState<number>(0);
+
+  usePageTitle("Главная");
 
   const imagesPerSlide = 4;
   const images = useMemo(

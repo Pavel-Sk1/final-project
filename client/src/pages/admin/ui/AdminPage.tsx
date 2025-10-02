@@ -1,6 +1,6 @@
 import styles from "./AdminPage.module.css";
 import { useState, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@/shared/hooks";
+import { useAppDispatch, useAppSelector, usePageTitle } from "@/shared";
 import { getOrdersByDateThunk } from "@/entities";
 import {
   AdminManageProductForm,
@@ -34,6 +34,8 @@ export function AdminPage() {
   const [selectedDate, setSelectedDate] = useState(() => {
     return new Date().toISOString().split("T")[0];
   });
+  
+  usePageTitle("Панель администратора");
 
   const dispatch = useAppDispatch();
   const { orders, loading, error } = useAppSelector(
@@ -158,7 +160,7 @@ export function AdminPage() {
                   className={styles.toggleButton}
                   onClick={() => setEditCalculations((prev) => !prev)}
                 >
-                  {editCalculations ? "Скрыть" : "Редактировать"}
+                  {editCalculations ? "Скрыть" : "Отобразить"}
                 </button>
               </div>
               {editCalculations && (
