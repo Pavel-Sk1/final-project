@@ -7,7 +7,12 @@ import {
   type IAdminVacancy,
   type ICreateAdminVacancy,
 } from "@/entities";
-import { useAppDispatch } from "@/shared";
+import {
+  useAppDispatch,
+  useModalNotifications,
+  SuccessModal,
+  ErrorModal,
+} from "@/shared";
 
 const initialVacancyInput: ICreateAdminVacancy = {
   position: "",
@@ -29,6 +34,14 @@ export function AdminVacancyForm({
   onClose = null,
 }: AdminVacancyFormProps) {
   const dispatch = useAppDispatch();
+  const {
+    successModal,
+    errorModal,
+    showSuccess,
+    showError,
+    closeSuccess,
+    closeError,
+  } = useModalNotifications();
   const [vacancyInput, setVacancyInput] = useState<ICreateAdminVacancy>(
     vacancy
       ? {
@@ -71,94 +84,136 @@ export function AdminVacancyForm({
     }));
   };
 
-  const onSubmitVacancyHandler = (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmitVacancyHandler = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
+
     try {
       if (vacancy) {
-        dispatch(updateVacancyThunk({ id: vacancy.id, vacancy: vacancyInput }));
+        const result = await dispatch(
+          updateVacancyThunk({ id: vacancy.id, vacancy: vacancyInput })
+        );
+        if (updateVacancyThunk.fulfilled.match(result)) {
+          showSuccess("Вакансия обновлена", "Вакансия была успешно обновлена!");
+        } else {
+          showError(
+            "Ошибка обновления",
+            "Не удалось обновить вакансию. Попробуйте снова."
+          );
+        }
       } else {
-        dispatch(createVacancyThunk(vacancyInput));
+        const result = await dispatch(createVacancyThunk(vacancyInput));
+        if (createVacancyThunk.fulfilled.match(result)) {
+          showSuccess("Вакансия создана", "Вакансия была успешно создана!");
+        } else {
+          showError(
+            "Ошибка создания",
+            "Не удалось создать вакансию. Попробуйте снова."
+          );
+        }
       }
     } catch (error) {
       console.error(error);
-    } finally {
-      setVacancyInput(initialVacancyInput);
-      setCreateVacancy?.(false);
-      onClose?.();
-      dispatch(deleteOneVacancy());
+      showError("Ошибка", "Произошла неожиданная ошибка. Попробуйте снова.");
     }
   };
 
+  // Функция для закрытия формы после успешной операции
+  const handleCloseForm = () => {
+    setVacancyInput(initialVacancyInput);
+    setCreateVacancy?.(false);
+    onClose?.();
+    dispatch(deleteOneVacancy());
+  };
+
   return (
-    <form className={styles.editForm} onSubmit={onSubmitVacancyHandler}>
-      <div className={styles.formGroup}>
-        <input
-          type="text"
-          name="position"
-          placeholder="Должность"
-          value={vacancyInput.position}
-          onChange={onChangeVacancyHandler}
-          className={styles.formInput}
-        />
-      </div>
-      <div className={styles.formGroup}>
-        <input
-          type="text"
-          name="location"
-          placeholder="Местоположение"
-          value={vacancyInput.location}
-          onChange={onChangeVacancyHandler}
-          className={styles.formInput}
-        />
-      </div>
-      <div className={styles.formGroup}>
-        <input
-          type="text"
-          name="salary"
-          placeholder="Зарплата"
-          value={vacancyInput.salary}
-          onChange={onChangeVacancyHandler}
-          className={styles.formInput}
-        />
-      </div>
-      <div className={styles.formGroup}>
-        <textarea
-          name="description"
-          placeholder="Описание вакансии"
-          value={vacancyInput.description}
-          onChange={onChangeVacancyHandler}
-          className={styles.formTextarea}
-          rows={4}
-        />
-      </div>
-      <div className={styles.formGroup}>
-        <div className={styles.checkboxGroup}>
+    <>
+      <form className={styles.editForm} onSubmit={onSubmitVacancyHandler}>
+        <div className={styles.formGroup}>
           <input
-            type="checkbox"
-            name="is_active"
-            id="is_active"
-            checked={vacancyInput.is_active}
-            onChange={onChangeVacancyIsActiveHandler}
+            type="text"
+            name="position"
+            placeholder="Должность"
+            value={vacancyInput.position}
+            onChange={onChangeVacancyHandler}
+            className={styles.formInput}
           />
-          <label htmlFor="is_active">Активность вакансии</label>
         </div>
-      </div>
-      <div className={styles.formActions}>
-        <button type="submit" className={styles.saveButton}>
-          Сохранить
-        </button>
-        <button
-          type="button"
-          className={styles.cancelButton}
-          onClick={() => {
-            setCreateVacancy?.(false);
-            onClose?.();
-            dispatch(deleteOneVacancy());
-          }}
-        >
-          Отмена
-        </button>
-      </div>
-    </form>
+        <div className={styles.formGroup}>
+          <input
+            type="text"
+            name="location"
+            placeholder="Местоположение"
+            value={vacancyInput.location}
+            onChange={onChangeVacancyHandler}
+            className={styles.formInput}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <input
+            type="text"
+            name="salary"
+            placeholder="Зарплата"
+            value={vacancyInput.salary}
+            onChange={onChangeVacancyHandler}
+            className={styles.formInput}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <textarea
+            name="description"
+            placeholder="Описание вакансии"
+            value={vacancyInput.description}
+            onChange={onChangeVacancyHandler}
+            className={styles.formTextarea}
+            rows={4}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <div className={styles.checkboxGroup}>
+            <input
+              type="checkbox"
+              name="is_active"
+              id="is_active"
+              checked={vacancyInput.is_active}
+              onChange={onChangeVacancyIsActiveHandler}
+            />
+            <label htmlFor="is_active">Активность вакансии</label>
+          </div>
+        </div>
+        <div className={styles.formActions}>
+          <button type="submit" className={styles.saveButton}>
+            Сохранить
+          </button>
+          <button
+            type="button"
+            className={styles.cancelButton}
+            onClick={handleCloseForm}
+          >
+            Отмена
+          </button>
+        </div>
+      </form>
+
+      <SuccessModal
+        isOpen={successModal.isOpen}
+        onClose={() => {
+          closeSuccess();
+          handleCloseForm();
+        }}
+        title={successModal.title}
+        message={successModal.message}
+        buttonText={successModal.buttonText}
+      />
+
+      <ErrorModal
+        isOpen={errorModal.isOpen}
+        onClose={closeError}
+        title={errorModal.title}
+        message={errorModal.message}
+        buttonText={errorModal.buttonText}
+      />
+    </>
   );
 }

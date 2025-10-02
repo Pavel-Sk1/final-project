@@ -5,7 +5,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(167, 99, 51, 0.25);
+  background-color: rgba(167, 99, 51, 0.2);
   backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
@@ -20,7 +20,7 @@
 /* Модальное окно */
 .modal {
   background: linear-gradient(135deg, #fff4ec 0%, #ffffff 100%);
-  border: 2px solid #f59e0b;
+  border: 2px solid var(--accent);
   border-radius: var(--radius);
   box-shadow: var(--shadow), 0 20px 40px rgba(167, 99, 51, 0.15);
   max-width: 400px;
@@ -38,15 +38,43 @@
 /* Заголовок модального окна */
 .header {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  padding: 20px 24px 16px;
-  border-bottom: 1px solid var(--border);
+  justify-content: center;
+  padding: 24px 24px 16px;
+  position: relative;
   background: linear-gradient(
     135deg,
-    rgba(245, 158, 11, 0.1) 0%,
+    rgba(216, 149, 95, 0.1) 0%,
     rgba(255, 244, 236, 0.5) 100%
   );
+  border-bottom: 1px solid var(--border);
+}
+
+.iconContainer {
+  margin-bottom: 16px;
+}
+
+.successIcon {
+  width: 48px;
+  height: 48px;
+  animation: successPulse 0.6s ease-out;
+}
+
+.successCircle {
+  fill: var(--accent);
+  stroke: var(--primary);
+  stroke-width: 2;
+}
+
+.successCheck {
+  stroke: var(--white);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 8;
+  stroke-dashoffset: 8;
+  animation: drawCheck 0.4s ease-out 0.2s forwards;
 }
 
 .title {
@@ -55,17 +83,21 @@
   font-size: 20px;
   font-weight: 600;
   color: var(--primary-dark);
+  text-align: center;
 }
 
 .closeButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
   background: none;
   border: none;
   font-size: 24px;
-  color: #6b7280;
+  color: var(--text-light);
   cursor: pointer;
   padding: 4px;
-  border-radius: 4px;
-  transition: all 0.2s ease;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
   line-height: 1;
   width: 32px;
   height: 32px;
@@ -74,19 +106,15 @@
   justify-content: center;
 }
 
-.closeButton:hover:not(:disabled) {
+.closeButton:hover {
   background-color: rgba(167, 99, 51, 0.1);
   color: var(--primary-dark);
-}
-
-.closeButton:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
 }
 
 /* Контент модального окна */
 .content {
   padding: 20px 24px;
+  text-align: center;
 }
 
 .message {
@@ -100,68 +128,42 @@
 /* Футер с кнопками */
 .footer {
   display: flex;
-  gap: 12px;
-  padding: 16px 24px 20px;
-  justify-content: flex-end;
+  justify-content: center;
+  padding: 16px 24px 24px;
   border-top: 1px solid var(--border);
   background: linear-gradient(
     135deg,
     rgba(255, 244, 236, 0.3) 0%,
-    rgba(245, 158, 11, 0.05) 100%
+    rgba(216, 149, 95, 0.05) 100%
   );
 }
 
-.cancelButton {
-  min-width: 100px;
-  font-size: 14px;
-  font-weight: 500;
-  font-family: var(--font-base);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 16px;
-  border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
-  color: var(--text);
-  border: 1px solid var(--border);
-  transition: var(--transition);
-  cursor: pointer;
-}
-
-.cancelButton:hover:not(:disabled) {
-  background: linear-gradient(135deg, #e5e7eb, #d1d5db);
-  transform: translateY(-1px);
-}
-
-.confirmButton {
-  min-width: 100px;
-  font-size: 14px;
+.successButton {
+  min-width: 120px;
+  font-size: 16px;
   font-weight: 600;
   font-family: var(--font-base);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 16px;
+  padding: 12px 24px;
   border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, #f59e0b, #d97706);
+  background: linear-gradient(135deg, var(--accent), var(--primary));
   color: var(--white);
-  border: 1px solid transparent;
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+  border: 2px solid transparent;
+  box-shadow: 0 4px 12px rgba(167, 99, 51, 0.3);
   transition: var(--transition);
   cursor: pointer;
 }
 
-.confirmButton:hover:not(:disabled) {
-  background: linear-gradient(135deg, #d97706, #b45309);
+.successButton:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+  filter: brightness(1.05);
+  box-shadow: 0 6px 16px rgba(167, 99, 51, 0.4);
 }
 
-.confirmButton:disabled,
-.cancelButton:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
+.successButton:active {
+  transform: translateY(0);
 }
 
 /* Анимации */
@@ -185,6 +187,27 @@
   }
 }
 
+@keyframes successPulse {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes drawCheck {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 /* Адаптивность */
 @media (max-width: 480px) {
   .modal {
@@ -199,12 +222,7 @@
     padding-right: 16px;
   }
 
-  .footer {
-    flex-direction: column;
-  }
-
-  .cancelButton,
-  .confirmButton {
+  .successButton {
     width: 100%;
   }
 }
