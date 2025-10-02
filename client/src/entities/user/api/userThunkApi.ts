@@ -46,3 +46,23 @@ export const signOutThunk = createAsyncThunk<ServerResponseType, void, { rejectV
         return rejectWithValue(err.response!.data);
     }
 });
+
+export const updateUserThunk = createAsyncThunk<ServerResponseType<UserResponseType>, { id: number, userData: ISignUpData }, { rejectValue: ServerResponseType }>('***user/updateUser***', async ({ id, userData }, { rejectWithValue }) => {
+    try {
+        const { data } = await axiosInstance.put<ServerResponseType<UserResponseType>>(`${USER_API_ROUTES.UPDATE_USER}/${id}`, userData);
+        return data;
+    } catch (error) {
+        const err = error as AxiosError<ServerResponseType>;
+        return rejectWithValue(err.response!.data);
+    }
+});
+
+export const deleteUserThunk = createAsyncThunk<ServerResponseType<UserResponseType>, { id: number }, { rejectValue: ServerResponseType }>('***user/deleteUser***', async ({ id }, { rejectWithValue }) => {
+    try {
+        const { data } = await axiosInstance.delete<ServerResponseType<UserResponseType>>(`${USER_API_ROUTES.DELETE_USER}/${id}`);
+        return data;
+    } catch (error) {
+        const err = error as AxiosError<ServerResponseType>;
+        return rejectWithValue(err.response!.data);
+    }
+});

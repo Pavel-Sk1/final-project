@@ -7,6 +7,7 @@ import {
   type ICreatePartnerWithUser,
   deleteOnePartner,
   signUpThunk,
+  updateUserThunk,
 } from "@/entities";
 import { useAppDispatch } from "@/shared";
 
@@ -44,6 +45,7 @@ export function AdminPartnerForm({
     partner
       ? {
           login: partner.user.login,
+          password: "",
           phone: partner.user.phone,
           role_id: partner.user.role_id,
           company_name: partner.company_name,
@@ -62,6 +64,10 @@ export function AdminPartnerForm({
   useEffect(() => {
     if (partner) {
       setPartnerInput({
+        login: partner.user.login,
+        password: "",
+        phone: partner.user.phone,
+        role_id: partner.user.role_id,
         company_name: partner.company_name,
         inn: partner.inn,
         ogrn: partner.ogrn,
@@ -71,9 +77,6 @@ export function AdminPartnerForm({
         contact_phone: partner.contact_phone,
         comment: partner.comment,
         status: partner.status,
-        login: partner.user.login,
-        phone: partner.user.phone,
-        role_id: partner.user.role_id,
       });
     }
   }, [partner]);
@@ -105,10 +108,25 @@ export function AdminPartnerForm({
           contact_phone: partnerInput.contact_phone,
           comment: partnerInput.comment,
           status: partnerInput.status,
+          user_id: partner.user.id,
         };
-        dispatch(
-          updatePartnerThunk({ id: partner.id, partner: partnerToUpdate })
+        const userToUpdate = {
+          login: partnerInput.login,
+          password: partnerInput.password || "",
+          phone: partnerInput.phone,
+          role_id: partnerInput.role_id,
+        };
+        const updateUserResult = await dispatch(
+          updateUserThunk({ id: partner.user.id, userData: userToUpdate })
         );
+        if (
+          updateUserThunk.fulfilled.match(updateUserResult) &&
+          updateUserResult.payload.data.user
+        ) {
+          await dispatch(
+            updatePartnerThunk({ id: partner.id, partner: partnerToUpdate })
+          );
+        }
       } else {
         const signUpResult = await dispatch(
           signUpThunk({
@@ -118,9 +136,12 @@ export function AdminPartnerForm({
             role_id: partnerInput.role_id,
           })
         );
-        
+
         // Проверяем, что регистрация прошла успешно
-        if (signUpThunk.fulfilled.match(signUpResult) && signUpResult.payload.data.user) {
+        if (
+          signUpThunk.fulfilled.match(signUpResult) &&
+          signUpResult.payload.data.user
+        ) {
           const createdUser = signUpResult.payload.data.user;
           const partnerToCreate = {
             company_name: partnerInput.company_name,
@@ -161,20 +182,18 @@ export function AdminPartnerForm({
           className={styles.formInput}
         />
       </div>
-      {!partner && (
-        <div className={styles.formGroup}>
-          <label htmlFor="password">Пароль</label>
-          <input
-            id="password"
-            type="password"
-            name="password"
-            placeholder="Введите пароль"
-            value={partnerInput.password}
-            onChange={onChangePartnerHandler}
-            className={styles.formInput}
-          />
-        </div>
-      )}
+      <div className={styles.formGroup}>
+        <label htmlFor="password">Пароль</label>
+        <input
+          id="password"
+          type="password"
+          name="password"
+          placeholder={partner ? "Введите новый пароль" : "Введите пароль"}
+          value={partnerInput.password}
+          onChange={onChangePartnerHandler}
+          className={styles.formInput}
+        />
+      </div>
       <div className={styles.formGroup}>
         <label htmlFor="phone">Телефон</label>
         <input

@@ -21,7 +21,14 @@ class AuthController {
       if (!user) {
         return res
           .status(404)
-          .json(formatResponse(404, "Пользователь не найден", null, "Пользователь не найден"));
+          .json(
+            formatResponse(
+              404,
+              "Пользователь не найден",
+              null,
+              "Пользователь не найден"
+            )
+          );
       }
 
       const { accessToken, refreshToken: newRefreshToken } = generateJWTTokens({
@@ -53,7 +60,7 @@ class AuthController {
 
     const { isValid, error } = User.validateSignUpData({
       login,
-      password,      
+      password,
     });
 
     if (!isValid) {
@@ -62,7 +69,9 @@ class AuthController {
 
     const normalizedLogin = login.trim().toLowerCase();
     try {
-      const userFound = await User.findOne({ where: { login: normalizedLogin } });
+      const userFound = await User.findOne({
+        where: { login: normalizedLogin },
+      });
 
       if (userFound) {
         return res
@@ -98,7 +107,7 @@ class AuthController {
       }
 
       return res
-        .status(201)        
+        .status(201)
         .json(
           formatResponse(
             201,
@@ -152,7 +161,9 @@ class AuthController {
       if (!isPasswordValid) {
         return res
           .status(401)
-          .json(formatResponse(401, `Неверный пароль`, null, `Неверный пароль`));
+          .json(
+            formatResponse(401, `Неверный пароль`, null, `Неверный пароль`)
+          );
       }
 
       delete userFound.password;
@@ -190,6 +201,81 @@ class AuthController {
       res
         .status(500)
         .json(formatResponse(500, "Внутренняя ошибка сервера", null, message));
+    }
+  }
+  static async updateUser(req, res) {
+    const { id } = req.params;
+    const { login, password, phone, role_id } = req.body;
+    const { isValid, error } = User.validateSignUpData({
+      login,
+      password,
+    });
+    if (!isValid) {
+      return res.status(422).json(formatResponse(422, error, null, error));
+    }
+    const normalizedLogin = login.trim().toLowerCase();
+    try {
+      const userToUpdate = await UserService.update(id, {
+        login: normalizedLogin,
+        password,
+        phone,
+        role_id,
+      });
+      if (!userToUpdate) {
+        return res
+          .status(404)
+          .json(
+            formatResponse(
+              404,
+              "Пользователь не обновлен",
+              null,
+              "Пользователь не обновлен"
+            )
+          );
+      }
+
+      res.status(200).json(
+        formatResponse(
+          200,
+          "Успешно обновлен пользователь",
+          {
+            accessToken: "",
+            user: userToUpdate,
+          },
+          null
+        )
+      );
+    } catch (error) {
+      console.error("======AuthController.updateUser===\n", error);
+      res
+        .status(500)
+        .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
+    }
+  }
+  static async deleteUser(req, res) {
+    const { id } = req.params;
+    try {
+      const userToDelete = await UserService.delete(id);
+      if (!userToDelete) {
+        return res
+          .status(404)
+          .json(
+            formatResponse(
+              404,
+              "Пользователь не удален",
+              null,
+              "Пользователь не удален"
+            )
+          );
+      }
+      res
+        .status(200)
+        .json(formatResponse(200, "Успешно удален пользователь", userToDelete));
+    } catch (error) {
+      console.error("======AuthController.deleteUser===\n", error);
+      res
+        .status(500)
+        .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
     }
   }
 }

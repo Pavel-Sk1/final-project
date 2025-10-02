@@ -1,0 +1,152 @@
+/* Backdrop - затемненный фон */
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.2s ease-out;
+  will-change: opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Модальное окно */
+.modal {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  max-width: 400px;
+  width: 90%;
+  max-height: 90vh;
+  overflow: hidden;
+  animation: slideIn 0.3s ease-out;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Заголовок модального окна */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  line-height: 1;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton:hover:not(:disabled) {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.closeButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Контент модального окна */
+.content {
+  padding: 20px 24px;
+}
+
+.message {
+  margin: 0;
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+/* Футер с кнопками */
+.footer {
+  display: flex;
+  gap: 12px;
+  padding: 16px 24px 20px;
+  justify-content: flex-end;
+  border-top: 1px solid #e5e7eb;
+}
+
+.cancelButton {
+  min-width: 80px;
+}
+
+.confirmButton {
+  min-width: 80px;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95) translateZ(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1) translateZ(0);
+  }
+}
+
+/* Адаптивность */
+@media (max-width: 480px) {
+  .modal {
+    width: 95%;
+    margin: 20px;
+  }
+  
+  .header,
+  .content,
+  .footer {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  
+  .footer {
+    flex-direction: column;
+  }
+  
+  .cancelButton,
+  .confirmButton {
+    width: 100%;
+  }
+}

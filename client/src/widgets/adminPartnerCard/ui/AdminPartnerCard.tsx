@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import styles from "./AdminPartnerCard.module.css";
-import { useAppDispatch, EditModal } from "@/shared";
+import { useAppDispatch, EditModal, ConfirmationModal } from "@/shared";
 import { deletePartnerThunk, editOnePartner, type IPartnerWithUser } from "@/entities";
 import { AdminPartnerForm } from "@/widgets";
 
@@ -13,6 +13,7 @@ export function AdminPartnerCard({
 }: AdminPartnerCardProps) {
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const memoizedPartnerForm = useMemo(() => {
     return (
       <AdminPartnerForm
@@ -22,6 +23,12 @@ export function AdminPartnerCard({
       />
     )
   }, [partner, setIsOpen])
+  const handleDeleteClick = () => {
+    setIsDeleteModalOpen(true);
+  }
+  const handleDeleteCancel = () => {
+    setIsDeleteModalOpen(false);
+  }
   const deletePartnerHandler = () => {
     try {
       dispatch(deletePartnerThunk(partner.id));
@@ -65,10 +72,17 @@ export function AdminPartnerCard({
         >
           Редактировать
         </button>
-        <button className={styles.deleteButton} onClick={deletePartnerHandler}>
+        <button className={styles.deleteButton} onClick={handleDeleteClick}>
           Удалить
         </button>
       </div>
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={handleDeleteCancel}
+        onConfirm={deletePartnerHandler}
+        title="Удалить партнера"
+        message="Вы уверены, что хотите удалить этого партнера?"
+      />
       <EditModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}

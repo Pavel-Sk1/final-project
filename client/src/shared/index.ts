@@ -4,3 +4,5 @@ export { CLIENT_ROUTES } from './enums/client-routes'
 export * from './hooks'
 export * from './hocs'
 export { EditModal } from './ui'
+export { ConfirmationModal } from './ui'
+

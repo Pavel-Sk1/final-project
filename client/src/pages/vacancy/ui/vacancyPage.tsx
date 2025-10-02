@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from './vacancyPage.module.css';
-import { useAppDispatch, useAppSelector } from '@/shared';
+import { useAppDispatch, useAppSelector, usePageTitle } from '@/shared';
 import { getAllVacanciesThunk, type IVacancy, getAllContactsThunk, type MainContact } from '@/entities';
 import { formatPhonePretty, formatTelHref } from '@/shared/lib/phone';
 
@@ -10,6 +10,8 @@ export function VacancyPage() {
   const dispatch = useAppDispatch();
   const [expandedLocations, setExpandedLocations] = useState<Set<string>>(new Set());
   const [selectedVacancy, setSelectedVacancy] = useState<IVacancy | null>(null);
+
+  usePageTitle("Вакансии");
 
   useEffect(() => {
     dispatch(getAllVacanciesThunk());

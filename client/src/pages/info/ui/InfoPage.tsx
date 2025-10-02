@@ -1,6 +1,6 @@
 
 import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '@/shared';
+import { useAppDispatch, useAppSelector, usePageTitle } from '@/shared';
 import { getProductsThunk, type IProduct, getAllContactsThunk, type MainContact } from '@/entities';
 import { formatPhonePretty, formatTelHref } from '@/shared/lib/phone';
 import { usePDF } from '@/features';
@@ -12,6 +12,7 @@ export  function InfoPage() {
   const { contacts } = useAppSelector((state) => state.contact);
   const { generatePDF } = usePDF();
 
+  usePageTitle("Информация для юридических лиц");
   useEffect(() => {
     dispatch(getProductsThunk());
     dispatch(getAllContactsThunk());
