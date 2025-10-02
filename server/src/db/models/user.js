@@ -21,7 +21,16 @@ module.exports = (sequelize, DataTypes) => {
         constraints: false, // Отключаем автоматические ограничения
       });
     }
-
+    static validatePhone(phone) {
+      if (typeof phone !== 'string') {
+        return false;
+      }
+      const prettyPattern = /^\+7[\s-]?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{2}[\s-]?\d{2}$/;
+      const digits = phone.replace(/\D/g, '');
+      if (digits.length !== 11) return false;
+      if (!(digits.startsWith('7') || digits.startsWith('8'))) return false;
+      return prettyPattern.test(phone) || true; // после цифровой проверки формат считается валидным
+    }
     static validateEmail(email) {
       const emailPattern = /^[A-z0-9._%+-]+@[A-z0-9.-]+\.[A-z]{2,}$/;
       return emailPattern.test(email);
