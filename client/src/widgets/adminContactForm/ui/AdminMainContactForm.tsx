@@ -1,6 +1,6 @@
 import styles from "./AdminMainContactForm.module.css";
 import { updateMainContactThunk, getAllContactsThunk } from "@/entities";
-import { formatPhoneInputMask, normalizePhoneDigits } from "@/shared/lib/phone";
+import { formatPhoneInputMask, normalizePhoneDigits } from "@/shared";
 import type { AppDispatch } from "@/app/store/store";
 
 type AdminMainContactFormProps = {

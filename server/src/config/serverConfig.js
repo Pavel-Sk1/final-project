@@ -18,6 +18,7 @@ const serverConfig = (app) => {
   app.use("/files", express.static(path.resolve(__dirname, "..", "public")));
   app.use(cors(corsOptions));
   app.use(cookieParser());
+  app.use(express.static(path.join(__dirname, "..", "public", "dist")));
 };
 
 module.exports = serverConfig;

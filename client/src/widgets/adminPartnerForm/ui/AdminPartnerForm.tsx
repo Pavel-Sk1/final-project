@@ -8,7 +8,7 @@ import {
   deleteOnePartner,
   signUpThunk,
 } from "@/entities";
-import { useAppDispatch } from "@/shared";
+import { useAppDispatch,formatPhoneInputMask, normalizePhoneDigits  } from "@/shared";
 
 const initialPartnerInput: ICreatePartnerWithUser = {
   login: "",
@@ -39,6 +39,27 @@ export function AdminPartnerForm({
 }: AdminPartnerFormProps) {
   const dispatch = useAppDispatch();
   // const { userToCreate } = useAppSelector((state) => state.user);
+
+  const isDeletingText = (oldValue: string, newValue: string): boolean => {
+    return newValue.length < oldValue.length;
+  };
+
+  const handleAddressAutocomplete = (value: string, currentValue: string): string => {
+    const trimmedValue = value.trim();
+    
+    if (trimmedValue === "п" && !currentValue.includes("проспект")) {
+      return "проспект ";
+    }
+    if (trimmedValue === "б" && !currentValue.includes("бульвар")) {
+      return "бульвар ";
+    }
+    if (trimmedValue === "у" && !currentValue.includes("улица")) {
+      return "улица ";
+    }
+    
+    return value;
+  };
+
 
   const [partnerInput, setPartnerInput] = useState<ICreatePartnerWithUser>(
     partner
@@ -83,10 +104,52 @@ export function AdminPartnerForm({
       | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
       | React.ChangeEvent<HTMLSelectElement>
   ) => {
-    setPartnerInput((prev) => ({
-      ...prev,
-      [event.target.name]: event.target.value,
-    }));
+    const { name, value } = event.target;
+    
+    if (name === "phone" || name === "contact_phone") {
+      const formatted = formatPhoneInputMask(value);
+      setPartnerInput((prev) => ({ ...prev, [name]: formatted }));
+      return;
+    }
+
+    if (name === "inn"){
+      if (value.length > 12) {
+        setPartnerInput((prev) => ({ ...prev, [name]: value.slice(0, 12) }));
+        return;
+      }
+    }
+
+     if (name === "ogrn"){
+       if (value.length > 15) {
+         setPartnerInput((prev) => ({ ...prev, [name]: value.slice(0, 15) }));
+         return;
+       }
+     
+     }
+
+    if (name === "address") {
+      const currentValue = partnerInput.address;
+      
+      if (value === "") {
+        setPartnerInput((prev) => ({ ...prev, address: "" }));
+        return;
+      }
+      
+      if (isDeletingText(currentValue, value)) {
+        setPartnerInput((prev) => ({ ...prev, address: value }));
+        return;
+      }
+      
+      const newAddressValue = handleAddressAutocomplete(value, currentValue);
+      setPartnerInput((prev) => ({ ...prev, address: newAddressValue }));
+      return;
+    }
+
+
+      setPartnerInput((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
   };
 
   const onSubmitPartnerHandler = async (
@@ -95,6 +158,7 @@ export function AdminPartnerForm({
     event.preventDefault();
     try {
       if (partner) {
+        const normalizedContactPhone = normalizePhoneDigits(partnerInput.contact_phone);
         const partnerToUpdate = {
           company_name: partnerInput.company_name,
           inn: partnerInput.inn,
@@ -102,7 +166,7 @@ export function AdminPartnerForm({
           address: partnerInput.address,
           contact_person: partnerInput.contact_person,
           contact_email: partnerInput.contact_email,
-          contact_phone: partnerInput.contact_phone,
+          contact_phone: normalizedContactPhone,
           comment: partnerInput.comment,
           status: partnerInput.status,
         };
@@ -110,11 +174,12 @@ export function AdminPartnerForm({
           updatePartnerThunk({ id: partner.id, partner: partnerToUpdate })
         );
       } else {
+        const normalizedPhone = normalizePhoneDigits(partnerInput.phone);
         const signUpResult = await dispatch(
           signUpThunk({
             login: partnerInput.login,
             password: partnerInput.password || "",
-            phone: partnerInput.phone,
+            phone: normalizedPhone,
             role_id: partnerInput.role_id,
           })
         );
@@ -122,6 +187,7 @@ export function AdminPartnerForm({
         // Проверяем, что регистрация прошла успешно
         if (signUpThunk.fulfilled.match(signUpResult) && signUpResult.payload.data.user) {
           const createdUser = signUpResult.payload.data.user;
+          const normalizedContactPhone = normalizePhoneDigits(partnerInput.contact_phone);
           const partnerToCreate = {
             company_name: partnerInput.company_name,
             inn: partnerInput.inn,
@@ -129,7 +195,7 @@ export function AdminPartnerForm({
             address: partnerInput.address,
             contact_person: partnerInput.contact_person,
             contact_email: partnerInput.contact_email,
-            contact_phone: partnerInput.contact_phone,
+            contact_phone: normalizedContactPhone,
             comment: partnerInput.comment,
             status: partnerInput.status,
             user_id: createdUser.id,
@@ -243,7 +309,7 @@ export function AdminPartnerForm({
           id="address"
           type="text"
           name="address"
-          placeholder="Введите адрес"
+          placeholder="улица(проспект, бульвар), Номер дома, Город"
           value={partnerInput.address}
           onChange={onChangePartnerHandler}
           className={styles.formInput}

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import styles from "./AdminPartnerCard.module.css";
-import { useAppDispatch, EditModal } from "@/shared";
+import { useAppDispatch, EditModal, formatPhonePretty } from "@/shared";
 import { deletePartnerThunk, editOnePartner, type IPartnerWithUser } from "@/entities";
 import { AdminPartnerForm } from "@/widgets";
 
@@ -33,14 +33,14 @@ export function AdminPartnerCard({
     <div className={styles.partnerItem}>
       <div className={styles.itemContent}>
         <h3 className={styles.itemTitle}>{partner.user?.login}</h3>        
-        <p className={styles.itemDescription}>{partner.user?.phone}</p>        
+        <p className={styles.itemDescription}>{partner.user?.phone ? formatPhonePretty(partner.user?.phone) : ''}</p>        
         <h3 className={styles.itemTitle}>{partner.company_name}</h3>
         <p className={styles.itemDescription}>{partner.inn}</p>
         <p className={styles.itemDescription}>{partner.ogrn}</p>
         <p className={styles.itemDescription}>{partner.address}</p>
         <p className={styles.itemDescription}>{partner.contact_person}</p>
         <p className={styles.itemDescription}>{partner.contact_email}</p>
-        <p className={styles.itemDescription}>{partner.contact_phone}</p>
+        <p className={styles.itemDescription}>{partner.contact_phone ? formatPhonePretty(partner.contact_phone) : ''}</p>
         <p className={styles.itemDescription}>{partner.comment}</p>
         <p className={`${styles.itemDescription} ${styles.statusItem} ${
           partner.status === 'active' ? styles.statusActive :
