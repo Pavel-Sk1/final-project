@@ -12,7 +12,13 @@ import {
   SuccessModal,
   ErrorModal,
   ImageUpload,
+  axiosInstance,
 } from "@/shared";
+import {
+  type StoredImage,
+  uploadStoredImageToServer,
+  clearAllStoredImages,
+} from "@/shared/lib/imageUtils";
 
 type AdminProductFormProps = {
   product: IAdminProduct;
@@ -35,6 +41,7 @@ export function AdminProductForm({
   const [productInput, setProductInput] = useState<ICreateAdminProduct>({
     img: product.img,
   });
+  const [storedImage, setStoredImage] = useState<StoredImage | null>(null);
   useEffect(() => {
     if (product) {
       setProductInput({
@@ -58,8 +65,32 @@ export function AdminProductForm({
     event.preventDefault();
 
     try {
+      let finalProductInput = { ...productInput };
+
+      // Если есть сохраненное изображение в localStorage, загружаем его на сервер
+      if (storedImage) {
+        try {
+          const uploadedImageUrl = await uploadStoredImageToServer(
+            storedImage,
+            axiosInstance
+          );
+          finalProductInput.img = uploadedImageUrl;
+
+          // Очищаем localStorage после успешной загрузки
+          clearAllStoredImages();
+          setStoredImage(null);
+        } catch (error) {
+          console.error("Error uploading image:", error);
+          showError(
+            "Ошибка загрузки изображения",
+            "Не удалось загрузить изображение на сервер. Попробуйте снова."
+          );
+          return;
+        }
+      }
+
       const result = await dispatch(
-        updateProductThunk({ id: product.id, product: productInput })
+        updateProductThunk({ id: product.id, product: finalProductInput })
       );
       if (updateProductThunk.fulfilled.match(result)) {
         showSuccess("Продукт обновлен", "Продукт был успешно обновлен!");
@@ -98,6 +129,9 @@ export function AdminProductForm({
               setProductInput((prev) => ({ ...prev, img: "" }))
             }
             placeholder="Введите URL изображения или загрузите файл"
+            useLocalStorage={true}
+            storedImageId={storedImage?.id}
+            onStoredImageChange={setStoredImage}
           />
         </div>
         <div className={styles.formActions}>

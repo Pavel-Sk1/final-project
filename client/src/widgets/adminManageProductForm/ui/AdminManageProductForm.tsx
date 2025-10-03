@@ -7,6 +7,7 @@ import {
   SuccessModal,
   ErrorModal,
   ImageUpload,
+  axiosInstance,
 } from "@/shared";
 import { getAllCategoriesThunk } from "@/entities";
 import type { ICreateProduct, IProduct } from "@/entities/products";
@@ -15,6 +16,11 @@ import {
   deleteOneProduct,
   updateFullProductThunk,
 } from "@/entities/products";
+import {
+  type StoredImage,
+  uploadStoredImageToServer,
+  clearAllStoredImages,
+} from "@/shared/lib/imageUtils";
 
 const initialProductInput: ICreateProduct = {
   name: "",
@@ -65,6 +71,7 @@ export function AdminManageProductForm({
         }
       : initialProductInput
   );
+  const [storedImage, setStoredImage] = useState<StoredImage | null>(null);
 
   useEffect(() => {
     if (product) {
@@ -108,9 +115,33 @@ export function AdminManageProductForm({
     event.preventDefault();
 
     try {
+      let finalProductInput = { ...productInput };
+
+      // Если есть сохраненное изображение в localStorage, загружаем его на сервер
+      if (storedImage) {
+        try {
+          const uploadedImageUrl = await uploadStoredImageToServer(
+            storedImage,
+            axiosInstance
+          );
+          finalProductInput.img = uploadedImageUrl;
+
+          // Очищаем localStorage после успешной загрузки
+          clearAllStoredImages();
+          setStoredImage(null);
+        } catch (error) {
+          console.error("Error uploading image:", error);
+          showError(
+            "Ошибка загрузки изображения",
+            "Не удалось загрузить изображение на сервер. Попробуйте снова."
+          );
+          return;
+        }
+      }
+
       if (product) {
         const result = await dispatch(
-          updateFullProductThunk({ id: product.id, product: productInput })
+          updateFullProductThunk({ id: product.id, product: finalProductInput })
         );
         if (updateFullProductThunk.fulfilled.match(result)) {
           showSuccess("Продукт обновлен", "Продукт был успешно обновлен!");
@@ -121,7 +152,7 @@ export function AdminManageProductForm({
           );
         }
       } else {
-        const result = await dispatch(createProductThunk(productInput));
+        const result = await dispatch(createProductThunk(finalProductInput));
         if (createProductThunk.fulfilled.match(result)) {
           showSuccess("Продукт создан", "Продукт был успешно создан!");
         } else {
@@ -216,6 +247,9 @@ export function AdminManageProductForm({
               setProductInput((prev) => ({ ...prev, img: "" }))
             }
             placeholder="Введите URL изображения или загрузите файл"
+            useLocalStorage={true}
+            storedImageId={storedImage?.id}
+            onStoredImageChange={setStoredImage}
           />
         </div>
 
