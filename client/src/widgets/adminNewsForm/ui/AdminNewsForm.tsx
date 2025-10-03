@@ -13,7 +13,13 @@ import {
   SuccessModal,
   ErrorModal,
   ImageUpload,
+  axiosInstance,
 } from "@/shared";
+import {
+  StoredImage,
+  uploadStoredImageToServer,
+  clearAllStoredImages,
+} from "@/shared/lib/imageUtils";
 
 const initialNewsInput: ICreateAdminNews = {
   title: "",
@@ -52,6 +58,7 @@ export function AdminNewsForm({
         }
       : initialNewsInput
   );
+  const [storedImage, setStoredImage] = useState<StoredImage | null>(null);
 
   useEffect(() => {
     if (news) {
@@ -86,9 +93,33 @@ export function AdminNewsForm({
     event.preventDefault();
 
     try {
+      let finalNewsInput = { ...newsInput };
+
+      // Если есть сохраненное изображение в localStorage, загружаем его на сервер
+      if (storedImage) {
+        try {
+          const uploadedImageUrl = await uploadStoredImageToServer(
+            storedImage,
+            axiosInstance
+          );
+          finalNewsInput.img = uploadedImageUrl;
+
+          // Очищаем localStorage после успешной загрузки
+          clearAllStoredImages();
+          setStoredImage(null);
+        } catch (error) {
+          console.error("Error uploading image:", error);
+          showError(
+            "Ошибка загрузки изображения",
+            "Не удалось загрузить изображение на сервер. Попробуйте снова."
+          );
+          return;
+        }
+      }
+
       if (news) {
         const result = await dispatch(
-          updateNewsThunk({ id: news.id, news: newsInput })
+          updateNewsThunk({ id: news.id, news: finalNewsInput })
         );
         if (updateNewsThunk.fulfilled.match(result)) {
           showSuccess("Новость обновлена", "Новость была успешно обновлена!");
@@ -99,7 +130,7 @@ export function AdminNewsForm({
           );
         }
       } else {
-        const result = await dispatch(createNewsThunk(newsInput));
+        const result = await dispatch(createNewsThunk(finalNewsInput));
         if (createNewsThunk.fulfilled.match(result)) {
           showSuccess("Новость создана", "Новость была успешно создана!");
         } else {
@@ -159,6 +190,9 @@ export function AdminNewsForm({
             }
             onImageClear={() => setNewsInput((prev) => ({ ...prev, img: "" }))}
             placeholder="Введите URL изображения или загрузите файл"
+            useLocalStorage={true}
+            storedImageId={storedImage?.id}
+            onStoredImageChange={setStoredImage}
           />
         </div>
         <div className={styles.formGroup}>

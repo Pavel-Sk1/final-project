@@ -8,7 +8,7 @@ module.exports = {
       [
         {
           name: "Ватрушка",
-          img: "https://images.unsplash.com/photo-1548365328-9f547fb09530",
+          img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDBVvZUa1ACrk-YNXbhNK0udjraUM-JCfUpQ&s",
           price: 24,
           recipe: "Томатный соус, моцарелла, базилик, оливковое масло",
           category_id: 1,
@@ -19,7 +19,7 @@ module.exports = {
         },
         {
           name: "Пирог с яйцом жар/печ",
-          img: "https://images.unsplash.com/photo-1600628422015-7430f3e7173b",
+          img: "https://media.ovkuse.ru/images/recipes/215f7df8-4395-4ae1-8eab-59b4cda1ab4d/215f7df8-4395-4ae1-8eab-59b4cda1ab4d_420_420.webp",
           price: 25,
           recipe: "Томатный соус, моцарелла, пепперони, орегано",
           category_id: 1,
@@ -31,7 +31,7 @@ module.exports = {
         },
         {
           name: "Пирог с картошкой жар/печ",
-          img: "https://images.unsplash.com/photo-1601924638867-3ec6b1c9b8e0",
+          img: "https://бежицахлеб.рф/assets/hlebokombinat/img/tovar/%D0%BF%D0%B8%D1%80%D0%BE%D0%B6%D0%BE%D0%BA%20%D1%81%20%D0%BA%D0%B0%D1%80%D1%82%D0%BE%D1%88%D0%BA%D0%BE%D0%B9.jpg",
           price: 20,
           recipe: "Моцарелла, горгонзола, пармезан, рикотта",
           category_id: 1,
@@ -43,7 +43,7 @@ module.exports = {
         // Бургеры
         {
           name: "Пирог с капустой жар/печ",
-          img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd",
+          img: "https://dobryanka-rus.ru/storage/goods/254902_frWFv.jpg",
           price: 20,
           recipe: "Говяжья котлета, салат, помидор, лук, соус",
           category_id: 2,
@@ -54,7 +54,7 @@ module.exports = {
         },
         {
           name: "Пирог с повидло жар/печ",
-          img: "https://images.unsplash.com/photo-1550547660-d9450f859349",
+          img: "https://www.zolotoykolos.ru/upload/iblock/2b1/fw7ut6w5r4hehiro1t93h2pxou6wkq8b.jpg",
           price: 20,
           recipe: "Говяжья котлета, сыр чеддер, салат, помидор, лук",
           category_id: 2,
@@ -66,7 +66,7 @@ module.exports = {
         // Напитки
         {
           name: "Пирог с творогом жар/печ",
-          img: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b",
+          img: "https://www.koolinar.ru/all_image/recipes/153/153130/recipe_c5505802-e70d-4770-8606-e731906df7dc.jpg",
           price: 23,
           recipe: "Газированный напиток",
           category_id: 3,
@@ -77,7 +77,7 @@ module.exports = {
         },
         {
           name: "Пирог с печенкой жар/печ",
-          img: "https://images.unsplash.com/photo-1571076730260-35a1f7c5d5cd",
+          img: "https://dobryanka-rus.ru/storage/goods/254897_OWMTO.jpg",
           price: 25,
           recipe: "Свежевыжатый апельсиновый сок",
           category_id: 3,
@@ -89,7 +89,7 @@ module.exports = {
         // Десерты
         {
           name: "Пирог с зеленым луком и яйцом жар/печ",
-          img: "https://images.unsplash.com/photo-1612197527762-8cfb55a3a7f3",
+          img: "https://media.ovkuse.ru/images/recipes/215f7df8-4395-4ae1-8eab-59b4cda1ab4d/215f7df8-4395-4ae1-8eab-59b4cda1ab4d_420_420.webp",
           price: 25,
           recipe: "Кофейный десерт с маскарпоне и савоярди",
           category_id: 4,
@@ -100,7 +100,7 @@ module.exports = {
         },
         {
           name: "Пирог с яблоком",
-          img: "https://images.unsplash.com/photo-1551024709-8f23befc6cf7",
+          img: "https://dobryanka-rus.ru/storage/goods/254917_Gq1OY.jpg",
           price: 20,
           recipe: "Классический чизкейк с ягодным соусом",
           category_id: 4,
@@ -112,7 +112,7 @@ module.exports = {
         // Салаты
         {
           name: "Пирог с мясом",
-          img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+          img: "https://ecomarket.ru/imgs/products/13309/pirozhki-s-myasom-ecomarket-ru-100-g---2-sht-1.jpg",
           price: 35,
           recipe: "Салат романо, курица, пармезан, сухарики, соус цезарь",
           category_id: 5,
@@ -123,7 +123,7 @@ module.exports = {
         },
         {
           name: "Беляш",
-          img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+          img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbS4Gfm0kBdHq6lQ6iLGWwc6eMZiniQAlhJw&s",
           price: 35,
           recipe: "Салат романо, курица, пармезан, сухарики, соус цезарь",
           category_id: 5,
@@ -134,7 +134,7 @@ module.exports = {
         },
         {
           name: "Пицца",
-          img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+          img: "https://media.ovkuse.ru/images/step_attachments/b5f7e45e-d088-49a0-8ae7-8b5761f39aab/b5f7e45e-d088-49a0-8ae7-8b5761f39aab.jpg",
           price: 32,
           recipe: "Салат романо, курица, пармезан, сухарики, соус цезарь",
           category_id: 5,
@@ -145,7 +145,7 @@ module.exports = {
         },
         {
           name: "Сосиска в тесте",
-          img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+          img: "https://s3.coolclever.tech/upload/cool_admin/recipe/anons-65fabe569829c897113520.jpg",
           price: 34,
           recipe: "Салат романо, курица, пармезан, сухарики, соус цезарь",
           category_id: 5,
@@ -156,7 +156,7 @@ module.exports = {
         },
         {
           name: "Плюшка с маком",
-          img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+          img: "https://img.vkusvill.ru/pim/images/site_LargeWebP/2b16d078-0213-4837-a726-3e48a4b505c8.webp?1719090053.603",
           price: 23,
           recipe: "Салат романо, курица, пармезан, сухарики, соус цезарь",
           category_id: 5,
@@ -167,7 +167,7 @@ module.exports = {
         },
         {
           name: 'Пирог "Славянский"',
-          img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+          img: "https://thumbs.dreamstime.com/b/%D1%82%D1%80%D0%B0%D0%B4%D0%B8%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B9-%D1%80%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9-%D1%81%D0%BB%D0%B0%D0%B2%D1%8F%D0%BD%D1%81%D0%BA%D0%B8%D0%B9-%D0%BF%D0%B8%D1%80%D0%BE%D0%B3-%D1%81-%D0%BE%D1%82%D0%B2%D0%B5%D1%80%D1%81%D1%82%D0%B8%D0%B5%D0%BC-%D0%B2-%D1%86%D0%B5%D0%BD%D1%82%D1%80%D0%B5-%D1%80%D0%B0%D1%81%D1%81%D1%82%D0%B5%D0%B3%D0%B0%D0%B9-217013018.jpg",
           price: 45,
           recipe: "Салат романо, курица, пармезан, сухарики, соус цезарь",
           category_id: 5,
@@ -178,7 +178,7 @@ module.exports = {
         },
         {
           name: "Пирог пресный с яйцом",
-          img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+          img: "https://gogol-mogol.goub.by/images_2/presnyi_pirog.jpg",
           price: 40,
           recipe: "Салат романо, курица, пармезан, сухарики, соус цезарь",
           category_id: 5,
@@ -190,7 +190,7 @@ module.exports = {
 
         {
           name: "Пирог пресный с картошкой",
-          img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+          img: "https://kopilka-kulinara.ru/upload/information_system_46/2/0/8/item_2081/item_2081.webp",
           price: 40,
           recipe: "Салат романо, курица, пармезан, сухарики, соус цезарь",
           category_id: 5,
@@ -201,7 +201,7 @@ module.exports = {
         },
         {
           name: "Пирог пресный с капустой",
-          img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+          img: "https://foodmood.ru/upload/iblock/9f2/9f2b3ce42cb5a96ad51744e5ca209044.jpg",
           price: 40,
           recipe: "Салат романо, курица, пармезан, сухарики, соус цезарь",
           category_id: 5,
@@ -212,7 +212,7 @@ module.exports = {
         },
         {
           name: "Пирог пресный с яблоками",
-          img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+          img: "https://img.povar.ru/mobile/72/71/c5/7f/sdobnie_pirojki_s_yablokami-793708.JPG",
           price: 40,
           recipe: "Салат романо, курица, пармезан, сухарики, соус цезарь",
           category_id: 5,
@@ -223,7 +223,7 @@ module.exports = {
         },
         {
           name: "Пирог пресный с творогом",
-          img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+          img: "https://media.ovkuse.ru/images/recipes/9f84ea54-e5c8-44d8-80c2-0361af2abae6/9f84ea54-e5c8-44d8-80c2-0361af2abae6_420_420.webp",
           price: 40,
           weight: 145,
           recipe: "Салат романо, курица, пармезан, сухарики, соус цезарь",
@@ -234,7 +234,7 @@ module.exports = {
         },
         {
           name: "Пирог пресный с зеленым луком и яйцом",
-          img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+          img: "https://alimero.ru/uploads/images/00/63/45/2015/02/20/0117e5_wmark.jpg",
           price: 40,
           weight: 145,
           recipe: "Салат романо, курица, пармезан, сухарики, соус цезарь",
@@ -245,7 +245,7 @@ module.exports = {
         },
         {
           name: "Пирог пресный с курагой",
-          img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+          img: "https://pishkaexclusive.ru/image/cache/catalog/a_images/%D0%92%D1%8B%D0%BF%D0%B5%D1%87%D0%BA%D0%B0/sdobnyekuraga-600x600.webp",
           price: 40,
           weight: 145,
           recipe: "Салат романо, курица, пармезан, сухарики, соус цезарь",
@@ -256,7 +256,7 @@ module.exports = {
         },
         {
           name: "Хот-дог",
-          img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+          img: "https://grill-food22.ru/wp-content/uploads/2022/04/hotdog-1.jpg",
           price: 40,
           weight: 145,
           recipe: "Салат романо, курица, пармезан, сухарики, соус цезарь",
@@ -267,7 +267,7 @@ module.exports = {
         },
         {
           name: "Провансалька",
-          img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+          img: "https://tornado.shop/images/detailed/77/P1670855.jpg",
           price: 50,
           weight: 140,
           recipe: "Салат романо, курица, пармезан, сухарики, соус цезарь",
@@ -278,7 +278,7 @@ module.exports = {
         },
         {
           name: "Пирог с курицей",
-          img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+          img: "https://static.vkusnyblog.com/full/uploads/2020/05/pirozhki-s-kuricei-i-syrom.jpg",
           price: 55,
           weight: 130,
           recipe: "Салат романо, курица, пармезан, сухарики, соус цезарь",
@@ -289,7 +289,7 @@ module.exports = {
         },
         {
           name: "Булка городская",
-          img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+          img: "https://sochi-hleb.ru/uploads/posts/2023-03/1679383398_bulki-gorodskie.jpg",
           price: 20,
           weight: 200,
           recipe: "Салат романо, курица, пармезан, сухарики, соус цезарь",
@@ -300,7 +300,7 @@ module.exports = {
         },
         {
           name: "Тесто дрожевое",
-          img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+          img: "https://www.patee.ru/r/x6/18/65/1a/960m.jpg",
           price: 45,
           weight: 500,
           recipe: "Салат романо, курица, пармезан, сухарики, соус цезарь",
@@ -311,7 +311,7 @@ module.exports = {
         },
         {
           name: "Сырники",
-          img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+          img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpJwThq41gofygKEDIrVQFc_3uj9cJZFfrbg&s",
           price: 30,
           weight: 60,
           recipe: "Салат романо, курица, пармезан, сухарики, соус цезарь",
@@ -322,7 +322,7 @@ module.exports = {
         },
         {
           name: "Запеканка творожная",
-          img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+          img: "https://cdn.tveda.ru/thumbs/26a/26a52a8f309e73b2a4787413c4c82ae8/e3041fab071cb8d7351dc9a092a7d34e.jpg",
           price: 400,
           weight: 1000,
           recipe: "Салат романо, курица, пармезан, сухарики, соус цезарь",
