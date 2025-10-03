@@ -6,7 +6,8 @@
     "dev": "nodemon src/app.js",
     "db:setup": "sequelize db:migrate && sequelize db:seed:all",
     "db:setup:prod": "npx sequelize db:migrate",
-    "start": "node src/app.js"
+    "start": "node src/app.js",
+    "db": "sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all"
   },
   "keywords": [],
   "author": "",

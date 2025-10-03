@@ -1,6 +1,6 @@
 import { editOneProduct, type IAdminProduct } from "@/entities";
 import styles from "./AdminProductCard.module.css";
-import { EditModal, useAppDispatch } from "@/shared";
+import { EditModal, getFullImageUrl, useAppDispatch } from "@/shared";
 import { useMemo, useState } from "react";
 import { AdminProductForm } from "@/widgets/adminProductForm";
 
@@ -21,7 +21,7 @@ export function AdminProductCard({ product }: AdminProductCardProps) {
   return (
     <div key={product.id} className={styles.productItem}>
       <div className={styles.itemImage}>
-        <img src={product.img} alt={product.name} />
+        <img src={getFullImageUrl(product.img)} alt={product.name} />
       </div>
       <div className={styles.itemContent}>
         <h3 className={styles.itemTitle}>{product.name}</h3>
