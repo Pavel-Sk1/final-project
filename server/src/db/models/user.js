@@ -168,11 +168,15 @@ module.exports = (sequelize, DataTypes) => {
           return rawUser;
         },
         beforeUpdate: async (updatedUser) => {
-          //* хэшируем пароль
-          const hashedPassword = await bcrypt.hash(updatedUser.password, 10);
-          updatedUser.password = hashedPassword;
-          //* приводим login к нижнему регистру
-          updatedUser.login = updatedUser.login.trim().toLowerCase();
+          //* хэшируем пароль только если он изменился и не хеширован
+          if (updatedUser.changed('password') && !updatedUser.password.startsWith('$2b$')) {
+            const hashedPassword = await bcrypt.hash(updatedUser.password, 10);
+            updatedUser.password = hashedPassword;
+          }
+          //* приводим login к нижнему регистру только если он изменился
+          if (updatedUser.changed('login')) {
+            updatedUser.login = updatedUser.login.trim().toLowerCase();
+          }
         },
         afterUpdate: (updatedUser) => {
           const rawUser = updatedUser.get();
@@ -180,11 +184,15 @@ module.exports = (sequelize, DataTypes) => {
           return rawUser;
         },
         beforeSave: async (updatedUser) => {
-          //* хэшируем пароль
-          const hashedPassword = await bcrypt.hash(updatedUser.password, 10);
-          updatedUser.password = hashedPassword;
-          //* приводим login к нижнему регистру
-          updatedUser.login = updatedUser.login.trim().toLowerCase();
+          //* хэшируем пароль только если он изменился и не хеширован
+          if (updatedUser.changed('password') && !updatedUser.password.startsWith('$2b$')) {
+            const hashedPassword = await bcrypt.hash(updatedUser.password, 10);
+            updatedUser.password = hashedPassword;
+          }
+          //* приводим login к нижнему регистру только если он изменился
+          if (updatedUser.changed('login')) {
+            updatedUser.login = updatedUser.login.trim().toLowerCase();
+          }
         },
         afterSave: (updatedUser) => {
           const rawUser = updatedUser.get();
