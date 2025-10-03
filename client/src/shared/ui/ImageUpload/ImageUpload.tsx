@@ -42,7 +42,7 @@ export function ImageUpload({
   const [previewUrl, setPreviewUrl] = useState(() => {
     // Для предварительного просмотра добавляем полный URL для локальных файлов
     return currentImageUrl?.startsWith("/uploads/")
-      ? `http://localhost:3000${currentImageUrl}`
+      ? `http://45.140.177.152:3000${currentImageUrl}`
       : currentImageUrl || "";
   });
   const [storedImage, setStoredImage] = useState<StoredImage | null>(null);
@@ -60,7 +60,7 @@ export function ImageUpload({
   // Обновляем previewUrl при изменении currentImageUrl
   useEffect(() => {
     const fullUrl = currentImageUrl?.startsWith("/uploads/")
-      ? `http://localhost:3000${currentImageUrl}`
+      ? `http://45.140.177.152:3000${currentImageUrl}`
       : currentImageUrl || "";
     setPreviewUrl(fullUrl);
     setUrlInput(currentImageUrl || "");
@@ -86,7 +86,7 @@ export function ImageUpload({
 
       // Для предварительного просмотра добавляем полный URL для локальных файлов
       const fullUrl = url.startsWith("/uploads/")
-        ? `http://localhost:3000${url}`
+        ? `http://45.140.177.152:3000${url}`
         : url;
       setPreviewUrl(fullUrl);
       onImageChange(url);
@@ -149,7 +149,7 @@ export function ImageUpload({
             const imageUrl = response.data.data.url;
             // Добавляем полный URL для локальных файлов
             const fullImageUrl = imageUrl.startsWith("/uploads/")
-              ? `http://localhost:3000${imageUrl}`
+              ? `http://45.140.177.152:3000${imageUrl}`
               : imageUrl;
 
             setUrlInput(imageUrl); // В поле ввода оставляем относительный путь
