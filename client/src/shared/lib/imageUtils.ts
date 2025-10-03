@@ -19,7 +19,7 @@ export function getFullImageUrl(imagePath: string | null | undefined): string {
 
   // Если это относительный путь к загруженному файлу, добавляем базовый URL
   if (imagePath.startsWith("/uploads/")) {
-    return `http://localhost:3000${imagePath}`;
+    return `http://45.140.177.152:3000${imagePath}`;
   }
 
   // Для других случаев возвращаем как есть
