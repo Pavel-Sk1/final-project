@@ -114,8 +114,6 @@
 /* Адаптация для 2K разрешения */
 @media (min-width: 1920px) {
   .editForm {
-    max-width: 800px;
-    margin: 0 auto;
     padding: 3rem;
     gap: 2rem;
     border-radius: 24px;
@@ -142,7 +140,6 @@
 
 @media (min-width: 2560px) {
   .editForm {
-    max-width: 1000px;
     padding: 4rem;
     gap: 2.5rem;
     border-radius: 32px;
